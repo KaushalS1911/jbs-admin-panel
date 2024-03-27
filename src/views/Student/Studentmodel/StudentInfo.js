@@ -19,7 +19,7 @@ import FormStepButtons from "../../../ui-component/FormStepButtons";
 import { courses } from "../../../contants/courseConstants";
 import { useDispatch } from "react-redux";
 import { settingPersonalDetails } from "../StudentSlice";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { Button } from "antd";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";

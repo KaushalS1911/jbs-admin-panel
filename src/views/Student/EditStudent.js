@@ -6,7 +6,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { useGetSingleStudent } from '../../hooks/useGetSingleStudent';
 import { useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import PersonalInfo from './Tabs/PersonalInfo';
 import MainCard from 'ui-component/cards/MainCard';
 import StudentAvater from './StudentAvater';

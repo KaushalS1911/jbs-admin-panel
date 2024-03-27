@@ -13,7 +13,7 @@ import { profile } from "../../atoms/authAtoms";
 import AddTask from "./AddTask";
 import { useGetTask } from "hooks/useGetTask";
 import moment from "moment";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import noDataImg from "../../assets/images/no data found.png";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";

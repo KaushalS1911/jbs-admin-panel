@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { gridSpacing } from "store/constant";
 import { useFormik } from "formik";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { numberofinstallmentConstants } from "contants/numberofinstallmentConstants";
 import instance from "helpers/axios";
 import Flatpickr from "react-flatpickr";

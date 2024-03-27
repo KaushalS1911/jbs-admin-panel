@@ -1,8 +1,8 @@
 {
-  "name": "berry-free-material-react-cra",
+  "name": "JBS Admin panel",
   "version": "3.3.2",
   "private": true,
-  "homepage": "https://berrydashboard.io",
+  "homepage": "https://adminpanel.jbsitinstitute.com",
   "dependencies": {
     "@emotion/cache": "^11.9.3",
     "@emotion/react": "^11.11.3",

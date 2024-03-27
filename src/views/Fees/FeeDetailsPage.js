@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useGetSingleStudent } from "../../hooks/useGetSingleStudent";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";

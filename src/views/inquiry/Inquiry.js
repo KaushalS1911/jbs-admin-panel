@@ -16,7 +16,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "flatpickr/dist/themes/material_green.css";
 import { gridSpacing } from "store/constant";
 import moment from "moment";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteAllInquiry } from "store/slices/inquiryslice";
 import { profile } from "../../atoms/authAtoms";

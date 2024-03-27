@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeAllStateData, settingFeesDetails } from '../StudentSlice';
 import FormStepButtons from "../../../ui-component/FormStepButtons";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { numberofinstallmentConstants } from "../../../contants/numberofinstallmentConstants";

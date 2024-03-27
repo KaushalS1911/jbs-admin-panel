@@ -5,7 +5,7 @@ import { useFormik } from 'formik'
 import location from '../../../Countrystatecity.json'
 import instance from '../../../helpers/axios'
 import { gridSpacing } from 'store/constant'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 import { notification } from 'antd'
 
 const validationSchema = Yup.object({

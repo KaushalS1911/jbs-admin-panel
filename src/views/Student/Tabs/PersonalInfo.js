@@ -17,7 +17,7 @@ import { gridSpacing } from "store/constant";
 import { courses } from "../../../contants/courseConstants";
 import { gender } from "../../../contants/genderConstants";
 import instance from "../../../helpers/axios";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { Stack } from "@mui/system";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";

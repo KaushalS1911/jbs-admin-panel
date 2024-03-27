@@ -3,7 +3,7 @@ import React from "react";
 import { gridSpacing } from "store/constant";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetSingleStudent } from "hooks/useGetSingleStudent";
 

@@ -2,7 +2,7 @@ import React from 'react'
 import MainCard from 'ui-component/cards/MainCard';
 import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { FormControl, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography, Paper, TextField, Select, MenuItem, InputLabel, Button, Chip, Popover, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton } from '@mui/material';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';

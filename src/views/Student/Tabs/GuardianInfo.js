@@ -7,7 +7,7 @@ import EditGuardianinfo from "./EditGuardianinfo";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import ConfirmationDialog from "Extracomponent/ConfirmationDialog";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useGetSingleStudent } from "../../../hooks/useGetSingleStudent";
 
 const GuardianInfo = ({ studentData }) => {

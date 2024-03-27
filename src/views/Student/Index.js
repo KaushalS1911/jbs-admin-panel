@@ -5,7 +5,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import StudentList from "./utils/StudentList";
 import "flatpickr/dist/themes/material_green.css";
 import { gridSpacing } from "store/constant";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";

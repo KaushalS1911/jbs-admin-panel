@@ -24,7 +24,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import FormStepButtons from '../../../ui-component/FormStepButtons'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8

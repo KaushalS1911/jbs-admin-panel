@@ -15,7 +15,7 @@ import PhoneInput from "react-phone-input-2";
 import { GuardianType } from "../../../contants/guardiantypeConstants";
 import { gridSpacing } from "store/constant";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { notification } from "antd";
 
 const ITEM_HEIGHT = 48;

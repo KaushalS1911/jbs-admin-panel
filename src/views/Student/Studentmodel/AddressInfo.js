@@ -9,7 +9,7 @@ import { useFormik } from 'formik'
 import FormStepButtons from '../../../ui-component/FormStepButtons'
 import { useDispatch } from 'react-redux'
 import { settingAddressDetails } from '../StudentSlice'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 
 const initialValues = {
   address_1: '',

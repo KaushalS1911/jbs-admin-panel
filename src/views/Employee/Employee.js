@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MainCard from "ui-component/cards/MainCard";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";

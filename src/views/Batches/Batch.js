@@ -8,7 +8,7 @@ import { gridSpacing } from "store/constant";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
