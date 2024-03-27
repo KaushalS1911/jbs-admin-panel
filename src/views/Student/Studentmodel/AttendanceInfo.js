@@ -1,4 +1,4 @@
-import { Chip, TablePagination } from "@mui/material";
+import {Chip, TablePagination, Typography} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetAllAttendance } from "hooks/useGetAttendance";
 import moment from "moment";
@@ -82,21 +82,18 @@ const AttendanceInfo = ({ formData }) => {
             color = "red";
             break;
           case "Late":
-            color = "blue";
+            color = "orange";
             break;
           default:
-            color = "blue";
+            color = "skyblue";
         }
         return (
           <>
-            <Chip
-              label={params.value}
-              style={{
-                backgroundColor: color,
-                color: "white",
-                size: "small",
-              }}
-            />
+              <Typography style={{
+                  color: color,
+                  fontSize: 14,
+                  fontWeight: 500
+              }}>{params.value}</Typography>
           </>
         );
       },

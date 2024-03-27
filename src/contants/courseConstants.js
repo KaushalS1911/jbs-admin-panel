@@ -39,7 +39,7 @@ export const courseProgress = (course) => {
       return [
         "C",
         "C++",
-        "State Manaagement",
+        "State Management",
         "Flutter",
         "Firebase",
         "Dart",
@@ -59,7 +59,7 @@ export const courseProgress = (course) => {
         "Android",
         "Firebase",
         "XML Design",
-        "Git mangement",
+        "Git Management",
         "DBMS",
         "Postman",
         "App Deployment",
@@ -91,7 +91,7 @@ export const courseProgress = (course) => {
         "ReactJS/AngularJS/VueJS",
         "Git Management",
         "API Development",
-        "MySQL/MogoDB",
+        "MySQL/MongoDB",
         "Express.JS",
         "Node.JS",
       ];
@@ -110,7 +110,7 @@ export const courseProgress = (course) => {
         "Array/String",
         "Functions/Pointer/Structure",
         "Dynamic Memory Allocation",
-        "File Handeling/Graphics",
+        "File Handling/Graphics",
       ];
     case "c++ Programming":
       return [
@@ -194,7 +194,7 @@ export const courseProgress = (course) => {
         "Illustrator",
         "Mockup Design",
         "Dribble Portfolio",
-        "corelDRAW",
+        "CorelDraw",
         "Visiting Card Design",
         "Behance Portfolio",
         "InDesign",
