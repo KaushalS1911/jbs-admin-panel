@@ -1,21 +1,10 @@
-// project imports
-import MainCard from 'ui-component/cards/MainCard';
-import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
-import Mainbreadcrumbs from 'contants/Mainbreadcrumbs';
-
-// ==============================|| TYPOGRAPHY ||============================== //
+import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
+import MainAccount from "views/Account/MainAccount";
 
 const Account = () => (
-  <>
-    <Mainbreadcrumbs title={"Account"} />
-    <MainCard
-      secondary={
-        <SecondaryAction link="https://next.material-ui.com/system/typography/" />
-      }
-    >
-      <div>Account</div>
-    </MainCard>
-  </>
+    <>
+        <Mainbreadcrumbs title={"Account"} />
+        <MainAccount />
+    </>
 );
-
 export default Account;
