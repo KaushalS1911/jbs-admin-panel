@@ -12,42 +12,98 @@ import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 import Box from "@mui/material/Box";
+import {useParams} from "react-router-dom";
+import {useGetSingleStudent} from "../../../hooks/useGetSingleStudent";
+import instance from "../../../helpers/axios";
+import {notification} from "antd";
 // Define the full-stack development courses
 
 const StudentDetail = ({ course }) => {
+  const {companyId, studentId} = useParams()
+  const { data, refetch } = useGetSingleStudent(studentId);
   const theme = useTheme();
   const [completedCourses, setCompletedCourses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [index, setIndex] = useState();
   const [dates, setDates] = useState([]);
 
+
   const one = () => {
     const selectedCourse = courseProgress(course);
     setCourses(selectedCourse);
-    setDates(Array(selectedCourse.length).fill("--"));
+    const initialDates = selectedCourse.map((course, index) =>
+        data?.assignmentCompleted.some(item => item.index === index) ? data?.assignmentCompleted.find(item => item.index === index).date : "--"
+    );
+
+      setDates(initialDates);
   };
 
   useEffect(() => {
     one();
+    refetch()
+
+    if(data?.assignmentCompleted && data?.assignmentCompleted.length !== 0){
+      setCompletedCourses(data?.assignmentCompleted)
+
+    }
   }, []);
 
-  const handleCourseCompletion = (index) => {
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
+
+  const handleCourseCompletion = async (index) => {
     if (!completedCourses.includes(index)) {
-      setCompletedCourses([...completedCourses, index]);
+      const completionDate = new Date().toLocaleDateString();
+
       setDates((prevDates) => {
         const newDates = [...prevDates];
-        newDates[index] = new Date().toLocaleDateString();
+        newDates[index] = completionDate;
         return newDates;
       });
+
+      const payload = {...data, assignmentCompleted: [...completedCourses, { index, date: completionDate }]}
+
+
+      await instance({
+        method: "PUT",
+        url: `company/${companyId}/${studentId}/updateStudent`,
+        data: payload,
+      })
+          .then((response) => {
+            setCompletedCourses([...completedCourses, { index, date: completionDate }]);
+            openNotificationWithIcon("success", response.data.data.message);
+            refetch()
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     }
   };
 
   const isCourseCompleted = (index) => {
-    return completedCourses.includes(index);
+    return data?.assignmentCompleted.some(item => item.index === index);
   };
 
-  const handleReset = () => {
-    setCompletedCourses([]);
+  const handleReset = async () => {
+
+    const payload = {...data, assignmentCompleted: []}
+
+    await instance({
+      method: "PUT",
+      url: `company/${companyId}/${studentId}/updateStudent`,
+      data: payload,
+    })
+        .then((response) => {
+          setCompletedCourses([]);
+          openNotificationWithIcon("success", "Progress reset successfully.");
+          refetch()
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   };
 
 
@@ -74,7 +130,7 @@ const StudentDetail = ({ course }) => {
                 >
                   <StepLabel
                     sx={{
-                      width: "300px",
+                      minWidth: "300px",
                     }}
                   >
                     {label}
@@ -83,9 +139,8 @@ const StudentDetail = ({ course }) => {
                     variant="h6"
                     sx={{
                       fontSize: "16px",
-                      margin: "0px 25px",
                       alignSelf: "center",
-                      width: "150px",
+                      width: "200px",
                     }}
                     component="span"
                     color={isCourseCompleted(index) ? "grey" : "secondary"}
@@ -98,8 +153,8 @@ const StudentDetail = ({ course }) => {
                     sx={{
                       ...theme.typography.commonAvatar,
                       transition: "all .2s ease-in-out",
-                      fontSize: "16px",
-                      margin: "0px 25px",
+                      fontSize: "14px",
+                      padding: "0px 25px",
                       background: theme.palette.secondary.light,
                       color: theme.palette.secondary.dark,
                       "&:hover": isCourseCompleted(index)
@@ -130,7 +185,7 @@ const StudentDetail = ({ course }) => {
             justifyContent: "space-between",
           }}
         >
-          <Typography sx={{ fontSize: "22px", fontWeight: "600" }}>
+          <Typography sx={{ fontSize: "20px", fontWeight: "600" }}>
             Progress : {completedCourses.length}/{courses.length}
           </Typography>
 
@@ -140,7 +195,7 @@ const StudentDetail = ({ course }) => {
               color="secondary"
               disabled={completedCourses.length === 0}
               sx={{
-                fontSize: "16px",
+                fontSize: "14px",
               }}
               onClick={() => {
                 handleReset();
@@ -156,7 +211,7 @@ const StudentDetail = ({ course }) => {
               color="secondary"
               disabled={completedCourses.length != courses.length}
               sx={{
-                fontSize: "16px",
+                fontSize: "14px",
                 margin: "0px 10px",
               }}
             >

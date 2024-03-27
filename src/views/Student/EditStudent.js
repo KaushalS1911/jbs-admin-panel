@@ -67,7 +67,7 @@ function EditStudent() {
               <AttendanceInfo formData={data} refetch={refetch} />
             </TabPanel>
             <TabPanel value="6">
-              <StudentDetail course={data?.personal_info.course} refetch={refetch} />
+              <StudentDetail course={data?.personal_info?.course} refetch={refetch} />
             </TabPanel>
           </MainCard>
         </TabContext>
