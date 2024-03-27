@@ -32,21 +32,16 @@ import { RestoreFromTrashTwoTone, EditNoteTwoTone } from "@mui/icons-material";
 
 const expenseType = [
   "Rent",
-  "Elecricity bill",
+  "Electricity bill",
   "Salary",
   "Stationary",
-  "Maintanance",
+  "Maintenance",
   "New Asset purchase",
   "Office expense",
 ];
 
 export const Expence = () => {
-  //notification
-  const openNotificationWithIcon = (type, message) => {
-    notification[type]({
-      message: message,
-    });
-  };
+
 
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(0);
@@ -67,6 +62,7 @@ export const Expence = () => {
   useEffect(() => {
     refetch();
   }, [page, rowsPerPage, searchText]);
+
   useEffect(() => {
     const today = new Date();
     const year = today.getFullYear();
@@ -76,6 +72,12 @@ export const Expence = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setCurrentDate(formattedDate);
   }, []);
+
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
 
   // console.log("data", data);
   const rows = data?.expenses
@@ -149,7 +151,6 @@ export const Expence = () => {
             lineHeight: "35px",
           }}
           onClick={() => {
-            console.log("iet", item);
             setEditExpence(item.row);
             setAddModal(true);
             setEditButton(true);
@@ -169,7 +170,7 @@ export const Expence = () => {
     setPage(0);
   }
 
-  function expenceform() {
+  function expenceForm() {
     setAddModal(true);
     setEditExpence("");
     setEditButton(false);
@@ -187,7 +188,7 @@ export const Expence = () => {
 
   const validationSchema = object({
     type: string().required("Type is required"),
-    desc: string().required("Descripition is required"),
+    desc: string().required("Description is required"),
     amount: string()
       .matches(/^[0-9]/, "Please Enter Number")
       .required("Amount is required"),
@@ -215,7 +216,7 @@ export const Expence = () => {
               payload
             )
             .then((res) => {
-              openNotificationWithIcon("success", res.data.message);
+              openNotificationWithIcon("success", res.data?.message);
               action.resetForm();
               setAddModal(false);
               refetch();
@@ -225,7 +226,7 @@ export const Expence = () => {
           await axios
             .post(`${process.env.REACT_APP_API_URL}expense`, payload)
             .then((res) => {
-              openNotificationWithIcon("success", res.data.data.message);
+              openNotificationWithIcon("success", res.data?.data?.message);
               action.resetForm();
               setAddModal(false);
               refetch();
@@ -254,7 +255,7 @@ export const Expence = () => {
             companyId: profileData.company_id,
           })
         );
-        openNotificationWithIcon("success", res.payload.data.message);
+        openNotificationWithIcon("success", res.payload?.data?.message);
         refetch();
       } catch (error) {
         console.error("Error deleting inquiries:", error.message);
@@ -266,7 +267,7 @@ export const Expence = () => {
 
   return (
     <>
-      <Mainbreadcrumbs title={"Expence"} />
+      <Mainbreadcrumbs title={"Expense"} />
       <MainCard>
         <FormControl
           sx={{
@@ -328,7 +329,7 @@ export const Expence = () => {
                     margin: " 0px 10px 0px 10px ",
                     color: "#5e35b1",
                   }}
-                  onClick={expenceform}
+                  onClick={expenceForm}
                   startIcon={
                     <AddCircleOutlineIcon
                       style={{
@@ -396,10 +397,10 @@ export const Expence = () => {
         </div>
         <TablePagination
           component="div"
-          count={data?.total}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
+          count={data?.total || 0}
           onRowsPerPageChange={handleChangeRowsPerPage}
           backIconButtonProps={{
             "aria-label": "Previous Page",
@@ -448,7 +449,7 @@ export const Expence = () => {
                   labelId="Type"
                   id="type"
                   name="type"
-                  InputLabelProps={{
+                  inputlabelprops={{
                     style: { color: "#5559CE" },
                   }}
                   label="Type"
@@ -472,7 +473,7 @@ export const Expence = () => {
                 onChange={formik.handleChange}
                 multiline
                 fullWidth
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#5559CE" },
                 }}
                 error={
@@ -494,7 +495,7 @@ export const Expence = () => {
                 onChange={formik.handleChange}
                 multiline
                 fullWidth
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#5559CE" },
                 }}
                 error={formik.touched.amount && Boolean(formik.errors.amount)}
@@ -510,7 +511,7 @@ export const Expence = () => {
                 value={formik?.values?.date}
                 onChange={formik.handleChange}
                 fullWidth
-                InputLabelProps={{
+                inputlabelprops={{
                   style: { color: "#5559CE" },
                 }}
                 error={formik.touched.date && Boolean(formik.errors.date)}
