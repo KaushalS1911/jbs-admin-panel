@@ -16,7 +16,7 @@ const PopularCard = ({ isLoading }) => {
                 <Grid container alignContent="center" justifyContent="space-between">
                   <Grid item>
                     <Typography variant="h4" style={{ fontSize: '18px' }}>
-                      am of the Month
+                      Employee of the Month
                     </Typography>
                   </Grid>
                 </Grid>
