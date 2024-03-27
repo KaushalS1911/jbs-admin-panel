@@ -121,7 +121,6 @@ const Editemployee = () => {
       const response = await dispatch(
         updateEmployee({ id: id, data: updatedEmployee, companyId: profileData.company_id })
       );
-      console.log(response);
       navigate('/employee');
       openNotificationWithIcon("success", response.payload.message);
     } catch (error) {
@@ -158,7 +157,6 @@ const Editemployee = () => {
   const handleDelete = async () => {
     try {
       const response = await dispatch(deleteEmployee({ id, companyId: profileData.company_id }))
-      console.log(response);
       setOpen(false)
       navigate('/employee')
       openNotificationWithIcon("success", response.payload.data.message);

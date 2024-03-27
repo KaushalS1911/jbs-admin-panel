@@ -1,7 +1,12 @@
 import { useState } from "react";
 import MainCard from "ui-component/cards/MainCard";
-import { Button, FormControl, Grid, TextField } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Button,
+  FormControl,
+  Grid,
+  TablePagination,
+  TextField,
+} from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "flatpickr/dist/themes/material_green.css";
 import { gridSpacing } from "store/constant";
@@ -13,11 +18,13 @@ import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import Batchform from "./Batchform";
-import { Modal, message } from "antd";
+import { Modal, notification } from "antd";
 import BatchEdit from "./BatchEdit";
 import ConfirmationDialog from "Extracomponent/ConfirmationDialog";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { EditNoteTwoTone, RestoreFromTrashTwoTone } from "@mui/icons-material";
+import noDataImg from "../../assets/images/no data found.png";
+
 
 function Batch() {
   const navigate = useNavigate();
@@ -29,7 +36,22 @@ function Batch() {
   const [showAddBatchDialog, setShowAddBatchDialog] = useState(false);
   const [showEditBatchDialog, setShowEditBatchDialog] = useState(false);
   const [batchData, setBatchData] = useState({});
-
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalBatches, setTotalBatches] = useState(0);
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
   // add batch model open
 
   const handleCloseAddBatchDialog = () => {
@@ -61,14 +83,15 @@ function Batch() {
   };
 
   const user = JSON.parse(localStorage.getItem("user"));
-
   const fetchData = async () => {
-    const searchParam = searchText ? `?searchKey=${searchText}` : "";
+    const searchParam = searchText
+      ? `?page=${page + 1}&limit=${rowsPerPage}&searchKey=${searchText}`
+      : `?page=${page + 1}&limit=${rowsPerPage}`;
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/batch${searchParam}`;
     try {
       const response = await axios.get(apiEndpoint);
-
       setBatches(response.data.data.batches);
+      setTotalBatches(response.data.data.total);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -83,22 +106,21 @@ function Batch() {
     } else {
       fetchData();
     }
-  }, [searchText]);
+  }, [searchText, page, rowsPerPage]);
 
+  //Single Batch Delete
   const handleDelete = async () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${batchId}/deleteBatch`;
-    let apiMessage;
     try {
       const response = await axios.delete(apiEndpoint);
       if (response.status === 200) {
         fetchData();
-        message.success(apiMessage);
+        openNotificationWithIcon("success", response.data.data.message);
       } else {
         console.error("Deletion failed");
       }
     } catch (error) {
       console.error("Error deleting data:", error);
-      message.error("Failed to delete batch. Please try again.");
     } finally {
       handleCloseConfirmationDialog();
     }
@@ -106,20 +128,20 @@ function Batch() {
 
   const rows = batches
     ? batches.map((item, index) => ({
-      rowId: item._id,
-      id: index + 1,
-      technology: item.technology,
-      batch_time: item.batch_time,
-      note: item.note,
-      lab_name: item.lab_name,
-      batch_members: item.batch_members,
-    }))
+        id: item._id,
+        srNo: index + 1,
+        technology: item.technology,
+        batch_time: item.batch_time,
+        note: item.note,
+        lab_name: item.lab_name,
+        batch_members: item.batch_members,
+      }))
     : [];
 
   const columns = [
     {
-      field: "id",
-      headerName: "ID",
+      field: "srNo",
+      headerName: "srNo",
       width: 40,
       disableColumnMenu: true,
       sortable: false,
@@ -174,9 +196,9 @@ function Batch() {
           label="View Student"
           size="small"
           onClick={() => {
-            Batchview(params.row.rowId);
+            Batchview(params.row.id);
           }}
-          KeyboardDoubleArrowRightIcon={<KeyboardDoubleArrowRightIcon />}
+          icon={<KeyboardDoubleArrowRightIcon />}
         />
       ),
     },
@@ -213,13 +235,35 @@ function Batch() {
               fontSize: "30px",
             }}
             onClick={() => {
-              handleOpenConfirmationDialog(params.row.rowId);
+              handleOpenConfirmationDialog(params.row.id); // Assuming rowId should be id
             }}
           />
         </div>
       ),
     },
   ];
+
+  //Multiple  Delete Batch
+  const handleSelectionModelChange = (selectionModel) => {
+    setSelectedRows(selectionModel);
+  };
+
+  console.log(selectedRows);
+  const deleteallbatch = async () => {
+    if (selectedRows.length > 0) {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/batches/delete-members`;
+        const response = await axios.delete(apiEndpoint, {
+          data: { ids: selectedRows },
+        });
+        openNotificationWithIcon("success", response.data.data.message);
+        refetch();
+      } catch (error) {
+        console.log("Error deleting employees:", error);
+      }
+    }
+  };
 
   return (
     <>
@@ -323,6 +367,7 @@ function Batch() {
                     lineHeight: "35px",
                     "&:hover": { Color: "#5559CE", backgroundColor: "#5559CE" },
                   }}
+                  onClick={deleteallbatch}
                   startIcon={
                     <RestoreFromTrashTwoTone
                       style={{ fontSize: "22px", marginRight: "3px" }}
@@ -333,9 +378,7 @@ function Batch() {
                 </Button>
               </Grid>
             </Grid>
-
           </Grid>
-
         </FormControl>
       </MainCard>
       <MainCard sx={{ margin: "20px 0" }}>
@@ -346,24 +389,58 @@ function Batch() {
             maxHeight: "100%",
           }}
         >
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            checkboxSelection
-            disableRowSelectionOnClick
-            disableColumnMenu
-            hideFooterSelectedRowCount={true}
-            hideFooterPagination={true}
-            sx={{
-              "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: "#ede7f6",
-                fontSize: 14,
-                color: "#262626",
-              },
-            }}
-          />
+          {rows.length > 0 ? (
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pagination
+              pageSize={rowsPerPage}
+              onPageChange={handleChangePage}
+              rowCount={rows.length}
+              checkboxSelection
+              disableRowSelectionOnClick
+              disableColumnMenu
+              hideFooterSelectedRowCount={true}
+              hideFooterPagination={true}
+              onRowSelectionModelChange={handleSelectionModelChange}
+              sx={{
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#ede7f6",
+                  fontSize: 14,
+                  color: "#262626",
+                },
+              }}
+            />
+          ) : (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={noDataImg}
+                  alt="no data"
+                  loading="lazy"
+                  style={{ maxWidth: "600px", width: "100%" }}
+                />
+              </div>
+            </>
+          )}
         </div>
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          component="div"
+          count={totalBatches}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </MainCard>
+      {/* Batch Add Modal */}
       <Modal
         open={showAddBatchDialog}
         onCancel={handleCloseAddBatchDialog}
@@ -377,6 +454,7 @@ function Batch() {
           fetchData={fetchData}
         />
       </Modal>
+      {/* Batch Edit Modal */}
       <Modal
         open={showEditBatchDialog}
         onCancel={handleCloseEditBatchDialog}
@@ -392,7 +470,7 @@ function Batch() {
           setShowEditBatchDialog={setShowEditBatchDialog}
         />
       </Modal>
-
+      {/* Batch Delete Modal */}
       <ConfirmationDialog
         open={open}
         handleClose={handleCloseConfirmationDialog}

@@ -9,6 +9,8 @@ import axios from "axios";
 import ConfirmationDialog from "Extracomponent/ConfirmationDialog";
 import { useParams } from "react-router-dom";
 import { useGetSingleStudent } from "../../../hooks/useGetSingleStudent";
+import { EditNoteTwoTone, RestoreFromTrashTwoTone } from "@mui/icons-material";
+
 
 const GuardianInfo = ({ studentData }) => {
   //notification
@@ -68,13 +70,12 @@ const GuardianInfo = ({ studentData }) => {
       const response = await axios.delete(apiEndpoint);
       if (response.status === 200) {
         handleCloseDialog();
-        openNotificationWithIcon("success", response.data.data.message); 
+        openNotificationWithIcon("success", response.data.data.message);
       }
     } catch (error) {
       console.error("Error deleting data:", error);
-    } 
-  }
-  
+    }
+  };
 
   const columns = [
     {
@@ -128,39 +129,32 @@ const GuardianInfo = ({ studentData }) => {
       renderCell: (params) => {
         return (
           <div>
-            <Button
-              variant="contained"
-              color="primary"
+            <EditNoteTwoTone
+              sx={{
+                color: "#b0b2e8",
+                height: "35px",
+                lineHeight: "35px",
+                margin: "0 20px",
+                cursor: "pointer",
+                fontSize: "30px",
+              }}
               onClick={() => {
                 handleguardian(params.row);
               }}
-              sx={{
-                backgroundColor: "#5559CE",
-                color: "#fff",
-                marginRight: "10px",
-                height: "35px",
-                lineHeight: "35px",
-                "&:hover": { Color: "#5559CE", backgroundColor: "#5559CE" },
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
+            />
+            <RestoreFromTrashTwoTone
+            sx={{
+              color: "#5559CE",
+              height: "35px",
+              lineHeight: "35px",
+              margin: "0 20px",
+              cursor: "pointer",
+              fontSize: "30px",
+            }}
+            onClick={() => {
                 handleOpenDialog(params.row.rowId);
               }}
-              sx={{
-                backgroundColor: "#FF0000",
-                color: "#fff",
-                height: "35px",
-                lineHeight: "35px",
-                "&:hover": { Color: "#fff", backgroundColor: "#FF0000" },
-              }}
-            >
-              Delete
-            </Button>
+          />
             <ConfirmationDialog
               open={open}
               handleClose={handleCloseDialog}

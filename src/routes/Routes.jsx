@@ -25,8 +25,6 @@ import BatchView from "views/Batches/BatchView ";
 import EditTaskView from '../views/tasks/EditTaskView';
 import Task from '../views/utilities/Task';
 import { Expence } from "views/utilities/Expence";
-import { exact } from "prop-types";
-import StudentDetail from '../views/Student/utils/StudentDetail';
 import FullStackStepper from '../views/Student/utils/StudentDetail';
 
 

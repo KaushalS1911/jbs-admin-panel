@@ -24,8 +24,17 @@ import axios from 'axios';
 import { profile } from '../../../../atoms/authAtoms';
 import { useRecoilState } from 'recoil';
 import PhoneInput from 'react-phone-input-2';
+import { notification } from 'antd';
 // ============================|| FIREBASE - LOGIN ||============================ //
 const FirebaseLogin = ({ setIsLoading }) => {
+
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
+
   const [checked, setChecked] = useState(true);
   const [contact, setContact] = useState('+91');
   const [loading, setLoading] = useState(false);
@@ -40,6 +49,7 @@ const FirebaseLogin = ({ setIsLoading }) => {
   useEffect(() => {
     loginUser();
   }, [setProfileData]);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -84,6 +94,7 @@ const FirebaseLogin = ({ setIsLoading }) => {
         //   return;
         // }
         setLoading(false);
+        openNotificationWithIcon("success", "Login successful!");
         setError('');
       })
       .catch((error) => {

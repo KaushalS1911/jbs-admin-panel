@@ -1,17 +1,15 @@
-// material-ui
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
-
-// ==============================|| SEARCH INPUT ||============================== //
 
 const SearchSection = () => {
   const location = useLocation();
-  const [output, setOutput] = useState();
+  const [output, setOutput] = useState('');
+
 
   useEffect(() => {
-    switch (location.pathname.split('/')[1]) {
+    const path = location.pathname.split('/')[1];
+    switch (path) {
       case 'Dashboard':
         setOutput('Dashboard');
         break;
@@ -45,15 +43,15 @@ const SearchSection = () => {
       case 'Reviews':
         setOutput('Reviews');
         break;
+      default:
+        setOutput('');
     }
-  }, [location.pathname.split('/')[1]]);
+  }, [location.pathname]);
 
   return (
-    <>
-      <Box>
-        <span style={{ marginLeft: '20px', color: '#5559CE', fontSize: '26px', fontWeight: '600' }}>{output}</span>
-      </Box>
-    </>
+    <Box>
+      <span style={{ marginLeft: '20px', color: '#5559CE', fontSize: '26px', fontWeight: '600' }}>{output}</span>
+    </Box>
   );
 };
 

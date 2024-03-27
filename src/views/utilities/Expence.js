@@ -77,7 +77,6 @@ export const Expence = () => {
     setCurrentDate(formattedDate);
   }, []);
 
-  // console.log("data", data);
   const rows = data?.expenses
     ? data?.expenses.map((item, index) => ({
         id: item._id,
@@ -149,7 +148,6 @@ export const Expence = () => {
             lineHeight: "35px",
           }}
           onClick={() => {
-            console.log("iet", item);
             setEditExpence(item.row);
             setAddModal(true);
             setEditButton(true);
@@ -208,7 +206,6 @@ export const Expence = () => {
       };
       try {
         if (editButton == true) {
-          console.log("editExpence", editExpence);
           await axios
             .put(
               `${process.env.REACT_APP_API_URL}/${data?.expenses[0].company_id}/${editExpence.id}/update-expense`,

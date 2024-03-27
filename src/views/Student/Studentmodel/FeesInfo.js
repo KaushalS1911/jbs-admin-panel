@@ -97,7 +97,6 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
       const noOfInstallments = parseInt(values.no_of_installments) || 0
       const amountRemaining = totalAmount - amountPaid - admissionAmount - discountAmt;
 
-      console.log(formik.initialValues);
 
       const finalobj = {
         ...values,

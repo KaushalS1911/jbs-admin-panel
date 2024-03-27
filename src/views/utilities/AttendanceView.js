@@ -70,7 +70,7 @@ const AttendanceView = ({ option, startDate }) => {
     },
     {
       field: "actions",
-      headerName: "Actions",
+      headerName: "Status",
       width: 500,
       sortable: false,
       headerAlign: "center",
@@ -104,7 +104,7 @@ const AttendanceView = ({ option, startDate }) => {
               height: "500",
               width: "100%",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "start",
               alignItems: "center",
             }}
           >
@@ -119,7 +119,7 @@ const AttendanceView = ({ option, startDate }) => {
                 <DataGrid
                   rows={rows}
                   columns={columns}
-                  checkboxSelection
+                  // checkboxSelection
                   disableRowSelectionOnClick
                   disableColumnMenu
                   hideFooterSelectedRowCount={true}

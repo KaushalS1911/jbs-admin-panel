@@ -83,7 +83,6 @@ const EditTaskView = () => {
         try {
             const response = await axios.delete(`${process.env.REACT_APP_API_URL}${user.company_id}/${id}/deleteTask`);
             if (response.status === 200) {
-                console.log(response);
                 openNotificationWithIcon("success", response.payload.data.message);
                 navigate('/task')
             } else {

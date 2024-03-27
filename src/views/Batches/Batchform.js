@@ -15,11 +15,10 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useGetAllStudents } from "../../hooks/useGetAllStudents";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { notification } from "antd";
-
+import { useGetAllStudents } from "hooks/useGetAllStudents";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -44,7 +43,7 @@ const labs = [
   { value: "lab 10", label: "Lab 10" },
 ];
 
-function Batchform({ setIsBatchOpen, batchData }) {
+function Batchform({ setIsBatchOpen, fetchData }) {
   //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -54,16 +53,17 @@ function Batchform({ setIsBatchOpen, batchData }) {
 
   const [options, setOptions] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
-  const { data, refetch } = useGetAllStudents();
-
+  const { data: students, refetch } = useGetAllStudents();
+  
+  console.log(students);
 
   useEffect(() => {
     refetch();
   }, []);
 
   useEffect(() => {
-    if (data && data.length !== 0) {
-      const refactoredStudentList = data.students.map((item) => {
+    if (students && students.length !== 0) {
+      const refactoredStudentList = students.students.map((item) => {
         return {
           student_id: item._id,
           firstName: item.personal_info.firstName,
@@ -73,7 +73,7 @@ function Batchform({ setIsBatchOpen, batchData }) {
 
       setOptions(refactoredStudentList);
     }
-  }, [data]);
+  }, []);
 
   const validationSchema = Yup.object({
     technology: Yup.string().required("technology is required"),
@@ -104,8 +104,8 @@ function Batchform({ setIsBatchOpen, batchData }) {
         };
         const response = await axios.post(apiEndpoint, payload);
         resetForm();
+        fetchData();
         setIsBatchOpen(false);
-        console.log(response);
         openNotificationWithIcon("success", response.data.data.message);
         refetch();
       } catch (error) {
@@ -180,8 +180,6 @@ function Batchform({ setIsBatchOpen, batchData }) {
             />
           </Grid>
           <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
-
-
             <Box
               className="flatpicker-input"
               style={{ outline: "none", whiteSpace: "nowrap" }}

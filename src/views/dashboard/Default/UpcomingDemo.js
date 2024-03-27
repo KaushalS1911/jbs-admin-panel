@@ -1,112 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, CardActions, Avatar, CardContent, Divider, Grid, Table, TableBody, Typography } from '@mui/material';
-import MainCard from 'ui-component/cards/MainCard';
-import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
-import { gridSpacing } from 'store/constant';
-import { Box } from '@mui/system';
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Button,
+  CardActions,
+  Avatar,
+  CardContent,
+  Divider,
+  Grid,
+  Table,
+  TableBody,
+  Typography,
+} from "@mui/material";
+import MainCard from "ui-component/cards/MainCard";
+import SkeletonPopularCard from "ui-component/cards/Skeleton/PopularCard";
+import { gridSpacing } from "store/constant";
+import { Box } from "@mui/system";
+import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import axios from "axios";
 
 const UpcomingDemo = ({ isLoading }) => {
-  const demoData = [
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'John Smith',
-      uid: '#54263',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Emily Johnson',
-      uid: '#54264',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Michael Brown',
-      uid: '#54265',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Jessica Wilson',
-      uid: '#54266',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Daniel Martinez',
-      uid: '#54267',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Sophia Davis',
-      uid: '#54268',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Matthew Taylor',
-      uid: '#54269',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Olivia Rodriguez',
-      uid: '#54270',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'William Lopez',
-      uid: '#54271',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Ava Martinez',
-      uid: '#54272',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Ethan Thompson',
-      uid: '#54273',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
-    },
-    {
-      id: 'UpcomingDemo',
-      AvatarImg: '/static/images/avatar/1.jpg ',
-      name: 'Isabella Harris',
-      uid: '#54274',
-      facName: 'Dr. Julia Hussa',
-      date: '16 Sep 2022 | 9 AM - 10 AM'
+  const [demoData, setDemoData] = useState([]);
+
+  const fetchDemo = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/demo`;
+    try {
+      const response = await axios.get(apiEndpoint);
+      const entries = response.data.data.data
+        .map((item) => item.entries)
+        .flat();
+      setDemoData(entries);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  ];
-  
+  };
+
+  useEffect(() => {
+    fetchDemo();
+  }, []);
 
   return (
     <>
@@ -114,12 +45,16 @@ const UpcomingDemo = ({ isLoading }) => {
         <SkeletonPopularCard />
       ) : (
         <MainCard content={false}>
-          <CardContent style={{ height: '445px' }}>
+          <CardContent style={{ height: "445px" }}>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
-                <Grid container alignContent="center" justifyContent="space-between">
+                <Grid
+                  container
+                  alignContent="center"
+                  justifyContent="space-between"
+                >
                   <Grid item>
-                    <Typography variant="h4" style={{ fontSize: '18px' }}>
+                    <Typography variant="h4" style={{ fontSize: "18px" }}>
                       Upcoming Demo
                     </Typography>
                   </Grid>
@@ -130,62 +65,117 @@ const UpcomingDemo = ({ isLoading }) => {
                 item
                 xs={12}
                 sx={{
-                  overflow: 'hidden',
-                  overflowY: 'scroll',
-                  maxHeight: '380px'
+                  overflow: "hidden",
+                  overflowY: "scroll",
+                  maxHeight: "380px",
                 }}
               >
                 <Table aria-label="table with ellipsis texts" noWrap>
-                  <TableBody style={{ cursor: 'pointer' }}>
-                    {demoData.map((item) => (
-                      <tr
-                        key={item.id}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          padding: '10px 0',
-                          borderBottom: '1px solid #E5EBF0'
-                        }}
-                      >
-                        <td>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                            <Avatar alt="Remy Sharp" src={item.AvatarImg} />
-                            <Box sx={{ minWidth: 0 }}>
-                              <Typography noWrap fontWeight="lg" sx={{ fontSize: '14px', color: '#1B1D28', fontWeight: '500' }}>
-                                {item.name}
-                              </Typography>
-                              <Typography noWrap level="body-sm" sx={{ fontSize: '10px', color: '#1B1D28', fontWeight: '400' }}>
-                                {item.uid}
-                              </Typography>
+                  <TableBody style={{ cursor: "pointer" }}>
+                    {demoData.map((entry, index) => {
+                      const faculty_name = entry.faculty_name.split(" ")[0];
+                      const avatarPhotoUrl = `https://api.adorable.io/avatars/100/${faculty_name}.png`;
+                      return (
+                        <tr
+                          key={index}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            padding: "10px 0",
+                            borderBottom: "1px solid #E5EBF0",
+                          }}
+                        >
+                          <td>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1.5,
+                              }}
+                            >
+                              <Box sx={{ minWidth: 0 }}>
+                                <Typography
+                                  noWrap
+                                  fontWeight="lg"
+                                  sx={{
+                                    fontSize: "14px",
+                                    color: "#1B1D28",
+                                    fontWeight: "500",
+                                  }}
+                                >
+                                  <Avatar
+                                    alt={entry.faculty_name}
+                                    src={avatarPhotoUrl}
+                                  />
+                                 
+                                </Typography>
+                              </Box>
                             </Box>
-                          </Box>
-                        </td>
-                        <td>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                            <Box sx={{ minWidth: 0 }}>
+                          </td>
+                          <td>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1.5,
+                              }}
+                            >
+                              <Box sx={{ minWidth: 0 }}>
                               <Typography
-                                noWrap
-                                fontWeight="lg"
-                                sx={{ textAlign: 'end', fontSize: '12px', color: '#1B1D28', fontWeight: '400' }}
-                              >
-                                {item.facName}
-                              </Typography>
-                              <Typography noWrap level="body-sm" sx={{ fontSize: '10px', color: '#96A0B5', fontWeight: '400' }}>
-                                {item.date}
-                              </Typography>
+                                  noWrap
+                                  fontWeight="lg"
+                                  sx={{
+                                    textAlign: "end",
+                                    fontSize: "14px",
+                                    color: "#5559CE",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {entry.faculty_name}
+                                </Typography>
+                               
+                                <Typography
+                                  noWrap
+                                  level="body-sm"
+                                  sx={{
+                                    fontSize: "10px",
+                                    color: "#96A0B5",
+                                    fontWeight: "400",
+                                  }}
+                                >
+                                 {new Date(entry.date).toLocaleDateString()} - {entry.time}
+                                </Typography>
+                                <Typography
+                                  noWrap
+                                  fontWeight="lg"
+                                  sx={{
+                                    textAlign: "end",
+                                    fontSize: "12px",
+                                    color: "#1B1D28",
+                                    fontWeight: "400",
+                                    lineHeight:'10px 0'
+                                  }}
+                                >
+                                  Note: {entry.note}
+                                </Typography>
+                              </Box>
                             </Box>
-                          </Box>
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </Grid>
             </Grid>
           </CardContent>
-          <CardActions sx={{ padding: '20px 0', justifyContent: 'center' }}>
-            <Button size="small" disableElevation sx={{ fontSize: '14px', color: '#5559CE', fontWeight: '500' }}>
+          <CardActions sx={{ padding: "20px 0", justifyContent: "center" }}>
+            <Button
+              size="small"
+              disableElevation
+              sx={{ fontSize: "14px", color: "#5559CE", fontWeight: "500" }}
+            >
               View All
               <ChevronRightOutlinedIcon />
             </Button>
@@ -197,7 +187,7 @@ const UpcomingDemo = ({ isLoading }) => {
 };
 
 UpcomingDemo.propTypes = {
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
 };
 
 export default UpcomingDemo;

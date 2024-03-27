@@ -101,7 +101,6 @@ function PersonalInfo({ formData, studentData, refetch }) {
       data: payload,
     })
       .then((response) => {
-        console.log("Student personal data",response);
         dispatch(settingPersonalDetails(response.data.data.student.personal_info))
         openNotificationWithIcon("success", response.data.data.message);
         refetch()

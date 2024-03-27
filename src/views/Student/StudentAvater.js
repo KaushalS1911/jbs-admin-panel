@@ -3,12 +3,13 @@ import React from "react";
 import { gridSpacing } from "store/constant";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetSingleStudent } from "hooks/useGetSingleStudent";
 
 const StudentAvater = () => {
   // const [selectedFile, setSelectedFile] = useState(null);
+  const navigate=useNavigate();
   const { studentId } = useParams();
 
   const { data: student, refetch } = useGetSingleStudent(studentId);
@@ -32,8 +33,8 @@ const StudentAvater = () => {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((response) => {
-          console.log("Upload success:", response.data);
+        .then(() => {
+          // console.log("Upload success:", response.data);
           refetch();
         })
         .catch((error) => {
@@ -47,6 +48,10 @@ const StudentAvater = () => {
     document.getElementById("file-input").click();
   };
 
+  const Backbutton=()=>{
+    navigate(-1);
+  }
+  
   return (
     <div>
       <Grid container spacing={gridSpacing} sx={{ padding: "30px" }}>
@@ -60,7 +65,7 @@ const StudentAvater = () => {
             xs={12}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <KeyboardBackspaceIcon />
+            <KeyboardBackspaceIcon onClick={Backbutton} style={{cursor:'pointer'}} />
             <Typography variant="h5" gutterBottom sx={{ margin: " 0 10px" }}>
               Student
             </Typography>
@@ -85,7 +90,7 @@ const StudentAvater = () => {
             />
             <Avatar
               alt="Avatar"
-              src={`${student?.personal_info?.profile_pic}`}
+              src={`${process.env.REACT_APP_LOGIN_URL}profile-pic/${student?.personal_info?.profile_pic}`}
               onClick={handleAvatarClick}
               style={{ cursor: "pointer", width: 96, height: 96 }}
             />

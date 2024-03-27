@@ -54,7 +54,6 @@ const AddGuardianinfo = ({studentData , setAddOpen}) => {
             }
           ]
         })
-        console.log('API Response:', response.data.data.student.guardian_info)
         setGuardians([...guardians, response.data.data.student.guardian_info])
         resetForm()
       } catch (error) {

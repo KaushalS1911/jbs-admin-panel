@@ -111,7 +111,7 @@ const openNotificationWithIcon = (type, message) => {
       };
       try {
         const user = JSON.parse(localStorage.getItem("user"));
-        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${batchData.rowId}/updateBatch`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${batchData.id}/updateBatch`;
         const response = await axios.put(apiEndpoint, payload);
         if (response.status === 200) {
           fetchData();
@@ -124,7 +124,7 @@ const openNotificationWithIcon = (type, message) => {
         console.error("API Error:", error);
       }
     },
-  });
+  }); 
 
   return (
     <form onSubmit={formik.handleSubmit}>

@@ -95,7 +95,6 @@ const StudentList = ({ searchText }) => {
     }
   }, []);
 
-  console.log("singleStudent", singleStudent);
   function handleChangePage(event, newPage) {
     setPage(newPage);
   }
@@ -285,11 +284,9 @@ const StudentList = ({ searchText }) => {
               headerClassName="custom-header-class"
               sx={{
                 "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#ede7f6",
                   fontSize: 14,
                   color: "#262626",
-                },
-                "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-                  outline: "none !important",
                 },
               }}
             />

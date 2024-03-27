@@ -1,57 +1,57 @@
+import React, { useEffect, useState } from "react";
 import { Button, FormControl, Grid, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import ConfirmationDialog from "Extracomponent/ConfirmationDialog";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import MainCard from "ui-component/cards/MainCard";
 import { notification } from "antd";
+import {
+  DeleteOutline as DeleteOutlineIcon,
+  RestoreFromTrashTwoTone,
+} from "@mui/icons-material";
+import MainCard from "ui-component/cards/MainCard";
+import ConfirmationDialog from "Extracomponent/ConfirmationDialog";
 import { gridSpacing } from "store/constant";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { RestoreFromTrashTwoTone } from "@mui/icons-material";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
+import noDataImg from "../../assets/images/no data found.png";
 
 const BatchView = () => {
-  //notification
-  const openNotificationWithIcon = (type, message) => {
-    notification[type]({
-      message: message,
-    });
-  };
-
-  var columns;
   const { id } = useParams();
   const [batchview, setBatchviewData] = useState([]);
+  const [batchData, setBatchdata] = useState([]);
   const [entryId, setentryId] = useState("");
   const [open, setOpen] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
 
-  // delete model
-  const handleOpenConfirmationDialog = (id) => {
-    setentryId(id);
-    console.log("object====>", id);
-    setOpen(true);
-  };
-  const handleCloseConfirmationDialog = () => {
-    setOpen(false);
-  };
-  const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
-    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/batch`;
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/batch`;
       const response = await axios.get(apiEndpoint);
+      setBatchdata(response.data.data.batch.batch_members);
       setBatchviewData(response.data.data.batch.batch_members.batch_members);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
+  const handleOpenConfirmationDialog = (id) => {
+    setentryId(id);
+    setOpen(true);
+  };
+
+  const handleCloseConfirmationDialog = () => {
+    setOpen(false);
+  };
+
   const handleDelete = async () => {
-    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/${entryId}/deleteBatch`;
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/${entryId}/deleteBatch`;
       const response = await axios.delete(apiEndpoint);
       openNotificationWithIcon("success", response.data.data.message);
       fetchData();
@@ -61,26 +61,48 @@ const BatchView = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
 
-  const rows = batchview
-    ? batchview.map((item, index) => ({
-        rowId: item._id,
-        id: index + 1,
-        firstName: item.firstName,
-        lastName: item.lastName,
-        contact: item.contact,
-        couRse: item.course,
-        joiningDate: moment(item.joining_date).format("DD-MM-YYYY"),
-      }))
-    : [];
+  const handleSelectionModelChange = (selectionModel) => {
+    setSelectedRows(selectionModel);
+  };
 
-  columns = [
+  const deleteAllbatchstudent = async () => {
+    if (selectedRows.length > 0) {
+      console.log(selectedRows);
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/delete-members`;
+        const response = await axios.delete(apiEndpoint, {
+          data: { entryIds: selectedRows },
+        });
+        openNotificationWithIcon("success", response.data.data.message);
+        fetchData();
+      } catch (error) {
+        console.log("Error deleting employees:", error);
+      }
+    }
+  };
+
+  const rows = batchview.map((item, index) => ({
+    rowId: item._id,
+    id: item._id,
+    srNo: index + 1,
+    firstName: item.firstName,
+    lastName: item.lastName,
+    contact: item.contact,
+    couRse: item.course,
+    joiningDate: moment(item.joining_date).format("DD-MM-YYYY"),
+  }));
+
+  const columns = [
     {
-      field: "id",
-      headerName: "ID",
+      field: "srNo",
+      headerName: "srNo",
       width: 70,
       disableColumnMenu: true,
       sortable: false,
@@ -144,10 +166,7 @@ const BatchView = () => {
             cursor: "pointer",
             fontSize: "30px",
           }}
-          onClick={() => {
-            handleOpenConfirmationDialog(params.row.rowId);
-            console.log("=>>>", params.row.rowId);
-          }}
+          onClick={() => handleOpenConfirmationDialog(params.row.id)}
         />
       ),
     },
@@ -155,8 +174,16 @@ const BatchView = () => {
 
   return (
     <>
-    <Mainbreadcrumbs title={'Batch'} subtitle={'All Batch Student'}/>
-
+      <Mainbreadcrumbs
+        title={
+          batchData.technology +
+          " " +
+          "(" +
+          moment(batchData.batch_time).format("LL") +
+          ")"
+        }
+        subtitle={"batch-members"}
+      />
       <MainCard>
         <FormControl
           sx={{
@@ -236,6 +263,7 @@ const BatchView = () => {
                     lineHeight: "35px",
                     "&:hover": { Color: "#5559CE", backgroundColor: "#5559CE" },
                   }}
+                  onClick={deleteAllbatchstudent}
                 >
                   Delete
                 </Button>
@@ -253,28 +281,48 @@ const BatchView = () => {
             maxHeight: "100%",
           }}
         >
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            checkboxSelection
-            disableRowSelectionOnClick
-            disableColumnMenu
-            hideFooterSelectedRowCount={true}
-            hideFooterPagination={true}
-            sx={{
-                  ".MuiDataGrid-cell:focus": {
-                    outline: "none",
-                  },
-                  "& .MuiDataGrid-row:hover": {
-                    cursor: "pointer",
-                  },
-                  "& .MuiDataGrid-columnHeaders": {
-                    backgroundColor: "#ede7f6",
-                    fontSize: 14,
-                    color: "#262626",
-                  },
+          {rows.length > 0 ? (
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              checkboxSelection
+              disableRowSelectionOnClick
+              disableColumnMenu
+              hideFooterSelectedRowCount={true}
+              hideFooterPagination={true}
+              onRowSelectionModelChange={handleSelectionModelChange}
+              sx={{
+                ".MuiDataGrid-cell:focus": {
+                  outline: "none",
+                },
+                "& .MuiDataGrid-row:hover": {
+                  cursor: "pointer",
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#ede7f6",
+                  fontSize: 14,
+                  color: "#262626",
+                },
+              }}
+            />
+          ) : (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-          />
+              >
+                <img
+                  src={noDataImg}
+                  alt="no data"
+                  loading="lazy"
+                  style={{ maxWidth: "600px", width: "100%" }}
+                />
+              </div>
+            </>
+          )}
         </div>
       </MainCard>
 

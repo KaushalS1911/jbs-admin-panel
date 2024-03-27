@@ -31,11 +31,9 @@ function Index(selectedRows,setSelectedRows) {
     navigate(`/company/${profileData.company_id}/add-student`);
   };
 
-console.log(selectedRows);
 
   const deletedAllStudents = async () => {
     if (selectedRows && selectedRows.length > 0) {
-      console.log(selectedRows);
       try {
         const res = await useDispatch(
           deleteAllStudents({
@@ -43,7 +41,6 @@ console.log(selectedRows);
             companyId: profileData.company_id,
           })
         );
-        console.log(res);
         openNotificationWithIcon("success", res.payload.data.message);
         refetch();
       } catch (error) {
