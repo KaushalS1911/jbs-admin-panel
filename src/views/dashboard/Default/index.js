@@ -16,82 +16,59 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../../store/actions/loginactions";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
+import {useGetDashboardData} from "../../../hooks/useGetDashboardData";
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
-  const [databaseData, setDatabaseData] = useState([]);
   const [dataObj, setDataObj] = useState([]);
-  const dispatch = useDispatch();
+  const {data, refetch} = useGetDashboardData()
 
   useEffect(() => {
     setLoading(false);
   }, []);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
   useEffect(() => {
-    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/dashboard`;
 
-    axios
-      .get(apiEndpoint)
-      .then((response) => {
-        if (response?.data) {
-          setDatabaseData(response?.data);
-          dispatch(loginSuccess());
-        } else {
-          console.log("No data found.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (!databaseData) {
-      console.log("Database data is not available.");
-      return;
-    }
     const updatedDataObj = [
       {
-        icone: StudentIc,
+        icon: StudentIc,
         roles: "Student",
-        roleValue: databaseData?.data?.studentCount || 0,
+        roleValue: data?.studentCount || 0,
         roleColor: "#FE8D3D",
       },
       {
-        icone: FacultyIc,
+        icon: FacultyIc,
         roles: "Faculty",
-        roleValue: databaseData?.data?.facultyCount || 0,
+        roleValue: data?.facultyCount || 0,
         roleColor: "#79AB78",
       },
       {
-        icone: InquiryIc,
+        icon: InquiryIc,
         roles: "Inquiry",
-        roleValue: "0",
+        roleValue: data?.inquiryCount || 0,
         roleColor: "#68ACE3",
       },
       {
-        icone: LabIc,
+        icon: LabIc,
         roles: "Lab",
         roleValue: "8",
         roleColor: "#A682C7",
       },
       {
-        icone: EmployeIc,
+        icon: EmployeIc,
         roles: "Staff",
-        roleValue: databaseData?.data?.employeeCount || 0,
+        roleValue: data?.employeeCount || 0,
         roleColor: "#F6C863",
       },
       {
-        icone: AccountIc,
+        icon: AccountIc,
         roles: "Account",
         roleValue: "0",
         roleColor: "#F35A79",
       },
     ];
     setDataObj(updatedDataObj);
-  }, [databaseData]);
+  }, [data]);
 
   return (
     <>
@@ -100,7 +77,7 @@ const Dashboard = () => {
         {dataObj.map((item, index) => (
           <Grid key={index} item lg={2} md={4} sm={4} xs={6}>
             <Allofcounter
-              icone={item.icone}
+              icone={item.icon}
               role={item.roles}
               roleValue={String(item.roleValue)}
               roleColor={item.roleColor}
