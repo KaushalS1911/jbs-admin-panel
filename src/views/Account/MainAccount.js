@@ -30,13 +30,16 @@ const MainAccount = () => {
       const apiEndpoint = `https://admin-api-tc8e.onrender.com/api/company/65cdca53216caf4d8d009023/account?startDate=${startDate}&endDate=${endDate}`;
       try {
         const response = await axios.get(apiEndpoint);
-        const data = response.data.data;
+        const data = response.data.data.data;
         setAccountData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
   };
+
+
+  console.log("accountData",accountData)
 
   return (
     <>

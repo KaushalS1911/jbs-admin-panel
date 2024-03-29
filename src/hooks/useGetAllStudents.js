@@ -28,7 +28,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 export const useGetAllStudents = (page, perPage, searchText) => {
   return useQuery(["companies"], async () => {
     const apiUrl =
-      `${process.env.REACT_APP_API_URL}${user.company_id}/student` +
+      `${process.env.REACT_APP_API_URL}${user?.company_id}/student` +
       (searchText
         ? `?page=${page}&limit=${perPage}&searchKey=${searchText}`
         : "");
