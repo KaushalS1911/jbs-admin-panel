@@ -34,7 +34,6 @@ const StudentAvater = () => {
           },
         })
         .then(() => {
-          // console.log("Upload success:", response.data);
           refetch();
         })
         .catch((error) => {

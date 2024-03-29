@@ -73,7 +73,6 @@ const BatchView = () => {
 
   const deleteAllbatchstudent = async () => {
     if (selectedRows.length > 0) {
-      console.log(selectedRows);
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/delete-members`;

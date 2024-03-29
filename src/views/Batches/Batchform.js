@@ -55,7 +55,6 @@ function Batchform({ setIsBatchOpen, fetchData }) {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const { data: students, refetch } = useGetAllStudents();
   
-  console.log(students);
 
   useEffect(() => {
     refetch();

@@ -31,7 +31,6 @@ const MainAccount = () => {
       try {
         const response = await axios.get(apiEndpoint);
         const data = response.data.data;
-        console.log("Received data:", data);
         setAccountData(data);
       } catch (error) {
         console.error("Error fetching data:", error);

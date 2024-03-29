@@ -79,7 +79,6 @@ export const Expence = () => {
     });
   };
 
-  // console.log("data", data);
   const rows = data?.expenses
     ? data?.expenses.map((item, index) => ({
         id: item._id,

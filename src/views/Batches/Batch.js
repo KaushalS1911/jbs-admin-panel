@@ -248,7 +248,6 @@ function Batch() {
     setSelectedRows(selectionModel);
   };
 
-  console.log(selectedRows);
   const deleteallbatch = async () => {
     if (selectedRows.length > 0) {
       try {
