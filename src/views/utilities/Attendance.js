@@ -74,10 +74,10 @@ const Attendance = () => {
               <TabList
                 onChange={handleChange}
                 aria-label="lab API tabs example"
-                style={{color:'#5559CE'}}
+                style={{color:'#0b8e8d'}}
               >
-                <Tab label="Students" value="1"  style={{color:'#5559CE'}}/>
-                <Tab label="Employees" value="2"  style={{color:'#5559CE'}}/>
+                <Tab label="Students" value="1"  style={{color:'#0b8e8d'}}/>
+                <Tab label="Employees" value="2"  style={{color:'#0b8e8d'}}/>
               </TabList>
             </Box>
 
@@ -91,13 +91,13 @@ const Attendance = () => {
                     width: "100%",
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {
-                        borderColor: "#5559CE",
+                        borderColor: "#0b8e8d",
                       },
                       "&:hover fieldset": {
-                        borderColor: "#5559CE",
+                        borderColor: "#0b8e8d",
                       },
                       "&.Mui-focused fieldset": {
-                        borderColor: "#5559CE",
+                        borderColor: "#0b8e8d",
                         borderWidth: "2px",
                       },
                     },
@@ -114,7 +114,7 @@ const Attendance = () => {
                     <Grid item lg={4} md={12} xs={12} sm={12}>
                       <Grid item>
                         <FormControl item={true} fullWidth>
-                          <InputLabel id="interested-in-label" style={{ color: "#5559CE" }}>
+                          <InputLabel id="interested-in-label" style={{ color: "#0b8e8d" }}>
                             Interested In
                           </InputLabel>
                           <Select

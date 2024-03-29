@@ -78,8 +78,7 @@ const Editemployee = () => {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then((response) => {
-          console.log('Upload success:', response.data);
+        .then(() => {
           fetchEmployee()
         })
         .catch((error) => {

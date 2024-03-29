@@ -81,7 +81,7 @@ const StudentList = ({ searchText }) => {
         `${process.env.REACT_APP_API_URL}${profileData.company_id}/${selectedStudentId}/updateStudent`,
         payload
       )
-      .then((response) => {
+      .then(() => {
         fetchSingleStudent();
       })
       .catch((error) => {
@@ -95,7 +95,6 @@ const StudentList = ({ searchText }) => {
     }
   }, []);
 
-  console.log("singleStudent", singleStudent);
   function handleChangePage(event, newPage) {
     setPage(newPage);
   }
@@ -104,7 +103,7 @@ const StudentList = ({ searchText }) => {
     setPage(0);
   }
   function handleSelectPage(rowsPerPage) {
-    // console.log(rowsPerPage);
+    console.log(rowsPerPage);
   }
 
   const handleClick = (id) => {
