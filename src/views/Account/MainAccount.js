@@ -10,10 +10,14 @@ import { Button, Grid, Typography } from "@mui/material";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
 import { useEffect } from "react";
+import {useRecoilState} from "recoil";
+import {profile} from "../../atoms/authAtoms";
+import moment from "moment";
 
 const MainAccount = () => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [accountData, setAccountData] = useState([]);
+  const [profileData, setProfileData] = useRecoilState(profile)
 
   useEffect(() => {
     fetchData();
@@ -24,22 +28,30 @@ const MainAccount = () => {
   };
 
   const fetchData = async () => {
+    let startDate, endDate;
+
     if (selectedDates.length === 2) {
-      const startDate = selectedDates[0].toISOString().split("T")[0];
-      const endDate = selectedDates[1].toISOString().split("T")[0];
-      const apiEndpoint = `https://admin-api-tc8e.onrender.com/api/company/65cdca53216caf4d8d009023/account?startDate=${startDate}&endDate=${endDate}`;
-      try {
-        const response = await axios.get(apiEndpoint);
-        const data = response.data.data.data;
-        setAccountData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      startDate = moment(selectedDates[0]).format("YYYY-MM-DD");
+      endDate = moment(selectedDates[1]).format("YYYY-MM-DD");
+    } else {
+      const today = moment();
+      startDate = today.startOf('month').format("YYYY-MM-DD");
+      endDate = today.endOf('month').format("YYYY-MM-DD");
+    }
+
+    const apiEndpoint = `${process.env.REACT_APP_API_URL}${profileData.company_id}/account?startDate=${startDate}&endDate=${endDate}`;
+
+    try {
+      const response = await axios.get(apiEndpoint);
+      setAccountData(response.data.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
+  const {expenses, students, otherInfo} = accountData
 
-  console.log("accountData",accountData)
+  console.log(expenses)
 
   return (
     <>
@@ -68,33 +80,23 @@ const MainAccount = () => {
               mode: "range",
             }}
           />
-          <Button
-            onClick={fetchData}
-            sx={{
-              backgroundColor: "#5559CE",
-              color: "#EDE7F6",
-              margin: "0 15px",
-            }}
-          >
-            View
-          </Button>
         </Box>
       </MainCard>
 
     
-      <Box sx={{ width: "100%", marginTop: "10px" }}>
+      <Box sx={{ width: "100%", marginTop: "16px" }}>
         <Grid
           container
           spacing={2}
-          rowSpacing={1}
+          rowSpacing={3}
           columnSpacing={{ xs: 1, sm: 2, md: 4 }}
         >
           <Grid item xs={12} sm={6} md={6} lg={6}>
             <Grid
               sx={{
                 boxShadow: 1,
-                padding: "10px",
-                borderRadius: "10px",
+                padding: "14px",
+                borderRadius: "14px",
                 backgroundColor: "#fff",
               }}
             >
@@ -103,56 +105,53 @@ const MainAccount = () => {
                   sx={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    marginBottom: "6px",
+                    padding: "14px"
                   }}
                 >
                   Student Details
                 </Typography>
-                <Typography sx={{ color: "#16A34A" }}>
-                  Paid on march 8,2024
-                </Typography>
               </Box>
               <Grid container direction="row">
                 <Grid lg={11} md={11} sm={12}>
-                  <Grid container spacing={1} sx={{ padding: "20px 10px" }}>
+                  <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
-                        New Addmision
+                        New Admissions
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        500
+                        {students?.newAdmissions}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
-                        Existing Addmision
+                        Existing Admissions
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        769
+                        {students?.existingAdmissions}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
-                        Leave Addmision
+                        Leave Admissions
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        287
+                        {students?.leavedStudents}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
-                        Couse Completed
+                        Course Completed
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        127
+                        {students?.courseCompleted}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -182,8 +181,8 @@ const MainAccount = () => {
             <Grid
               sx={{
                 boxShadow: 1,
-                padding: "10px",
-                borderRadius: "10px",
+                padding: "14px",
+                borderRadius: "14px",
                 backgroundColor: "#fff",
               }}
             >
@@ -192,18 +191,16 @@ const MainAccount = () => {
                   sx={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    marginBottom: "6px",
+                    marginBottom: "4px",
+                    padding: "14px"
                   }}
                 >
                   Revenue Details
                 </Typography>
-                <Typography sx={{ color: "#DC2626" }}>
-                  Paid on march 8,2024
-                </Typography>
               </Box>
               <Grid container direction="row">
                 <Grid lg={11} md={11} sm={12}>
-                  <Grid container spacing={1} sx={{ padding: "20px 10px" }}>
+                  <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
@@ -277,8 +274,8 @@ const MainAccount = () => {
             <Grid
               sx={{
                 boxShadow: 1,
-                padding: "10px",
-                borderRadius: "10px",
+                padding: "14px",
+                borderRadius: "14px",
                 backgroundColor: "#fff",
               }}
             >
@@ -287,90 +284,29 @@ const MainAccount = () => {
                   sx={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    marginBottom: "6px",
+                    padding:"14px"
                   }}
                 >
                   Expense Details
                 </Typography>
-                <Typography sx={{ color: "#F59E0B" }}>
-                  Paid on march 8,2024
-                </Typography>
               </Box>
               <Grid container direction="row">
                 <Grid lg={11} md={11} sm={12}>
-                  <Grid container spacing={1} sx={{ padding: "20px 10px" }}>
-                    <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
-                      <Typography
-                        sx={{ fontSize: "16px", marginBottom: "4px" }}
-                      >
-                        Rent
-                      </Typography>
-                      <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        500
-                      </Typography>
-                    </Grid>
-                    <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
-                      <Typography
-                        sx={{ fontSize: "16px", marginBottom: "4px" }}
-                      >
-                        Electricity bill
-                      </Typography>
-                      <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        769
-                      </Typography>
-                    </Grid>
-                    <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
-                      <Typography
-                        sx={{ fontSize: "16px", marginBottom: "4px" }}
-                      >
-                        Salary
-                      </Typography>
-                      <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        287
-                      </Typography>
-                    </Grid>
-                    <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
-                      <Typography
-                        sx={{ fontSize: "16px", marginBottom: "4px" }}
-                      >
-                        Stationary
-                      </Typography>
-                      <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        127
-                      </Typography>
-                    </Grid>
-                    <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
-                      <Typography
-                        sx={{ fontSize: "16px", marginBottom: "4px" }}
-                      >
-                        Maintenance(Ac /Computer)
-                      </Typography>
-                      <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        127
-                      </Typography>
-                    </Grid>
-                    <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
-                      <Typography
-                        sx={{ fontSize: "16px", marginBottom: "4px" }}
-                      >
-                        New Assets Purchase
-                      </Typography>
-
-                      <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        127
-                      </Typography>
-                    </Grid>
-                    <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
-                      <Typography
-                        sx={{ fontSize: "16px", marginBottom: "4px" }}
-                      >
-                        Office Expenses
-                      </Typography>
-
-                      <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        127
-                      </Typography>
-                    </Grid>
+                  <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
+                    { expenses?.expensesByType && expenses.expensesByType.length !== 0 && expenses.expensesByType.map((e) => {
+                      return (
+                          <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
+                            <Typography
+                                sx={{ fontSize: "16px", marginBottom: "4px" }}
+                            >
+                              {e?.type}
+                            </Typography>
+                            <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
+                              {e?.totalAmount}
+                            </Typography>
+                          </Grid>
+                      )
+                    })}
                   </Grid>
                 </Grid>
                 <Grid lg={1} md={1} sm={12} sx={{ padding: "6px" }}>
@@ -398,8 +334,8 @@ const MainAccount = () => {
             <Grid
               sx={{
                 boxShadow: 1,
-                padding: "10px",
-                borderRadius: "10px",
+                padding: "14px",
+                borderRadius: "14px",
                 backgroundColor: "#fff",
               }}
             >
@@ -408,18 +344,15 @@ const MainAccount = () => {
                   sx={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    marginBottom: "6px",
+                    padding: "14px"
                   }}
                 >
                   Cash/Bank Tally
                 </Typography>
-                <Typography sx={{ color: "#5559CE" }}>
-                  Paid on march 8,2024
-                </Typography>
               </Box>
               <Grid container direction="row">
                 <Grid lg={11} md={11} sm={12}>
-                  <Grid container spacing={1} sx={{ padding: "20px 10px" }}>
+                  <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
@@ -427,17 +360,17 @@ const MainAccount = () => {
                         Opening Cash
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        500
+                        {otherInfo?.openingCash}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
-                        Fees Recived
+                        Fees Received
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        769
+                        {otherInfo?.feesReceived}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
@@ -447,7 +380,7 @@ const MainAccount = () => {
                         Cash Investment
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        287
+                        {otherInfo?.cashInvestment}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
@@ -457,17 +390,17 @@ const MainAccount = () => {
                         Total Expense
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        127
+                        {otherInfo?.totalExpense}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
                         sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
-                        Withdrwal
+                        Withdrawal
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        127
+                        {otherInfo?.withdrawal}
                       </Typography>
                     </Grid>
                   </Grid>

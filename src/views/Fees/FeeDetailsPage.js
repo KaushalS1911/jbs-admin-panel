@@ -145,8 +145,8 @@ function FeeDetailsPage() {
     ? data.fees_info.installments.map((item, index) => ({
         srNo: index + 1,
         id: item._id,
-        installment_date: moment(item.installment_date).format("L"),
-        payment_date: moment(item.payment_date).format("L"),
+        installment_date: moment(item.installment_date).format("DD/MM/YYYY"),
+        payment_date: item.payment_date ? moment(item.payment_date).format("DD/MM/YYYY") : "--",
         amount: item.amount,
         status: item.status || "Pending",
       }))
