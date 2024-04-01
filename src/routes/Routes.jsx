@@ -35,7 +35,7 @@ const Routes = () => {
   return (
     <Routers>
       <Route element={<PrivateRoutes />}>
-        <Route path="/" element={<MainLayout />}>
+        <Route element={<MainLayout />}>
           <Route path='/' element={<Dashboard />} />
           <Route path='/dashboard' element={<Dashboard />} exact />
 
