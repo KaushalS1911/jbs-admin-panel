@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Box,
@@ -21,24 +21,24 @@ import {
   Paper,
   Popper,
   Switch,
-  Typography
-} from '@mui/material';
+  Typography,
+} from "@mui/material";
 
 // third-party
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
-import Transitions from 'ui-component/extended/Transitions';
+import MainCard from "ui-component/cards/MainCard";
+import Transitions from "ui-component/extended/Transitions";
 
 // import User1 from 'assets/images/users/user-round.svg';
 
 // assets
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
 // import axios from 'axios';
-import { useRecoilValue } from 'recoil';
-import { profile } from '../../../../atoms/authAtoms';
-import { useLogout } from '../../../../hooks/useLogout';
+import { useRecoilValue } from "recoil";
+import { profile } from "../../../../atoms/authAtoms";
+import { useLogout } from "../../../../hooks/useLogout";
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -46,7 +46,7 @@ const ProfileSection = () => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
-  const {mutate} = useLogout()
+  const { mutate } = useLogout();
 
   const [sdm, setSdm] = useState(true);
   const [notification, setNotification] = useState(false);
@@ -65,11 +65,11 @@ const ProfileSection = () => {
     setOpen(false);
   };
 
-  const handleListItemClick = (event, index, route = '') => {
+  const handleListItemClick = (event, index, route = "") => {
     setSelectedIndex(index);
     handleClose(event);
 
-    if (route && route !== '') {
+    if (route && route !== "") {
       navigate(route);
     }
   };
@@ -100,8 +100,7 @@ const ProfileSection = () => {
   //   }
   // };
   // const greeting = getGreeting();
-  const user = useRecoilValue(profile)
-
+  const user = useRecoilValue(profile);
 
 
 
@@ -290,7 +289,7 @@ const ProfileSection = () => {
                           }}
                           selected={selectedIndex === 0}
                           onClick={(event) =>
-                            handleListItemClick(event, 0, "#")
+                            handleListItemClick(event, 0, "/settings")
                           }
                         >
                           <ListItemIcon>
@@ -298,12 +297,15 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText
                             primary={
-                              <Typography variant="body2">
+                              <Typography
+                                variant="body2"
+                              >
                                 Account Settings
                               </Typography>
                             }
                           />
                         </ListItemButton>
+                        
                         <ListItemButton
                           sx={{
                             borderRadius: `${customization.borderRadius}px`,

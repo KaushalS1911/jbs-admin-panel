@@ -1,99 +1,112 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { TextField, Button, FormControl, InputLabel, Typography, Select, MenuItem, InputAdornment, Avatar } from '@mui/material'
-import Grid from '@mui/material/Grid'
-import FormHelperText from '@mui/material/FormHelperText'
-import { notification } from 'antd'
-import { useFormik } from 'formik'
-import * as yup from 'yup'
-import PhoneInput from 'react-phone-input-2'
-import countrystatecity from 'Countrystatecity.json'
-import 'react-phone-input-2/lib/style.css'
-import MainCard from 'ui-component/cards/MainCard'
-import { useDispatch } from 'react-redux'
-import { EditEmployee, deleteEmployee, updateEmployee } from 'store/slices/employeeslice'
-import ConfirmationDialog from 'Extracomponent/ConfirmationDialog'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { useRecoilState } from 'recoil'
-import { profile } from '../../atoms/authAtoms'
-import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
-import 'react-datepicker/dist/react-datepicker.css'
-import Mainbreadcrumbs from 'contants/Mainbreadcrumbs'
-import { gridSpacing } from 'store/constant'
-import axios from 'axios'
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Typography,
+  Select,
+  MenuItem,
+  InputAdornment,
+  Avatar,
+} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import FormHelperText from "@mui/material/FormHelperText";
+import { notification } from "antd";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import PhoneInput from "react-phone-input-2";
+import countrystatecity from "Countrystatecity.json";
+import "react-phone-input-2/lib/style.css";
+import MainCard from "ui-component/cards/MainCard";
+import { useDispatch } from "react-redux";
+import {
+  EditEmployee,
+  deleteEmployee,
+  updateEmployee,
+} from "store/slices/employeeslice";
+import ConfirmationDialog from "Extracomponent/ConfirmationDialog";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { useRecoilState } from "recoil";
+import { profile } from "../../atoms/authAtoms";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import "react-datepicker/dist/react-datepicker.css";
+import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
+import { gridSpacing } from "store/constant";
+import axios from "axios";
 
 const Editemployee = () => {
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
 
-    //notification
-    const openNotificationWithIcon = (type, message) => {
-      notification[type]({
-        message: message,
-      });
-    };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams(); /* eslint-disable */
+  const [profileData, setProfileData] = useRecoilState(profile);
+  const [profilePic, setProfilePic] = useState("");
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { id } = useParams() /* eslint-disable */
-  const [profileData, setProfileData] = useRecoilState(profile)
-  const [profilePic, setProfilePic] = useState('')
-
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleOpenDialog = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
   const handleCloseDialog = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const validationSchema = yup.object({
-    firstName: yup.string().required('First Name is required'),
-    lastName: yup.string().required('Last Name is required'),
-    contact: yup.string().required('Contact No is required'),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    gender: yup.string().required('Gender is required'),
-    role: yup.string().required('Role is required'),
-    qualification: yup.string().required('Qualification is required'),
-    technology: yup.string().required('Developer is required'),
-    experience: yup.string().required('Experience is required'),
-    dob: yup.date().required('Date of Birth is required'),
-    joining_date: yup.date().required('Joining Date is required'),
-    address_1: yup.string().required('Address line1 is required'),
-    country: yup.string().required('Country is required'),
-    state: yup.string().required('State is required'),
-    city: yup.string().required('City is required'),
-    zipcode: yup.string().required('Zip Code is required')
-  })
+    firstName: yup.string().required("First Name is required"),
+    lastName: yup.string().required("Last Name is required"),
+    contact: yup.string().required("Contact No is required"),
+    email: yup.string().email("Invalid email").required("Email is required"),
+    gender: yup.string().required("Gender is required"),
+    role: yup.string().required("Role is required"),
+    qualification: yup.string().required("Qualification is required"),
+    technology: yup.string().required("Developer is required"),
+    experience: yup.string().required("Experience is required"),
+    dob: yup.date().required("Date of Birth is required"),
+    joining_date: yup.date().required("Joining Date is required"),
+    address_1: yup.string().required("Address line1 is required"),
+    country: yup.string().required("Country is required"),
+    state: yup.string().required("State is required"),
+    city: yup.string().required("City is required"),
+    zipcode: yup.string().required("Zip Code is required"),
+  });
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     const apiUrl = `${process.env.REACT_APP_API_URL}${id}/employee/profile-pic`;
     if (file) {
       const formData = new FormData();
-      formData.append('profile-pic', file);
+      formData.append("profile-pic", file);
 
       axios
         .put(apiUrl, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         })
         .then(() => {
-          fetchEmployee()
+          fetchEmployee();
         })
         .catch((error) => {
-          console.error('Upload error:', error);
+          console.error("Upload error:", error);
         });
     }
   };
 
   const handleAvatarClick = () => {
-    document.getElementById('file-input').click();
+    document.getElementById("file-input").click();
   };
 
   const onSubmit = async (values) => {
     const experienceAsNumber = parseInt(values.experience, 10);
-    const numericContact = values.contact.replace(/\D/g, '');
+    const numericContact = values.contact.replace(/\D/g, "");
     const updatedEmployee = {
       firstName: values.firstName,
       lastName: values.lastName,
@@ -118,51 +131,57 @@ const Editemployee = () => {
 
     try {
       const response = await dispatch(
-        updateEmployee({ id: id, data: updatedEmployee, companyId: profileData.company_id })
+        updateEmployee({
+          id: id,
+          data: updatedEmployee,
+          companyId: profileData.company_id,
+        })
       );
-      navigate('/employee');
+      navigate("/employee");
       openNotificationWithIcon("success", response.payload.message);
     } catch (error) {
-      console.error('Error updating data:', error);
+      console.error("Error updating data:", error);
       openNotificationWithIcon("error", response.payload.message);
     }
   };
 
   const formik = useFormik({
     initialValues: {
-      avatar_url: '',
-      firstName: '',
-      lastName: '',
-      contact: '',
-      email: '',
-      gender: '',
-      role: '',
-      qualification: '',
-      technology: '',
-      experience: '',
+      avatar_url: "",
+      firstName: "",
+      lastName: "",
+      contact: "",
+      email: "",
+      gender: "",
+      role: "",
+      qualification: "",
+      technology: "",
+      experience: "",
       dob: null,
       joining_date: null,
-      address_1: '',
-      address_2: '',
-      country: '',
-      state: '',
-      city: '',
-      zipcode: ''
+      address_1: "",
+      address_2: "",
+      country: "",
+      state: "",
+      city: "",
+      zipcode: "",
     },
     validationSchema: validationSchema,
-    onSubmit: onSubmit
-  })
+    onSubmit: onSubmit,
+  });
 
   const handleDelete = async () => {
     try {
-      const response = await dispatch(deleteEmployee({ id, companyId: profileData.company_id }))
-      setOpen(false)
-      navigate('/employee')
+      const response = await dispatch(
+        deleteEmployee({ id, companyId: profileData.company_id })
+      );
+      setOpen(false);
+      navigate("/employee");
       openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
-      console.error('Error deleting Inquiry:', error)
+      console.error("Error deleting Inquiry:", error);
     }
-  }
+  };
 
   const populateFormWithData = (data) => {
     formik.setValues({
@@ -182,24 +201,26 @@ const Editemployee = () => {
       country: data.address.country,
       state: data.address.state,
       city: data.address.city,
-      zipcode: data.address.zipcode
-    })
-  }
+      zipcode: data.address.zipcode,
+    });
+  };
 
   useEffect(() => {
-    fetchEmployee()
-  }, [dispatch, id])
+    fetchEmployee();
+  }, [dispatch, id]);
 
-  async function fetchEmployee(){
+  async function fetchEmployee() {
     try {
-      const actionResult = await dispatch(EditEmployee({ companyId: profileData.company_id, id }))
+      const actionResult = await dispatch(
+        EditEmployee({ companyId: profileData.company_id, id })
+      );
       if (EditEmployee.fulfilled.match(actionResult)) {
-        const employeeData = actionResult.payload
-        populateFormWithData(employeeData.data)
-        setProfilePic(employeeData.data.avatar_url)
+        const employeeData = actionResult.payload;
+        populateFormWithData(employeeData.data);
+        setProfilePic(employeeData.data.avatar_url);
       }
     } catch (error) {
-      console.error('Error fetching or populating data:', error)
+      console.error("Error fetching or populating data:", error);
     }
   }
 
@@ -269,6 +290,9 @@ const Editemployee = () => {
                           {formik.values.technology}
                         </Typography>
                       </Grid>
+                    </Grid>
+                    <Grid>
+                      
                     </Grid>
                   </Grid>
                 </Grid>
@@ -878,5 +902,5 @@ const Editemployee = () => {
       </MainCard>
     </>
   );
-}
-export default Editemployee
+};
+export default Editemployee;

@@ -26,6 +26,7 @@ import EditTaskView from '../views/tasks/EditTaskView';
 import Task from '../views/utilities/Task';
 import { Expence } from "views/utilities/Expence";
 import FullStackStepper from '../views/Student/utils/StudentDetail';
+import Setting from "views/Setting/Setting";
 
 
 
@@ -85,6 +86,10 @@ const Routes = () => {
 
           {/* Expence routes*/}
           <Route path="/expence" element={<Expence />} exact  />
+
+          {/* Setting Route */}
+          <Route path="/settings" element={<Setting />} exact  />
+
           </Route>
       </Route>
       <Route path="/login" element={<Login3 />} />

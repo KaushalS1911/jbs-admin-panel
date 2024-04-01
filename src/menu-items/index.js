@@ -1,9 +1,15 @@
-import utilities from './utilities';
+import React from 'react';
 
-// ==============================|| MENU ITEMS ||============================== //
-
-const menuItems = {
-  items: [utilities]
+const MenuItem = ({ title, url, icon: Icon, isSelected, onClick }) => {
+  return (
+    <div 
+      onClick={onClick} 
+      style={{ backgroundColor: isSelected ? '#e1e1e1' : 'transparent', cursor: 'pointer' }}
+    >
+      <Icon />
+      <span>{title}</span>
+    </div>
+  );
 };
 
-export default menuItems;
+export default MenuItem;

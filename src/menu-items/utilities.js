@@ -1,147 +1,123 @@
-import Person4Icon from '@mui/icons-material/Person4';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import Diversity3Icon from '@mui/icons-material/Diversity3';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import ReviewsIcon from '@mui/icons-material/Reviews';
-import ReduceCapacityIcon from '@mui/icons-material/ReduceCapacity';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import React, { useState } from "react";
+import MenuItem from "./MenuItem";
+import Person4Icon from "@mui/icons-material/Person4";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import ReviewsIcon from "@mui/icons-material/Reviews";
+import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import AddTaskIcon from "@mui/icons-material/AddTask";
 
-import AddTaskIcon from '@mui/icons-material/AddTask';// constant
+const Utilities = () => {
+  const [selectedItem, setSelectedItem] = useState(null);
 
-const icons = {
-  DashboardIcon,
-  CalendarTodayIcon,
-  Person4Icon,
-  Diversity3Icon,
-  ReduceCapacityIcon,
-  AccountBalanceIcon,
-  MeetingRoomOutlinedIcon,
-  ReceiptIcon,
-  OndemandVideoIcon,
-  HowToRegIcon,
-  ReviewsIcon,
-  CalendarMonthIcon,
-  AddTaskIcon,
-  CurrencyRupeeIcon,
+  const handleMenuItemClick = (url) => {
+    setSelectedItem(url);
+  };
+
+  return (
+    <div>
+      <MenuItem
+        title="Dashboard"
+        url="dashboard"
+        icon={<DashboardIcon />}
+        isSelected={selectedItem === "dashboard"}
+        onClick={() => handleMenuItemClick("dashboard")}
+      />
+
+      <MenuItem
+        title="Inquiry"
+        url="inquiry"
+        icon={<CalendarTodayIcon />}
+        isSelected={selectedItem === "inquiry"}
+        onClick={() => handleMenuItemClick("inquiry")}
+      />
+
+      <MenuItem
+        title="Student"
+        url="student"
+        icon={<Person4Icon />}
+        isSelected={selectedItem === "student"}
+        onClick={() => handleMenuItemClick("student")}
+      />
+
+      <MenuItem
+        title="Batches"
+        url="batches"
+        icon={<ReduceCapacityIcon />}
+        isSelected={selectedItem === "batches"}
+        onClick={() => handleMenuItemClick("batches")}
+      />
+
+      <MenuItem
+        title="Employee"
+        url="employee"
+        icon={<Diversity3Icon />}
+        isSelected={selectedItem === "employee"}
+        onClick={() => handleMenuItemClick("employee")}
+      />
+
+      <MenuItem
+        title="Calendar"
+        url="calendar"
+        icon={<CalendarMonthIcon />}
+        isSelected={selectedItem === "calendar"}
+        onClick={() => handleMenuItemClick("calendar")}
+      />
+
+      <MenuItem
+        title="Task"
+        url="task"
+        icon={<AddTaskIcon />}
+        isSelected={selectedItem === "task"}
+        onClick={() => handleMenuItemClick("task")}
+      />
+
+      <MenuItem
+        title="Account"
+        url="account"
+        icon={<AccountBalanceIcon />}
+        isSelected={selectedItem === "account"}
+        onClick={() => handleMenuItemClick("account")}
+      />
+
+      <MenuItem
+        title="Fees"
+        url="fees"
+        icon={<ReceiptIcon />}
+        isSelected={selectedItem === "fees"}
+        onClick={() => handleMenuItemClick("fees")}
+      />
+
+      <MenuItem
+        title="Attendance"
+        url="attendance"
+        icon={<HowToRegIcon />}
+        isSelected={selectedItem === "attendance"}
+        onClick={() => handleMenuItemClick("attendance")}
+      />
+
+      <MenuItem
+        title="Seminar"
+        url="seminar"
+        icon={<ReviewsIcon />}
+        isSelected={selectedItem === "seminar"}
+        onClick={() => handleMenuItemClick("seminar")}
+      />
+
+      <MenuItem
+        title="Expense"
+        url="expense"
+        icon={<CalendarTodayIcon />}
+        isSelected={selectedItem === "expense"}
+        onClick={() => handleMenuItemClick("expense")}
+      />
+    </div>
+  );
 };
 
-// ==============================|| UTILITIES MENU ITEMS ||============================== //
-
-const utilities = {
-  id: "utilities",
-  type: "group",
-  children: [
-    {
-      id: "default",
-      title: "Dashboard",
-      type: "item",
-      url: "dashboard",
-      icon: icons.DashboardIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Inquiry",
-      title: "Inquiry",
-      type: "item",
-      url: "inquiry",
-      icon: icons.CalendarTodayIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Student",
-      title: "Student",
-      type: "item",
-      url: "student",
-      icon: icons.Person4Icon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Batches",
-      title: "Batches",
-      type: "item",
-      url: "batches",
-      icon: icons.ReduceCapacityIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Employee",
-      title: "Employee",
-      type: "item",
-      url: "employee",
-      icon: icons.Diversity3Icon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Calendar",
-      title: "Calendar",
-      type: "item",
-      url: "calendar",
-      icon: icons.CalendarMonthIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Task",
-      title: "Task",
-      type: "item",
-      url: "task",
-      icon: icons.AddTaskIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Account",
-      title: "Account",
-      type: "item",
-      url: "account",
-      icon: icons.AccountBalanceIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Fees",
-      title: "Fees",
-      type: "item",
-      url: "fees",
-      icon: icons.ReceiptIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Demo",
-      title: "Demo",
-      type: "item",
-      url: "demo",
-      icon: icons.OndemandVideoIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Attendance",
-      title: "Attendance",
-      type: "item",
-      url: "attendance",
-      icon: icons.HowToRegIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Seminar",
-      title: "Seminar",
-      type: "item",
-      url: "seminar",
-      icon: icons.ReviewsIcon,
-      breadcrumbs: false,
-    },
-    {
-      id: "Expence",
-      title: "Expence",
-      type: "item",
-      url: "expence",
-      icon: icons.CurrencyRupeeIcon,
-      breadcrumbs: false,
-    },
-  ],
-};
-
-export default utilities;
+export default Utilities;
