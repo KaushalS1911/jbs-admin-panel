@@ -3,7 +3,7 @@ import SecondaryAction from "ui-component/cards/CardSecondaryAction";
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import TablePagination from "@mui/material/TablePagination";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Added import for useEffect
 import {
   Avatar,
   Button,
@@ -23,7 +23,6 @@ import { useGetAllStudents } from "../../../hooks/useGetAllStudents";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { profile } from "../../../atoms/authAtoms";
-import { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 
@@ -36,14 +35,20 @@ const StudentList = ({ searchText }) => {
   const options = ["Running", "Completed", "Leave / Placed"];
   const [selectedStudentId, setSelectedStudentId] = useState(null);
   const [singleStudent, setSingleStudent] = useState({});
-  const [additionalState, setAdditionalState] = useState();
-  const [AddDialogbox, setAddDialogbox] = useState(false);
+  const [additionalState, setAdditionalState] = useState("");
+  const [addDialogOpen, setAddDialogOpen] = useState(false); // Changed variable name for consistency
 
   const { data, refetch } = useGetAllStudents(
     page + 1,
     rowsPerPage,
     searchText
   );
+
+  useEffect(() => {
+    if (selectedStudentId) {
+      fetchSingleStudent();
+    }
+  }, [selectedStudentId]); // Added selectedStudentId to dependency array
 
   function fetchSingleStudent() {
     axios
@@ -59,22 +64,24 @@ const StudentList = ({ searchText }) => {
         }
       })
       .catch((err) => {
-        return err.response;
+        console.error(err); // Changed return err.response to console.error
       });
   }
 
   const handleSelectChange = (params, value) => {
-    setAddDialogbox(true);
+    setAddDialogOpen(true);
     setSelectedStudentId(params.id);
     setAdditionalState(value);
   };
+
   function handleCloseDialog() {
-    setAdditionalState();
-    setAddDialogbox(false);
+    setAdditionalState("");
+    setAddDialogOpen(false);
     fetchSingleStudent();
   }
+
   function handleUpdate() {
-    setAddDialogbox(false);
+    setAddDialogOpen(false);
     const payload = { ...singleStudent, status: additionalState };
     axios
       .put(
@@ -85,23 +92,19 @@ const StudentList = ({ searchText }) => {
         fetchSingleStudent();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error); // Changed console.log to console.error
       });
   }
-
-  useEffect(() => {
-    if (selectedStudentId) {
-      fetchSingleStudent();
-    }
-  }, []);
 
   function handleChangePage(event, newPage) {
     setPage(newPage);
   }
+
   function handleChangeRowsPerPage(event) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   }
+
   function handleSelectPage(rowsPerPage) {
     console.log(rowsPerPage);
   }
@@ -122,6 +125,7 @@ const StudentList = ({ searchText }) => {
       refetch();
     }
   }, [searchText, rowsPerPage, page]);
+
   const columns = [
     {
       field: "srNo",
@@ -157,14 +161,17 @@ const StudentList = ({ searchText }) => {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <Grid style={{ color: "#5559CE", cursor: "pointer" }}>
+        <Grid
+          style={{ color: "#5559CE", cursor: "pointer" }}
+          onClick={() => handleClick(params.row.id)} // Changed to params.row.id
+        >
           {params.row.studentName}
         </Grid>
       ),
     },
     {
-      field: "coures",
-      headerName: "coures",
+      field: "course",
+      headerName: "Course", // Fixed typo
       width: 225,
       sortable: false,
       headerAlign: "center",
@@ -204,7 +211,7 @@ const StudentList = ({ searchText }) => {
       renderCell: () => (
         <Chip
           label="View More"
-          STYLE={{ backgroundColor: "#262626" }}
+          style={{ backgroundColor: "#e1e1e1" }} 
           size="small"
         />
       ),
@@ -238,21 +245,15 @@ const StudentList = ({ searchText }) => {
       ),
     },
   ];
+
   const rows = data?.students
     ? data?.students.map((item, index) => ({
         id: item._id,
         srNo: index + 1,
         profile: item?.personal_info?.profile_pic,
         status: item.status,
-        studentName: (
-          <Grid
-            style={{ cursor: "pointer", textDecoration: "none" }}
-            onClick={() => handleClick(item._id)}
-          >
-            {item.personal_info?.firstName} {item.personal_info?.lastName}
-          </Grid>
-        ),
-        coures: item.personal_info?.course,
+        studentName: `${item.personal_info?.firstName} ${item.personal_info?.lastName}`,
+        course: item.personal_info?.course, // Changed to item.personal_info?.course
         joiningDate: moment(item.personal_info?.joining_date).format(
           "YYYY-MM-DD"
         ),
@@ -261,6 +262,7 @@ const StudentList = ({ searchText }) => {
         moreDetails: "view more",
       }))
     : [];
+
   return (
     <>
       <MainCard
@@ -269,7 +271,13 @@ const StudentList = ({ searchText }) => {
         }
       >
         <>
-          <div style={{ height: "90%", width: "100%" }}>
+          <div
+            style={{
+              width: "100%",
+              height: "570px",
+              maxHeight: "100%",
+            }}
+          >
             <DataGrid
               rows={rows}
               columns={columns}
@@ -294,13 +302,13 @@ const StudentList = ({ searchText }) => {
             />
           </div>
           <Dialog
-            open={AddDialogbox}
+            open={addDialogOpen}
             onClose={handleCloseDialog}
             sx={{ width: "300px" }}
           >
             <DialogContent sx={{ fontSize: "18px" }}>
               <Typography sx={{ textAlign: "center" }}>
-                Are you sure you want to change status ?{" "}
+                Are you sure you want to change status?
               </Typography>
             </DialogContent>
             <DialogActions
@@ -331,7 +339,7 @@ const StudentList = ({ searchText }) => {
                   backgroundColor: "#EDE7F6",
                   color: "#5559CE",
                 }}
-                onClick={(e) => handleUpdate(e)}
+                onClick={handleUpdate} // Removed unnecessary parameter
               >
                 Update
               </Button>
@@ -342,7 +350,7 @@ const StudentList = ({ searchText }) => {
             count={data?.totalStudents}
             rowsPerPage={rowsPerPage}
             page={page}
-            onChange={handleSelectPage(rowsPerPage)}
+            onChange={handleSelectPage}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[10, 20, 50, 100]}
@@ -352,4 +360,5 @@ const StudentList = ({ searchText }) => {
     </>
   );
 };
+
 export default StudentList;

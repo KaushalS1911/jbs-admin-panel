@@ -1,9 +1,7 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
-  ButtonBase,
   Chip,
   FormControl,
   Grid,
@@ -20,34 +18,44 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import { Subtitles } from "@mui/icons-material";
-import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import moment from "moment";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
-import MainCard from "ui-component/cards/MainCard";
+import MainCard from "../../ui-component/cards/MainCard";
+import { Edit as EditIcon, Print as PrintIcon } from "@mui/icons-material";
+import "../../assets/scss/FeesReceipt.css";
+import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function FeeDetailsPage() {
   const { studentId } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const { data, refetch } = useGetSingleStudent(studentId);
-  const [feeDetails, setFeeDetails] = useState({});
-  const [installments, setInstallments] = useState([]);
-  const [totalAmount, setTotalAmount] = useState();
-  const [remainingAmount, setRemainingAmount] = useState();
   const [selectedValue, setSelectedValue] = useState("");
+  /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
+  const [studentData, setStudentData] = useState(null);
+
+
+  useEffect(() => {
+    if (data) {
+      setStudentData(data);
+    }
+  }, [data]);
 
   const handleEditClick = (row) => {
     setSelectedRow(row);
     setOpenDialog(true);
     setSelectedValue(row.status);
   };
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+
   const handleSaveUpdate = async () => {
     const finalObject = {
       status: selectedValue,
@@ -65,14 +73,198 @@ function FeeDetailsPage() {
     }
   };
 
-
   useEffect(() => {
     refetch();
   }, []);
 
   const handlePaymentStatusChange = (event) => {
-    // setPaymentStatus(event.target.value);
     setSelectedValue(event.target.value);
+  };
+
+  const handlePrintClick = (row ) => {
+    const printReceipt = {
+      ReceiptNo: "0011",
+      PaymentMode: "Cash",
+      Name:
+        studentData.personal_info.firstName +
+        " " +
+        studentData.personal_info.lastName,
+      StudentID: studentData._id,
+      Course: studentData.personal_info.course,
+      Contact: studentData.personal_info.contact,
+      Email: studentData.personal_info.email,
+      SrNo: row.srNo,
+      paid: row.amount,
+      InstallmentDate: row.installment_date,
+      PaymentDate: row.payment_date,
+      Status: row.status,
+      Date: new Date().toDateString(),
+    };
+  
+    if (printReceipt.Status === "Paid") {
+      const doc = new jsPDF({
+        orientation: "p",
+        unit: "pt",
+        format: [800, 1000],
+      });
+  
+      const receiptHTML = `
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <div class="main">
+          <div class="header">
+            <div class="top">
+              <img src="logo.png" alt="" />
+              <p><b>Date: ${printReceipt.Date}</b></p>
+            </div>
+            <hr />
+            <div class="desc">
+              <table>
+                <tr>
+                  <td>Receipt No: ${printReceipt.ReceiptNo}</td>
+                  <td>Student Id: ${printReceipt.StudentID}</td>
+                </tr>
+                <tr>
+                  <td colspan="2">Name: ${printReceipt.Name}</td>
+                </tr>
+                <tr>
+                  <td colspan="2">Course: ${printReceipt.Course}</td>
+                </tr>
+                <tr>
+                  <td>Contact: ${printReceipt.Contact}</td>
+                  <td>Email: ${printReceipt.Email}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="payment-section">
+              <table cellspacing="4" style="width: 100%;">
+                <tr>
+                  <th>Sr No.</th>
+                  <th>Invoice Date</th>
+                  <th>Payment Date</th>
+                  <th>Payment Mode</th>
+                  <th>Amount</th>
+                </tr>
+                <tbody>
+                  <tr>
+                    <td>${printReceipt.SrNo}</td>
+                    <td>${printReceipt.InstallmentDate}</td>
+                    <td>${printReceipt.PaymentDate}</td>
+                    <td>${printReceipt.PaymentMode}</td>
+                    <td>${printReceipt.paid}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="signature">
+              <p>Authority Sign:-</p>
+              <p>Student Sign:-</p>
+            </div>
+            <div class="footer">
+              <p>+91 9726806634</p>
+              <p>monilkakadiya0096@gmail.com</p>
+              <p>www.jbsitinstitute.com</p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>`;
+      
+      const styles = {
+        main: {
+          backgroundImage: 'url("rotatedLogo.jpg")',
+          backgroundPosition: "center",
+          backgroundBlendMode: "overlay",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          height: "842px",
+          width: "100%",
+          border: "2px solid black",
+          backgroundColor: "rgba(255, 255, 255, 0.904)",
+          margin: "auto"
+        },
+        header: {
+          padding: "2rem"
+        },
+        top: {
+          marginBottom: "1rem",
+          display: "flex",
+          justifyContent: "space-between"
+        },
+        descTable: {
+          padding: "12px 0",
+          borderRadius: "4px",
+          width: "100%",
+          fontSize: "14px",
+          fontWeight: "500"
+        },
+        descTableCell: {
+          padding: "10px 10px 6px",
+          borderBottom: "1px solid rgb(206, 205, 205)"
+        },
+        paymentSection: {
+          marginTop: "3rem"
+        },
+        paymentTable: {
+          width: "100%"
+        },
+        paymentTableCell: {
+          padding: "8px",
+          fontSize: "14px",
+          textAlign: "center",
+          borderBottom: "1px solid rgb(206, 205, 205)"
+        },
+        paymentTableHeader: {
+          fontWeight: "500",
+          padding: "8px",
+          fontSize: "15px",
+          borderBottom: "1px solid rgb(206, 205, 205)"
+        },
+        signature: {
+          paddingRight: "7rem",
+          marginTop: "14rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        },
+        signatureP: {
+          fontSize: "17px",
+          fontWeight: "500",
+          color: "rgb(111, 62, 146)"
+        },
+        footer: {
+          borderTop: "1px solid black",
+          paddingTop: "12px",
+          display: "flex",
+          marginTop: "2rem",
+          fontSize: "13px",
+          justifyContent: "space-between"
+        }
+      };
+      
+      Object.entries(styles).forEach(([element, style]) => {
+        const elements = document.querySelectorAll(`.${element}`);
+        elements.forEach(el => {
+          Object.assign(el.style, style);
+        });
+      });
+      
+  
+      doc.html(receiptHTML, {
+        callback: function (doc) {
+          doc.save("receipt.pdf");
+        },
+      });
+    } else if (printReceipt.Status === "Unpaid") {
+      alert("Status is not Paid. Cannot print receipt.");
+    } else if (printReceipt.Status === "Pending") {
+      alert("Status is not Paid. Cannot print receipt.");
+    }
   };
 
   const columns = [
@@ -92,13 +284,13 @@ function FeeDetailsPage() {
         let color;
         switch (params.value) {
           case "Paid":
-            color = "green";
+            color = "#4f9753";
             break;
           case "Unpaid":
-            color = "red";
+            color = "#e04f44";
             break;
           case "Pending":
-            color = "blue";
+            color = "#f98364";
             break;
           default:
             color = "blue";
@@ -107,14 +299,16 @@ function FeeDetailsPage() {
           <>
             <Chip
               label={
-                params.value == "" || params.value == undefined
+                params.value === "" || params.value === undefined
                   ? "Pending"
                   : params.value
               }
+              size="small"
               style={{
                 backgroundColor: color,
                 color: "white",
                 size: "small",
+                padding: "0",
               }}
             />
           </>
@@ -129,14 +323,32 @@ function FeeDetailsPage() {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <Button
-          variant="outlined"
-          sx={{ color: "#5559ce", border: "1px solid #5559CE" }}
-          size="md"
-          onClick={() => handleEditClick(params.row)}
-        >
-          Edit
-        </Button>
+        <>
+          <EditIcon
+            variant="outlined"
+            sx={{
+              color: "#b0b2e8",
+              height: "35px",
+              lineHeight: "35px",
+              margin: "0 20px",
+              cursor: "pointer",
+              fontSize: "30px",
+            }}
+            onClick={() => handleEditClick(params.row)}
+          />
+          <PrintIcon
+            variant="outlined"
+            sx={{
+              color: "#b0b2e8",
+              height: "35px",
+              lineHeight: "35px",
+              margin: "0 20px",
+              cursor: "pointer",
+              fontSize: "30px",
+            }}
+            onClick={() => handlePrintClick(params.row)}
+          />
+        </>
       ),
     },
   ];
@@ -154,7 +366,7 @@ function FeeDetailsPage() {
 
   return (
     <>
-     <Mainbreadcrumbs title={'Fees'} subtitle={'Fees Detsils'}/>
+      <Mainbreadcrumbs title={"Fees"} subtitle={"Fees Details"} />
       <Paper>
         <Typography
           variant="h4"
@@ -241,14 +453,14 @@ function FeeDetailsPage() {
           {data?.fees_info?.amount_paid} INR
         </Typography>
 
-        {/* Status Dauilog Box */}
         <Dialog
           open={openDialog}
           onClose={handleCloseDialog}
           sx={{
             "& .MuiDialog-container": {
               "& .MuiPaper-root": {
-                width: "100%",
+                width: "40%",
+                maxWidth: "300px",
               },
             },
           }}
@@ -260,6 +472,9 @@ function FeeDetailsPage() {
                   fontSize: "14px",
                   color: "#5559CE",
                   fontWeight: "600",
+                  textAlign: "center",
+                  borderBottom: "1px solid #e1e1e1",
+                  padding: "10px",
                 },
                 "@media (min-width:1024px)": {
                   fontSize: "16px",
@@ -272,29 +487,59 @@ function FeeDetailsPage() {
             </Typography>
           </DialogTitle>
           <DialogContent>
-            <FormControl item={true} fullWidth variant="outlined">
-              <InputLabel id="status-label" style={{ color: "#5559ce" }}>
-                Status
-              </InputLabel>
-              <Select
-                value={selectedValue}
-                labelId="status-label"
-                id="status"
-                name="status"
-                label="status"
-                onChange={handlePaymentStatusChange}
-                fullWidth
-                InputLabelProps={{
-                  style: { color: "#5559CE" },
+            <Grid
+              item
+              xl={12}
+              lg={12}
+              md={12}
+              sm={12}
+              xs={12}
+              sx={{ marginBottom: "10px" }}
+            >
+              <FormControl
+                sx={{
+                  m: 1,
+                  p: 0,
+                  minWidth: 120,
+                  width: "100%",
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#5559CE",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#5559CE",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#5559CE",
+                      borderWidth: "1px",
+                    },
+                  },
+                  size: "small",
                 }}
               >
-                <MenuItem value="Paid">Paid</MenuItem>
-                <MenuItem value="Unpaid">Unpaid</MenuItem>
-                <MenuItem value="Pending">Pending</MenuItem>
-              </Select>
-            </FormControl>
+                <InputLabel id="status-label" style={{ color: "#5559ce" }}>
+                  Status
+                </InputLabel>
+                <Select
+                  value={selectedValue}
+                  labelId="status-label"
+                  id="status"
+                  name="status"
+                  label="status"
+                  onChange={handlePaymentStatusChange}
+                  fullWidth
+                  InputLabelProps={{
+                    style: { color: "#5559CE" },
+                  }}
+                >
+                  <MenuItem value="Paid">Paid</MenuItem>
+                  <MenuItem value="Unpaid">Unpaid</MenuItem>
+                  <MenuItem value="Pending">Pending</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ justifyContent: "center" }}>
             <Button
               onClick={handleSaveUpdate}
               variant="contained"

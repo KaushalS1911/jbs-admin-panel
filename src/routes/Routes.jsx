@@ -27,6 +27,10 @@ import Task from '../views/utilities/Task';
 import { Expence } from "views/utilities/Expence";
 import FullStackStepper from '../views/Student/utils/StudentDetail';
 import Setting from "views/Setting/Setting";
+import Profileedit from "views/Setting/EditAdminProfile";
+import EditAdminProfile from "views/Setting/EditAdminProfile";
+import EditCompanyProfile from "views/Setting/EditCompanyProfile";
+import Expenses from "views/Setting/Expenses";
 
 
 
@@ -89,7 +93,9 @@ const Routes = () => {
 
           {/* Setting Route */}
           <Route path="/settings" element={<Setting />} exact  />
-
+          <Route path="/settings/editadminprofile" element={<EditAdminProfile />} exact />
+          <Route path="/settings/editcompanyprofile" element={<EditCompanyProfile />} exact />
+          <Route path="/settings/expenses" element={<Expenses />} exact />
           </Route>
       </Route>
       <Route path="/login" element={<Login3 />} />

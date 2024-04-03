@@ -26,7 +26,6 @@ function Index(selectedRows,setSelectedRows) {
   const [profileData, setProfileData] = useRecoilState(profile);
   /* eslint-disable */
   const [searchText, setSearchText] = useState("");
-
   const StudentAdd = () => {
     navigate(`/company/${profileData.company_id}/add-student`);
   };
@@ -49,7 +48,8 @@ function Index(selectedRows,setSelectedRows) {
     }
   };
 
-
+  
+  
   return (
     <>
       <Mainbreadcrumbs title={"Student"} />
