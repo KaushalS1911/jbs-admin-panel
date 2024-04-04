@@ -1,90 +1,165 @@
 import React, { useEffect } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, Grid, IconButton, Paper, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Paper,
+  Radio,
+  RadioGroup,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import SearchIcon from "@mui/icons-material/Search";
 import MainCard from "ui-component/cards/MainCard";
 import AddSeminar from "./AddSeminar";
 import { TablePagination } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useRecoilValue } from 'recoil';
-import { profile } from '../../atoms/authAtoms';
+import { useRecoilValue } from "recoil";
+import { profile } from "../../atoms/authAtoms";
 import { useState } from "react";
 import { useGetSeminar } from "hooks/useGetSeminar";
 import moment from "moment";
 import axios from "axios";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import CloseIcon from "@mui/icons-material/Close";
 import { green, red } from "@mui/material/colors";
-import AirplayIcon from '@mui/icons-material/Airplay';
+import AirplayIcon from "@mui/icons-material/Airplay";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
+import noDataImg from "../../assets/images/no data found.png";
 
 const Index = () => {
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [searchText, setSearchText] = useState('')
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchText, setSearchText] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
-  const [editId, setEditId] = useState('');
+  const [editId, setEditId] = useState("");
   const [openHowToRegDialog, setOpenHowToRegDialog] = useState(false);
   const [attendanceData, setAttendanceData] = useState([]);
-  const [editAttendanceId, setEditAttendanceId] = useState('')
+  const [editAttendanceId, setEditAttendanceId] = useState("");
   const [seminarOverData, setSeminarOverData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const user = useRecoilValue(profile)
+  const user = useRecoilValue(profile);
 
   const handleTaskClick = () => {
     setOpenAddTaskDialog(true);
   };
 
-  const { data: seminar, refetch } = useGetSeminar(page + 1, rowsPerPage, searchText);
-
+  const { data: seminar, refetch } = useGetSeminar(
+    page + 1,
+    rowsPerPage,
+    searchText
+  );
 
   function handleChangePage(event, newPage) {
-    setPage(newPage)
+    setPage(newPage);
   }
   function handleChangeRowsPerPage(event) {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   }
 
   useEffect(() => {
-    if (searchText !== '') {
+    if (searchText !== "") {
       const delayDebounceFn = setTimeout(() => {
-        refetch()
-      }, 1000)
-      return () => clearTimeout(delayDebounceFn)
+        refetch();
+      }, 1000);
+      return () => clearTimeout(delayDebounceFn);
     } else {
-      refetch()
+      refetch();
     }
-  }, [searchText, page, rowsPerPage])
-
-
+  }, [searchText, page, rowsPerPage]);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70, disableColumnMenu: true, sortable: false, headerAlign: 'start', align: 'start', cursor: 'pointer' },
-    { field: 'schedule_by', headerName: 'Schedule By', width: 250, disableColumnMenu: true, sortable: false, headerAlign: 'start', align: 'start' },
-    { field: 'title', headerName: 'Title', width: 500, disableColumnMenu: true, sortable: false, headerAlign: 'start', align: 'start' },
-    { field: 'date', headerName: 'Date', width: 225, disableColumnMenu: true, sortable: false, headerAlign: 'start', align: 'start' },
-    { field: 'time', headerName: 'Time', width: 150, disableColumnMenu: true, sortable: false, headerAlign: 'start', align: 'start' },
-    { field: 'attendance', headerName: 'Attendance', width: 150, disableColumnMenu: true, sortable: false, headerAlign: 'center', align: 'center', renderCell: (params) => <HowToRegIcon size="small" onClick={() => handleHowToRegClick(params)} /> },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 70,
+      disableColumnMenu: true,
+      sortable: false,
+      headerAlign: "start",
+      align: "start",
+      cursor: "pointer",
+    },
+    {
+      field: "schedule_by",
+      headerName: "Schedule By",
+      width: 250,
+      disableColumnMenu: true,
+      sortable: false,
+      headerAlign: "start",
+      align: "start",
+    },
+    {
+      field: "title",
+      headerName: "Title",
+      width: 500,
+      disableColumnMenu: true,
+      sortable: false,
+      headerAlign: "start",
+      align: "start",
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      width: 225,
+      disableColumnMenu: true,
+      sortable: false,
+      headerAlign: "start",
+      align: "start",
+    },
+    {
+      field: "time",
+      headerName: "Time",
+      width: 150,
+      disableColumnMenu: true,
+      sortable: false,
+      headerAlign: "start",
+      align: "start",
+    },
+    {
+      field: "attendance",
+      headerName: "Attendance",
+      width: 150,
+      disableColumnMenu: true,
+      sortable: false,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <HowToRegIcon
+          size="small"
+          onClick={() => handleHowToRegClick(params)}
+        />
+      ),
+    },
   ];
-
 
   const rows = seminar
     ? seminar.seminars.map((item, index) => ({
-      id: index + 1,
-      assigned: item.fullName,
-      date: moment(item.date_time).format('YYYY-MM-DD'),
-      time: moment(item.date_time).format('hh:mm A'),
-      title: item.title,
-      schedule_by: item.schedule_by,
-      status: item.status,
-      role: item.role,
-      _id: item._id,
-    }))
-    : []
+        id: index + 1,
+        assigned: item.fullName,
+        date: moment(item.date_time).format("YYYY-MM-DD"),
+        time: moment(item.date_time).format("hh:mm A"),
+        title: item.title,
+        schedule_by: item.schedule_by,
+        status: item.status,
+        role: item.role,
+        _id: item._id,
+      }))
+    : [];
 
   const handleSelectionModelChange = (selectionModel) => {
     const selectedRowIds = selectionModel
@@ -95,48 +170,58 @@ const Index = () => {
   };
 
   const handleRowIdlick = (params) => {
-    setEditId(params.row._id)
-    setOpenAddTaskDialog(true)
-    setIsEdit(true)
+    setEditId(params.row._id);
+    setOpenAddTaskDialog(true);
+    setIsEdit(true);
   };
 
   const handleDeleteButtonClick = async () => {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_API_URL}${user.company_id}/delete/multipleSeminar`, {
-        data: { ids: selectedRows },
-      });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}${user.company_id}/delete/multipleSeminar`,
+        {
+          data: { ids: selectedRows },
+        }
+      );
 
       if (response.status === 200) {
         refetch();
-        const remainingRows = selectedRows.filter(id => !rows.find(row => row._id === id));
+        const remainingRows = selectedRows.filter(
+          (id) => !rows.find((row) => row._id === id)
+        );
         setSelectedRows(remainingRows);
       }
     } catch (error) {
-      console.error('Error deleting multiple tasks:', error);
+      console.error("Error deleting multiple tasks:", error);
     }
   };
 
   const handleHowToRegClick = (params) => {
     setOpenHowToRegDialog(true);
-    const myRes = seminar?.seminars?.find((item) => item?._id === params?.row?._id)
-    setAttendanceData(myRes?.attended_by)
-    setEditAttendanceId(params?.row?._id)
+    const myRes = seminar?.seminars?.find(
+      (item) => item?._id === params?.row?._id
+    );
+    setAttendanceData(myRes?.attended_by);
+    setEditAttendanceId(params?.row?._id);
   };
 
   const handleSaveAttendance = async () => {
     try {
       const seminarToUpdate = {
         ...seminar.data,
-        attended_by: attendanceData
+        attended_by: attendanceData,
       };
-      const response = await axios.put(`${process.env.REACT_APP_API_URL}${user.company_id}/${editAttendanceId}/updateseminar`, seminarToUpdate);
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}${user.company_id}/${editAttendanceId}/updateseminar`,
+        seminarToUpdate
+      );
 
       if (response.status === 200) {
         setOpenHowToRegDialog(false);
-        refetch()
+        refetch();
       }
     } catch (error) {
-      console.error('Error updating attendance:', error);
+      console.error("Error updating attendance:", error);
     }
   };
 
@@ -148,26 +233,31 @@ const Index = () => {
 
   const handleOverViewClick = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}${user.company_id}/seminarOverView`);
-      
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}${user.company_id}/seminarOverView`
+      );
+
       if (response.status === 200) {
-        const formattedData = response.data.data.map(seminar => ({
+        const formattedData = response.data.data.map((seminar) => ({
           ...seminar,
-          date_time: moment(seminar.date_time).format('DD-MM-YYYY'),
+          date_time: moment(seminar.date_time).format("DD-MM-YYYY"),
         }));
         setSeminarOverData(formattedData);
         setOpenDialog(true);
       } else {
-        console.error("Error fetching seminar overview. Status:", response.status);
+        console.error(
+          "Error fetching seminar overview. Status:",
+          response.status
+        );
       }
     } catch (error) {
       console.error("Error fetching seminar overview:", error);
     }
-  }
+  };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setSeminarOverData([])
+    setSeminarOverData([]);
   };
 
   return (
@@ -205,17 +295,15 @@ const Index = () => {
               alignItems: "center",
             }}
           >
-            <Grid item lg={6} md={6} xs={12} sm={6}>
+            <Grid item lg={4} md={12} xs={12} sm={6}>
               <Grid item>
-                <div className="icon-input">
-                  <input
-                    className="icon-input__text-field"
-                    type="text"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                  />
-                  <SearchIcon className="icon-input__icon" />
-                </div>
+                <TextField
+                  type="text"
+                  fullWidth
+                  size="small"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
               </Grid>
             </Grid>
 
@@ -323,38 +411,56 @@ const Index = () => {
       </MainCard>
       <MainCard sx={{ margin: "20px 0" }}>
         <>
-        <div style={{ width: '100%',height:'570px',maxHeight:'100%'}}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pagination
-              pageSize={rowsPerPage}
-              onPageChange={handleChangePage}
-              onRowSelectionModelChange={handleSelectionModelChange}
-              rowCount={rows.length}
-              checkboxSelection
-              disableRowSelectionOnClick
-              disableColumnMenu
-              hideFooter={true}
-              onCellClick={(params) => {
-                const clickedField = params.field;
-                if (
-                  ["id", "schedule_by", "title", "date", "time"].includes(
-                    clickedField
-                  )
-                ) {
-                  handleRowIdlick(params);
-                }
-              }}
-              sx={{
-                ".MuiDataGrid-cell:focus": {
-                  outline: "none",
-                },
-                "& .MuiDataGrid-row:hover": {
-                  cursor: "pointer",
-                },
-              }}
-            />
+          <div style={{ width: "100%", height: "570px", maxHeight: "100%" }}>
+            {rows.length > 0 ? (
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                pagination
+                pageSize={rowsPerPage}
+                onPageChange={handleChangePage}
+                onRowSelectionModelChange={handleSelectionModelChange}
+                rowCount={rows.length}
+                checkboxSelection
+                disableRowSelectionOnClick
+                disableColumnMenu
+                hideFooter={true}
+                onCellClick={(params) => {
+                  const clickedField = params.field;
+                  if (
+                    ["id", "schedule_by", "title", "date", "time"].includes(
+                      clickedField
+                    )
+                  ) {
+                    handleRowIdlick(params);
+                  }
+                }}
+                sx={{
+                  "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "#ede7f6",
+                    fontSize: 14,
+                    color: "#262626",
+                  },
+                }}
+              />
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <img
+                    src={noDataImg}
+                    alt="no data"
+                    loading="lazy"
+                    style={{ maxWidth: "600px" }}
+                  />
+                </div>
+              </>
+            )}
           </div>
           <TablePagination
             component="div"
@@ -518,4 +624,3 @@ const Index = () => {
 };
 
 export default Index;
-

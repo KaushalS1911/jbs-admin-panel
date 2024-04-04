@@ -5,8 +5,10 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import MainCard from "ui-component/cards/MainCard";
-import { useRecoilState } from 'recoil';
-import { profile } from '../../atoms/authAtoms';
+import { useRecoilState } from "recoil";
+import { profile } from "../../atoms/authAtoms";
+import noDataImg from "../../assets/images/no data found.png";
+
 
 const AttendanceView = ({ option, startDate }) => {
   var columns;
@@ -109,7 +111,9 @@ const AttendanceView = ({ option, startDate }) => {
             }}
           >
             <form>
-              <div
+            {
+              rows.length >0 ?AttendanceView(
+                <div
                 style={{
                   width: "100%",
                   height: "570px",
@@ -119,13 +123,40 @@ const AttendanceView = ({ option, startDate }) => {
                 <DataGrid
                   rows={rows}
                   columns={columns}
-                  // checkboxSelection
                   disableRowSelectionOnClick
                   disableColumnMenu
                   hideFooterSelectedRowCount={true}
                   hideFooterPagination={true}
+                  sx={{
+                    "& .MuiDataGrid-columnHeaders": {
+                      backgroundColor: "#ede7f6",
+                      fontSize: 14,
+                      color: "#262626",
+                    },
+                  }}
                 />
               </div>
+              ):
+              (
+                <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={noDataImg}
+                  alt="no data"
+                  loading="lazy"
+                  style={{ maxWidth: "600px" }}
+                />
+              </div>
+            </>
+              )
+            }
+             
 
               <Box sx={{ textAlign: "right", marginTop: "15px" }}>
                 <Button

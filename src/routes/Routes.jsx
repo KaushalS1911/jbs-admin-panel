@@ -89,7 +89,7 @@ const Routes = () => {
 
 
           {/* Expence routes*/}
-          <Route path="/expence" element={<Expence />} exact  />
+          <Route path="/expense" element={<Expence />} exact  />
 
           {/* Setting Route */}
           <Route path="/settings" element={<Setting />} exact  />

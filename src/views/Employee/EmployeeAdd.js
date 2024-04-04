@@ -340,13 +340,7 @@ const EmployeeAdd = () => {
                     />
                   </LocalizationProvider>
                 </Grid>
-
-
-
-
               </Grid>
-
-
               <Grid>
                 <Typography sx={{ marginBottom: '20px', color: '#5559CE', fontWeight: '500', fontSize: '18px' }}>Address Details:</Typography>
                 <Grid container spacing={2} sx={{ marginBottom: '20px' }}>

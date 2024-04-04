@@ -20,6 +20,8 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import { notification } from "antd";
+import noDataImg from "../../assets/images/no data found.png";
+
 
 const Employee = () => {
   //notification
@@ -271,7 +273,10 @@ const Employee = () => {
       </MainCard>
 
       <MainCard sx={{ margin: "20px 0" }}>
-        <div
+      <>
+        {
+          rows.length>0 ?(
+            <div
           style={{
             width: "100%",
             height: "570px",
@@ -298,6 +303,28 @@ const Employee = () => {
             }}
           />
         </div>
+          ):
+          (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={noDataImg}
+                  alt="no data"
+                  loading="lazy"
+                  style={{ maxWidth: "600px" }}
+                />
+              </div>
+            </>
+          )
+        }
+      </>
+       
         <TablePagination
           component="div"
           count={Employees?.total}

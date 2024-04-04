@@ -134,8 +134,8 @@ const utilities = {
       breadcrumbs: false,
     },
     {
-      id: "Expense",
-      title: "Expense",
+      id: "Expenses",
+      title: "Expenses",
       type: "item",
       url: "expense",
       icon: icons.CurrencyRupeeIcon,

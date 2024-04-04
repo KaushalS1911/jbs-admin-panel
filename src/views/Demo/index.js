@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import MainCard from 'ui-component/cards/MainCard'
-import { Button } from '@mui/material'
+import { EditNoteTwoTone, RestoreFromTrashTwoTone } from "@mui/icons-material";
 import { useTheme } from '@mui/material/styles'
 import moment from 'moment'
 import { useEffect } from 'react'
@@ -273,10 +273,9 @@ const Index = () => {
                             },
                           }}
                         >
-                          <Button
+                          <EditNoteTwoTone
                             sx={{
-                              backgroundColor: "#D9DAF9",
-                              color: "#000",
+                              color: "#D9DAF9",
                               marginRight: "10px",
                               height: "30px",
                               lineHeight: "30px",
@@ -288,13 +287,10 @@ const Index = () => {
                               handleAddDemo(entry, row._id);
                               followModal();
                             }}
-                          >
-                            Edit
-                          </Button>
-                          <Button
+                          />
+                          <RestoreFromTrashTwoTone
                             sx={{
-                              backgroundColor: "#5559CE",
-                              color: "#fff",
+                              color: "#5559CE",
                               marginRight: "10px",
                               height: "30px",
                               lineHeight: "30px",
@@ -306,9 +302,7 @@ const Index = () => {
                             onClick={() => {
                               handleOpenDialog(row, entry._id);
                             }}
-                          >
-                            Delete{" "}
-                          </Button>
+                          />
                         </TableCell>
                       </TableRow>
                     ))}

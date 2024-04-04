@@ -141,8 +141,8 @@ function Batch() {
   const columns = [
     {
       field: "srNo",
-      headerName: "srNo",
-      width: 40,
+      headerName: "SrNo",
+      width: 80,
       disableColumnMenu: true,
       sortable: false,
       headerAlign: "center",

@@ -27,6 +27,7 @@ import { Edit as EditIcon, Print as PrintIcon } from "@mui/icons-material";
 import "../../assets/scss/FeesReceipt.css";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import "jspdf-autotable";
 
 function FeeDetailsPage() {
@@ -38,7 +39,6 @@ function FeeDetailsPage() {
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [studentData, setStudentData] = useState(null);
-
 
   useEffect(() => {
     if (data) {
@@ -81,7 +81,7 @@ function FeeDetailsPage() {
     setSelectedValue(event.target.value);
   };
 
-  const handlePrintClick = (row ) => {
+  const handlePrintClick = (row) => {
     const printReceipt = {
       ReceiptNo: "0011",
       PaymentMode: "Cash",
@@ -100,26 +100,89 @@ function FeeDetailsPage() {
       Status: row.status,
       Date: new Date().toDateString(),
     };
-  
+
     if (printReceipt.Status === "Paid") {
-      const doc = new jsPDF({
-        orientation: "p",
-        unit: "pt",
-        format: [800, 1000],
-      });
-  
-      const receiptHTML = `
+      const receiptDiv = document.createElement("div");
+      receiptDiv.style.width = "800px";
+      receiptDiv.innerHTML = `
       <html lang="en">
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
+        <style>
+          .main {
+            max-width: 800px;
+            margin: auto;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 842px;
+            background-color: #fff;
+          }
+          .header {
+            padding: 2rem;
+          }
+          .top {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+          }
+          .desc table {
+            padding: 12px 0;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 500;
+          }
+          .desc td {
+            padding: 10px;
+            border-bottom: 1px solid rgb(206, 205, 205);
+          }
+          .payment-section {
+            margin-top: 3rem;
+          }
+          .payment-section table {
+            width: 100%;
+          }
+          .payment-section th, .payment-section td {
+            padding: 8px;
+            font-size: 14px;
+            text-align: center;
+            border-bottom: 1px solid rgb(206, 205, 205);
+          }
+          .payment-section th {
+            font-weight: 500;
+          }
+          .signature {
+            padding-right: 7rem;
+            margin-top: 14rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .signature p {
+            font-size: 17px;
+            font-weight: 500;
+            color: rgb(111, 62, 146);
+          }
+          .footer {
+            border-top: 1px solid black;
+            padding-top: 12px;
+            display: flex;
+            margin-top: 2rem;
+            font-size: 13px;
+            justify-content: space-between;
+          }
+        </style>
       </head>
       <body>
         <div class="main">
           <div class="header">
             <div class="top">
-              <img src="logo.png" alt="" />
+              <div class="logo">
+              </div>
               <p><b>Date: ${printReceipt.Date}</b></p>
             </div>
             <hr />
@@ -142,7 +205,7 @@ function FeeDetailsPage() {
               </table>
             </div>
             <div class="payment-section">
-              <table cellspacing="4" style="width: 100%;">
+              <table cellspacing="4">
                 <tr>
                   <th>Sr No.</th>
                   <th>Invoice Date</th>
@@ -174,91 +237,17 @@ function FeeDetailsPage() {
         </div>
       </body>
       </html>`;
-      
-      const styles = {
-        main: {
-          backgroundImage: 'url("rotatedLogo.jpg")',
-          backgroundPosition: "center",
-          backgroundBlendMode: "overlay",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
-          height: "842px",
-          width: "100%",
-          border: "2px solid black",
-          backgroundColor: "rgba(255, 255, 255, 0.904)",
-          margin: "auto"
-        },
-        header: {
-          padding: "2rem"
-        },
-        top: {
-          marginBottom: "1rem",
-          display: "flex",
-          justifyContent: "space-between"
-        },
-        descTable: {
-          padding: "12px 0",
-          borderRadius: "4px",
-          width: "100%",
-          fontSize: "14px",
-          fontWeight: "500"
-        },
-        descTableCell: {
-          padding: "10px 10px 6px",
-          borderBottom: "1px solid rgb(206, 205, 205)"
-        },
-        paymentSection: {
-          marginTop: "3rem"
-        },
-        paymentTable: {
-          width: "100%"
-        },
-        paymentTableCell: {
-          padding: "8px",
-          fontSize: "14px",
-          textAlign: "center",
-          borderBottom: "1px solid rgb(206, 205, 205)"
-        },
-        paymentTableHeader: {
-          fontWeight: "500",
-          padding: "8px",
-          fontSize: "15px",
-          borderBottom: "1px solid rgb(206, 205, 205)"
-        },
-        signature: {
-          paddingRight: "7rem",
-          marginTop: "14rem",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center"
-        },
-        signatureP: {
-          fontSize: "17px",
-          fontWeight: "500",
-          color: "rgb(111, 62, 146)"
-        },
-        footer: {
-          borderTop: "1px solid black",
-          paddingTop: "12px",
-          display: "flex",
-          marginTop: "2rem",
-          fontSize: "13px",
-          justifyContent: "space-between"
-        }
-      };
-      
-      Object.entries(styles).forEach(([element, style]) => {
-        const elements = document.querySelectorAll(`.${element}`);
-        elements.forEach(el => {
-          Object.assign(el.style, style);
-        });
-      });
-      
-  
-      doc.html(receiptHTML, {
-        callback: function (doc) {
-          doc.save("receipt.pdf");
-        },
+
+      document.body.appendChild(receiptDiv);
+
+      html2canvas(receiptDiv, { scale: 2 }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdfWidth = 400;
+        const pdfHeight = (canvas.height / canvas.width) * pdfWidth;
+        const pdf = new jsPDF("p", "pt", [pdfWidth, pdfHeight]);
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("receipt.pdf");
+        document.body.removeChild(receiptDiv);
       });
     } else if (printReceipt.Status === "Unpaid") {
       alert("Status is not Paid. Cannot print receipt.");
@@ -358,7 +347,9 @@ function FeeDetailsPage() {
         srNo: index + 1,
         id: item._id,
         installment_date: moment(item.installment_date).format("DD/MM/YYYY"),
-        payment_date: item.payment_date ? moment(item.payment_date).format("DD/MM/YYYY") : "--",
+        payment_date: item.payment_date
+          ? moment(item.payment_date).format("DD/MM/YYYY")
+          : "--",
         amount: item.amount,
         status: item.status || "Pending",
       }))

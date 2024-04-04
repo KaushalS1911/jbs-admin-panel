@@ -25,6 +25,7 @@ import { useRecoilState } from "recoil";
 import { profile } from "../../../atoms/authAtoms";
 import moment from "moment";
 import axios from "axios";
+import Index from "../Index";
 
 const StudentList = ({ searchText }) => {
   const [profileData, setProfileData] = useRecoilState(profile);
@@ -126,6 +127,10 @@ const StudentList = ({ searchText }) => {
     }
   }, [searchText, rowsPerPage, page]);
 
+  const handleViewClick=(Index)=>{
+    console.log(Index);
+  }
+
   const columns = [
     {
       field: "srNo",
@@ -208,11 +213,12 @@ const StudentList = ({ searchText }) => {
       sortable: false,
       headerAlign: "center",
       align: "center",
-      renderCell: () => (
+      renderCell: (params) => (
         <Chip
           label="View More"
           style={{ backgroundColor: "#e1e1e1" }} 
           size="small"
+          onClick={()=>handleViewClick(params.row)}
         />
       ),
     },
@@ -292,11 +298,9 @@ const StudentList = ({ searchText }) => {
               headerClassName="custom-header-class"
               sx={{
                 "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#ede7f6",
                   fontSize: 14,
                   color: "#262626",
-                },
-                "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-                  outline: "none !important",
                 },
               }}
             />
