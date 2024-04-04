@@ -89,7 +89,7 @@ const StudentAvater = () => {
             />
             <Avatar
               alt="Avatar"
-              src={`${process.env.REACT_APP_LOGIN_URL}profile-pic/${student?.personal_info?.profile_pic}`}
+              src= {student?.personal_info?.profile_pic}
               onClick={handleAvatarClick}
               style={{ cursor: "pointer", width: 96, height: 96 }}
             />

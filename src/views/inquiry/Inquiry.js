@@ -82,16 +82,9 @@ const Inquiry = () => {
     searchText
   );
 
-  //Serch Inquiry
+  //Search Inquiry
   useEffect(() => {
-    if (searchText !== "") {
-      const delayDebounceFn = setTimeout(() => {
-        refetch();
-      }, 1000);
-      return () => clearTimeout(delayDebounceFn);
-    } else {
       refetch();
-    }
   }, [page, rowsPerPage, searchText]);
 
   //Inquiry Column
