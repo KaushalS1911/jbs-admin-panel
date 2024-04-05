@@ -24,6 +24,8 @@ import { useRecoilState } from "recoil";
 import { RestoreFromTrashTwoTone } from "@mui/icons-material";
 import { useGetAllInquiries } from "../../hooks/useGetAllinquiries";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
+import noDataImg from "../../assets/images/no data found.png";
+
 
 const Inquiry = () => {
       //notification
@@ -357,7 +359,22 @@ const Inquiry = () => {
               }}
             />
           ) : (
-            <>No Inquiry Available!</>
+            <>
+            <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={noDataImg}
+                  alt="no data"
+                  loading="lazy"
+                  style={{ maxWidth: "600px" }}
+                />
+              </div>
+            </>
           )}
         </div>
         <TablePagination

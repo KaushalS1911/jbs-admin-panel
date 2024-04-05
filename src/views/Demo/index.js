@@ -279,9 +279,7 @@ const Index = () => {
                               marginRight: "10px",
                               height: "30px",
                               lineHeight: "30px",
-                              "&:hover": {
-                                backgroundColor: "#D9DAF9",
-                              },
+                              cursor:'pointer'
                             }}
                             onClick={() => {
                               handleAddDemo(entry, row._id);
@@ -294,10 +292,7 @@ const Index = () => {
                               marginRight: "10px",
                               height: "30px",
                               lineHeight: "30px",
-                              "&:hover": {
-                                Color: "#5559CE",
-                                backgroundColor: "#5559CE",
-                              },
+                              cursor:'pointer'
                             }}
                             onClick={() => {
                               handleOpenDialog(row, entry._id);

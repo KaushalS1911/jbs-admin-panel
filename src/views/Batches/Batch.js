@@ -79,6 +79,7 @@ function Batch() {
   };
 
   const Batchview = (id) => {
+    console.log(id);
     navigate(`/batch-student/${id}`);
   };
 
@@ -141,8 +142,8 @@ function Batch() {
   const columns = [
     {
       field: "srNo",
-      headerName: "SrNo",
-      width: 80,
+      headerName: "srNo",
+      width: 40,
       disableColumnMenu: true,
       sortable: false,
       headerAlign: "center",
@@ -252,12 +253,12 @@ function Batch() {
     if (selectedRows.length > 0) {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
-        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/batches/delete-members`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/batches/multiple-batches`;
         const response = await axios.delete(apiEndpoint, {
           data: { ids: selectedRows },
         });
         openNotificationWithIcon("success", response.data.data.message);
-        refetch();
+        fetchData();
       } catch (error) {
         console.log("Error deleting employees:", error);
       }

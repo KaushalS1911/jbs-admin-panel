@@ -441,7 +441,7 @@ function FeeDetailsPage() {
           style={{ textAlign: "right", padding: "10px" }}
         >
           <span style={{ fontWeight: 300 }}>Amount Paid:</span>
-          {data?.fees_info?.amount_paid} INR
+          {data?.fees_info?.amount_paid + data?.fees_info?.admission_amount } INR
         </Typography>
 
         <Dialog

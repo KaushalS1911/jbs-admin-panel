@@ -133,7 +133,7 @@ function Inquiryform() {
     const selectedOptions = [...formik.values.interested_in];
 
     if (event.target.checked) {
-      if (selectedOptions.length < 2) {
+      if (selectedOptions) {
         selectedOptions.push(event.target.value);
       }
     } else {

@@ -20,7 +20,6 @@ import { useParams } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { numberofinstallmentConstants } from "../../../contants/numberofinstallmentConstants";
-import { notification } from "antd";
 
 
 const initialValues = {
@@ -45,12 +44,7 @@ const MenuProps = {
 };
 
 const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
-   //notification
-   const openNotificationWithIcon = (type, message) => {
-    notification[type]({
-      message: message,
-    });
-  };
+ 
   const dispatch = useDispatch();
   const { companyId, studentId } = useParams();
   const { personalDetails, addressDetails, guardianDetails } = useSelector(
@@ -162,6 +156,7 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         no_of_installments,
         discount,
       };
+      console.log(payload);
       await axios({
         method: "POST",
         baseURL: `${process.env.REACT_APP_API_URL}${companyId}/`,

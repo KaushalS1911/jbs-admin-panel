@@ -11,45 +11,48 @@ import { profile } from "../../atoms/authAtoms";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { RestoreFromTrashTwoTone } from "@mui/icons-material";
 import { notification } from "antd";
-import { deleteAllStudents } from "store/slices/inquiryslice";
-import { useDispatch } from "react-redux";
+import axios from "axios";
+import { useGetAllStudents } from "hooks/useGetAllStudents";
 
-function Index(selectedRows,setSelectedRows) {
+function Index() {
   const navigate = useNavigate();
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
     });
   };
-
   // eslint-disable-next-line
   const [profileData, setProfileData] = useRecoilState(profile);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const { refetch } = useGetAllStudents();
   /* eslint-disable */
   const [searchText, setSearchText] = useState("");
+
   const StudentAdd = () => {
     navigate(`/company/${profileData.company_id}/add-student`);
   };
 
+  const handleSelectRow = (selectedRows) => {
+    setSelectedRows(selectedRows);
+  };
 
-  const deletedAllStudents = async () => {
-    if (selectedRows && selectedRows.length > 0) {
+  //Delete Alll Students
+  const deleteallStudents = async () => {
+    if (selectedRows.length > 0) {
       try {
-        const res = await useDispatch(
-          deleteAllStudents({
-            ids: selectedRows,
-            companyId: profileData.company_id,
-          })
-        );
-        openNotificationWithIcon("success", res.payload.data.message);
+        const user = JSON.parse(localStorage.getItem("user"));
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/delete/all-students`;
+        const response = await axios.delete(apiEndpoint, {
+          data: { ids: selectedRows },
+        });
+        openNotificationWithIcon("success", response.data.data.message);
         refetch();
       } catch (error) {
-        console.error("Error deleting inquiries:", error.message);
+        console.log("Error deleting employees:", error);
       }
     }
   };
 
-  
-  
   return (
     <>
       <Mainbreadcrumbs title={"Student"} />
@@ -131,11 +134,15 @@ function Index(selectedRows,setSelectedRows) {
                   onClick={StudentAdd}
                   startIcon={
                     <AddCircleOutlineIcon
-                      style={{ fontSize: "22px", marginRight: "3px" ,color: "#5e35b1",}}
+                      style={{
+                        fontSize: "22px",
+                        marginRight: "3px",
+                        color: "#5e35b1",
+                      }}
                     />
                   }
                 >
-                  Add 
+                  Add
                 </Button>
                 <Button
                   startIcon={
@@ -155,7 +162,7 @@ function Index(selectedRows,setSelectedRows) {
                     lineHeight: "35px",
                     "&:hover": { Color: "#5559CE", backgroundColor: "#5559CE" },
                   }}
-                  onClick={deletedAllStudents}
+                  onClick={deleteallStudents}
                 >
                   Delete
                 </Button>
@@ -165,12 +172,8 @@ function Index(selectedRows,setSelectedRows) {
         </FormControl>
       </MainCard>
       <MainCard sx={{ margin: "20px 0" }}>
-        <StudentList searchText={searchText}/>
+        <StudentList onSelectRow={handleSelectRow} searchText={searchText} />
       </MainCard>
-
-      {/* <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} maskClosable={false} footer={false} style={{ width: '50%' }}>
-                <StudentMain />
-            </Modal> */}
     </>
   );
 }

@@ -27,10 +27,10 @@ import Task from '../views/utilities/Task';
 import { Expence } from "views/utilities/Expence";
 import FullStackStepper from '../views/Student/utils/StudentDetail';
 import Setting from "views/Setting/Setting";
-import Profileedit from "views/Setting/EditAdminProfile";
 import EditAdminProfile from "views/Setting/EditAdminProfile";
 import EditCompanyProfile from "views/Setting/EditCompanyProfile";
 import Expenses from "views/Setting/Expenses";
+import Register from "views/pages/authentication/authentication3/Register3";
 
 
 
@@ -99,7 +99,7 @@ const Routes = () => {
           </Route>
       </Route>
       <Route path="/login" element={<Login3 />} />
-
+      <Route path="/register" element={<Register />} />
       </Routers>
   );
 };

@@ -12,41 +12,42 @@ import InquiryIc from "../../../assets/images/icone deshbord/Vector (2).png";
 import LabIc from "../../../assets/images/icone deshbord/Vector (3).png";
 import AccountIc from "../../../assets/images/icone deshbord/Vector (4).png";
 import EmployeIc from "../../../assets/images/icone deshbord/Vector (5).png";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "../../../store/actions/loginactions";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
-import {useGetDashboardData} from "../../../hooks/useGetDashboardData";
+import { useGetDashboardData } from "../../../hooks/useGetDashboardData";
+import { Link } from "react-router-dom";
+
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
   const [dataObj, setDataObj] = useState([]);
-  const {data, refetch} = useGetDashboardData()
+  const { data, refetch } = useGetDashboardData();
 
   useEffect(() => {
     setLoading(false);
   }, []);
 
   useEffect(() => {
-
     const updatedDataObj = [
       {
         icon: StudentIc,
         roles: "Student",
         roleValue: data?.studentCount || 0,
         roleColor: "#FE8D3D",
+        linkTo: "/student",
       },
       {
         icon: FacultyIc,
         roles: "Faculty",
         roleValue: data?.facultyCount || 0,
         roleColor: "#79AB78",
+        linkTo: "/employee",
       },
       {
         icon: InquiryIc,
         roles: "Inquiry",
         roleValue: data?.inquiryCount || 0,
         roleColor: "#68ACE3",
+        linkTo: "/inquiry",
       },
       {
         icon: LabIc,
@@ -59,12 +60,14 @@ const Dashboard = () => {
         roles: "Staff",
         roleValue: data?.employeeCount || 0,
         roleColor: "#F6C863",
+        linkTo: "/employee",
       },
       {
         icon: AccountIc,
         roles: "Account",
         roleValue: "0",
         roleColor: "#F35A79",
+        linkTo: "/account",
       },
     ];
     setDataObj(updatedDataObj);
@@ -76,12 +79,15 @@ const Dashboard = () => {
       <Grid container spacing={gridSpacing}>
         {dataObj.map((item, index) => (
           <Grid key={index} item lg={2} md={4} sm={4} xs={6}>
-            <Allofcounter
-              icone={item.icon}
-              role={item.roles}
-              roleValue={String(item.roleValue)}
-              roleColor={item.roleColor}
-            />
+            {/* Wrap the grid item with Link component */}
+            <Link to={item.linkTo}>
+              <Allofcounter
+                icone={item.icon}
+                role={item.roles}
+                roleValue={String(item.roleValue)}
+                roleColor={item.roleColor}
+              />
+            </Link>
           </Grid>
         ))}
         <Grid item xs={12}>

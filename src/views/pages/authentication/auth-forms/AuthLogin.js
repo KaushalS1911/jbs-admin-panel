@@ -7,7 +7,6 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
-  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -25,7 +24,8 @@ import { profile } from '../../../../atoms/authAtoms';
 import { useRecoilState } from 'recoil';
 import PhoneInput from 'react-phone-input-2';
 import { notification } from 'antd';
-// ============================|| FIREBASE - LOGIN ||============================ //
+
+// ============================|| ADMIN PANEL LOGIN ||============================ //
 const FirebaseLogin = ({ setIsLoading }) => {
 
   //notification
@@ -71,6 +71,7 @@ const FirebaseLogin = ({ setIsLoading }) => {
   //     [name]: value
   //   }));
   // };
+  
   const handleSubmit = async () => {
     setLoading(true)
     return await axios({
@@ -88,11 +89,6 @@ const FirebaseLogin = ({ setIsLoading }) => {
         localStorage.setItem("jwt", data.jwt);
         localStorage.setItem("jwtRefresh", data.jwtRefresh);
         window.location = "/";
-        // if (res?.data?.user?.role === 'Student') {
-        //   setError('Student Permission Decline — Please Check!');
-        //   setLoading(false);
-        //   return;
-        // }
         setLoading(false);
         openNotificationWithIcon("success", "Login successful!");
         setError('');
@@ -131,13 +127,6 @@ const FirebaseLogin = ({ setIsLoading }) => {
   }
   return (
     <>
-      <Grid container direction="column" justifyContent="center" spacing={2}>
-        <Grid item xs={12} container alignItems="center" justifyContent="center">
-          {/*<Box sx={{ mb: 2 }}>*/}
-          {/*  <Typography variant="subtitle1">Sign in with Mobile Number</Typography>*/}
-          {/*</Box>*/}
-        </Grid>
-      </Grid>
       <form>
         <FormControl
           fullWidth
@@ -158,14 +147,6 @@ const FirebaseLogin = ({ setIsLoading }) => {
             }
           }}
         >
-          {/* <MuiTelInput
-            onChange={handlePhoneChange}
-            defaultCountry="in"
-            fullWidth
-            value={contact}
-            disableDropdown
-            inputProps={{ maxLength: 16 }}
-          /> */}
           <PhoneInput
             country={'in'}
             value={contact}

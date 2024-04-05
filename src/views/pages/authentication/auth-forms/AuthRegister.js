@@ -1,57 +1,56 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
-  Divider,
+  CircularProgress,
   FormControl,
   FormControlLabel,
-  FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Stack,
   TextField,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+} from "@mui/material";
+import AnimateButton from "ui-component/extended/AnimateButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import axios from "axios";
+import { profile } from "../../../../atoms/authAtoms";
+import { useRecoilState } from "recoil";
+import PhoneInput from "react-phone-input-2";
+import { notification } from "antd";
 
-// third party
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-
-// project imports
-import useScriptRef from 'hooks/useScriptRef';
-import Google from 'assets/images/icons/social-google.svg';
-import AnimateButton from 'ui-component/extended/AnimateButton';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
-
-// assets
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-// ===========================|| FIREBASE - REGISTER ||=========================== //
-
-const FirebaseRegister = ({ ...others }) => {
-  const theme = useTheme();
-  const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
-  const [showPassword, setShowPassword] = useState(false);
-  const [checked, setChecked] = useState(true);
-
-  const [strength, setStrength] = useState(0);
-  const [level, setLevel] = useState();
-
-  const googleHandler = async () => {
-    console.error('Register');
+const AuthRegister = ({ setIsLoading }) => {
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
   };
+
+  const [checked, setChecked] = useState(true);
+  const [contact, setContact] = useState("+91");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [userData, setUserData] = useState({
+    contact: contact,
+    password: "",
+    role: "Admin",
+    firstName: "",
+    lastName: "",
+    email: "",
+    company_name: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  // eslint-disable-next-line
+  const [profileData, setProfileData] = useRecoilState(profile);
+
+  useEffect(() => {
+    registerUser();
+  }, [setProfileData]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -61,152 +60,178 @@ const FirebaseRegister = ({ ...others }) => {
     event.preventDefault();
   };
 
-  const changePassword = (value) => {
-    const temp = strengthIndicator(value);
-    setStrength(temp);
-    setLevel(strengthColor(temp));
+  const handlePhoneChange = (value, country, e, formattedValue) => {
+    const formattedContact = formattedValue.startsWith("+91")
+      ? formattedValue
+      : "+91" + formattedValue;
+    setContact(formattedContact);
+    setUserData((prevData) => ({
+      ...prevData,
+      contact: formattedContact,
+    }));
   };
 
-  useEffect(() => {
-    changePassword('123456');
-  }, []);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    console.log("registerData", userData);
+    setLoading(false);
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_LOGIN_URL}/register`,
+        { ...userData }
+      );
+      console.log(response);
+      const data = response.data.data.tokens;
+      localStorage.setItem("jwt", data.jwt);
+      localStorage.setItem("jwtRefresh", data.jwtRefresh);
+      window.location = "/";
+      setLoading(false);
+      openNotificationWithIcon("success", "Registration successful!");
+      setError("");
+    } catch (error) {
+      setLoading(false);
+      setError(error.response?.data?.message || "An error occurred.");
+      console.error("Error:", error);
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && userData.password.trim() !== "") {
+      handleSubmit();
+    }
+  };
+
+  function registerUser() {
+    axios({
+      method: "GET",
+      baseURL: `${process.env.REACT_APP_LOGIN_URL}`,
+      url: "users/me",
+      withCredentials: false,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setProfileData(response.data.data);
+          window.location = "/";
+        }
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
+  }
 
   return (
-    <>
-      <Grid container direction="column" justifyContent="center" spacing={2}>
-        <Grid item xs={12}>
-          <AnimateButton>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={googleHandler}
-              size="large"
-              sx={{
-                color: 'grey.700',
-                backgroundColor: theme.palette.grey[50],
-                borderColor: theme.palette.grey[100]
-              }}
-            >
-              <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-                <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
-              </Box>
-              Sign up with Google
-            </Button>
-          </AnimateButton>
-        </Grid>
-        <Grid item xs={12}>
-          <Box sx={{ alignItems: 'center', display: 'flex' }}>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-            <Button
-              variant="outlined"
-              sx={{
-                cursor: 'unset',
-                m: 2,
-                py: 0.5,
-                px: 7,
-                borderColor: `${theme.palette.grey[100]} !important`,
-                color: `${theme.palette.grey[900]}!important`,
-                fontWeight: 500,
-                borderRadius: `${customization.borderRadius}px`
-              }}
-              disableRipple
-              disabled
-            >
-              OR
-            </Button>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-          </Box>
-        </Grid>
-        <Grid item xs={12} container alignItems="center" justifyContent="center">
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Sign up with Email address</Typography>
-          </Box>
-        </Grid>
-      </Grid>
-
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-          submit: null
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
+    <form onSubmit={handleSubmit}>
+      <FormControl
+        fullWidth
+        sx={{
+          width: "100%",
+          padding: "20px 0",
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#5559CE",
+            },
+            "&:hover fieldset": {
+              borderColor: "#5559CE",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#5559CE",
+              borderWidth: "2px",
+            },
+          },
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} {...others}>
-            <Grid container spacing={matchDownSM ? 0 : 2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="First Name"
-                  margin="normal"
-                  name="fname"
-                  type="text"
-                  defaultValue=""
-                  sx={{ ...theme.typography.customInput }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  margin="normal"
-                  name="lname"
-                  type="text"
-                  defaultValue=""
-                  sx={{ ...theme.typography.customInput }}
-                />
-              </Grid>
-            </Grid>
-            <FormControl item={true}fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
+        <Grid container spacing={3}>
+          <Grid item lg={12} sm={12} xs={12}>
+            <TextField
+              label="First Name"
+              id="firstname"
+              name="firstName"
+              value={userData.firstName}
+              onChange={handleChange}
+              variant="outlined"
+              fullWidth
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
+            />
+          </Grid>
+          <Grid item lg={12} sm={12} xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Last Name"
+              name="lastName"
+              value={userData.lastName}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
+            />
+          </Grid>
+          <Grid item lg={12} sm={12} xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Email id"
+              name="email"
+              variant="outlined"
+              value={userData.email}
+              onChange={handleChange}
+              fullWidth
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
+            />
+          </Grid>
+          <Grid item lg={12} sm={12} xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Company name"
+              name="company_name"
+              value={userData.company_name}
+              onChange={handleChange}
+              variant="outlined"
+              fullWidth
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
+            />
+          </Grid>
+          <Grid item lg={12} sm={12} xs={12}>
+            <PhoneInput
+              country={"in"}
+              value={contact}
+              onChange={handlePhoneChange}
+            />
+          </Grid>
+          <Grid item lg={12} sm={12} xs={12}>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel
+                htmlFor="outlined-adornment-password-login"
+                style={{ color: "#5559CE" }}
+              >
+                Password
+              </InputLabel>
               <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="email"
-                value={values.email}
-                name="email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-              />
-              {touched.email && errors.email && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.email}
-                </FormHelperText>
-              )}
-            </FormControl>
-
-            <FormControl item={true}fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password-register"
-                type={showPassword ? 'text' : 'password'}
-                value={values.password}
+                id="outlined-adornment-password-login"
+                type={showPassword ? "text" : "password"}
                 name="password"
-                label="Password"
-                onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange(e);
-                  changePassword(e.target.value);
-                }}
+                onChange={(e) =>
+                  setUserData({ ...userData, password: e.target.value })
+                }
+                onKeyDown={handleKeyDown}
+                value={userData.password}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -220,67 +245,59 @@ const FirebaseRegister = ({ ...others }) => {
                     </IconButton>
                   </InputAdornment>
                 }
-                inputProps={{}}
+                label="Password"
+                inputProps={{
+                  autoComplete: "new-password",
+                  maxLength: 20,
+                }}
               />
-              {touched.password && errors.password && (
-                <FormHelperText error id="standard-weight-helper-text-password-register">
-                  {errors.password}
-                </FormHelperText>
-              )}
             </FormControl>
-
-            {strength !== 0 && (
-              <FormControl item={true}fullWidth>
-                <Box sx={{ mb: 2 }}>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Box style={{ backgroundColor: level?.color }} sx={{ width: 85, height: 8, borderRadius: '7px' }} />
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="subtitle1" fontSize="0.75rem">
-                        {level?.label}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </FormControl>
-            )}
-
-            <Grid container alignItems="center" justifyContent="space-between">
-              <Grid item>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
-                  }
-                  label={
-                    <Typography variant="subtitle1">
-                      Agree with &nbsp;
-                      <Typography variant="subtitle1" component={Link} to="#">
-                        Terms & Condition.
-                      </Typography>
-                    </Typography>
-                  }
+          </Grid>
+        </Grid>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          spacing={1}
+        >
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={checked}
+                onChange={(event) => setChecked(event.target.checked)}
+                name="checked"
+                color="primary"
+              />
+            }
+            label="Remember me"
+          />
+        </Stack>
+        {error && <Alert severity="error">{error}</Alert>}
+        <Box sx={{ mt: 2 }}>
+          <AnimateButton>
+            <Button
+              fullWidth
+              size="large"
+              variant="contained"
+              onClick={handleSubmit}
+              color="secondary"
+              disabled={
+                userData.contact.length < 4 || userData.password.trim() === ""
+              }
+            >
+              {loading ? (
+                <CircularProgress
+                  style={{ color: "white", width: "25px", height: "25px" }}
                 />
-              </Grid>
-            </Grid>
-            {errors.submit && (
-              <Box sx={{ mt: 3 }}>
-                <FormHelperText error>{errors.submit}</FormHelperText>
-              </Box>
-            )}
-
-            <Box sx={{ mt: 2 }}>
-              <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Sign up
-                </Button>
-              </AnimateButton>
-            </Box>
-          </form>
-        )}
-      </Formik>
-    </>
+              ) : (
+                "Register"
+              )}
+            </Button>
+          </AnimateButton>
+        </Box>
+      </FormControl>
+    </form>
   );
 };
 
-export default FirebaseRegister;
+export default AuthRegister;

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Box, Grid, Typography } from '@mui/material';
-// // project imports
 import MainCard from 'ui-component/cards/MainCard';
 const CardWrapper = styled(MainCard)(() => ({
   backgroundColor: '#fff',
