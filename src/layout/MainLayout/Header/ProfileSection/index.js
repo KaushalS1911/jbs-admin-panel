@@ -312,7 +312,7 @@ const ProfileSection = () => {
                           }}
                           selected={selectedIndex === 1}
                           onClick={(event) =>
-                            handleListItemClick(event, 1, "#")
+                            handleListItemClick(event, 1, "/editadminprofile")
                           }
                         >
                           <ListItemIcon>
@@ -327,18 +327,8 @@ const ProfileSection = () => {
                               >
                                 <Grid item>
                                   <Typography variant="body2">
-                                    Social Profile
+                                    My Profile
                                   </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Chip
-                                    label="02"
-                                    size="small"
-                                    sx={{
-                                      bgcolor: theme.palette.warning.dark,
-                                      color: theme.palette.background.default,
-                                    }}
-                                  />
                                 </Grid>
                               </Grid>
                             }

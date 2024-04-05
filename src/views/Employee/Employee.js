@@ -55,6 +55,7 @@ const Employee = () => {
   const EmployeeEdit = (id) => {
     navigate(`/edit-employee/${id}`);
   };
+  
   //Per page pagination
   function handleChangePage(_, newPage) {
     setPage(newPage);
@@ -106,6 +107,7 @@ const Employee = () => {
     { field: "dob", headerName: "Date of Birth", width: 150 },
     { field: "joiningDate", headerName: "Joining date", width: 150 },
   ];
+
   //Employee Row
   const rows = Employees
     ? Employees.employees.map((item, index) => {

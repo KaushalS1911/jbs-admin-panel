@@ -1,107 +1,126 @@
-import {  Route, Routes as Routers } from "react-router-dom";
+import { Route, Routes as Routers } from "react-router-dom";
 
-import MainLayout from '../layout/MainLayout';
-import Dashboard from '../views/dashboard/Default';
-import Inquiry from '../views/utilities/Inquiry';
-import Student from '../views/utilities/Student';
-import Account from '../views/utilities/Account';
-import Demo from '../views/utilities/Demo';
-import Fees from '../views/utilities/Fees';
+import MainLayout from "../layout/MainLayout";
+import Dashboard from "../views/dashboard/Default";
+import Inquiry from "../views/utilities/Inquiry";
+import Student from "../views/utilities/Student";
+import Account from "../views/utilities/Account";
+import Demo from "../views/utilities/Demo";
+import Fees from "../views/utilities/Fees";
 import Seminar from "../views/utilities/Seminar";
-import Calendar from '../views/utilities/Calendar';
-import Attendance from '../views/utilities/Attendance';
-import Login3 from '../views/pages/authentication/authentication3/Login3';
-import PrivateRoutes from './PrivateRoutes';
+import Calendar from "../views/utilities/Calendar";
+import Attendance from "../views/utilities/Attendance";
+import Login3 from "../views/pages/authentication/authentication3/Login3";
+import PrivateRoutes from "./PrivateRoutes";
 import Inquiryform from "views/inquiry/Inquiryform";
-import InquiryEdit from 'views/inquiry/InquiryEdit'
+import InquiryEdit from "views/inquiry/InquiryEdit";
 import Batches from "views/utilities/Batches";
-import CreateStudentStepByStep from '../views/Student/CreateStudentStepByStep'
-import EditStudent from '../views/Student/EditStudent'
+import CreateStudentStepByStep from "../views/Student/CreateStudentStepByStep";
+import EditStudent from "../views/Student/EditStudent";
 import Employee from "views/Employee/Employee";
 import EmployeeAdd from "views/Employee/EmployeeAdd";
-import FeeDetailsPage from '../views/Fees/FeeDetailsPage'
-import Editemployee from '../views/Employee/Editemployee'
+import FeeDetailsPage from "../views/Fees/FeeDetailsPage";
+import Editemployee from "../views/Employee/Editemployee";
 import BatchView from "views/Batches/BatchView ";
-import EditTaskView from '../views/tasks/EditTaskView';
-import Task from '../views/utilities/Task';
+import EditTaskView from "../views/tasks/EditTaskView";
+import Task from "../views/utilities/Task";
 import { Expence } from "views/utilities/Expence";
-import FullStackStepper from '../views/Student/utils/StudentDetail';
+import FullStackStepper from "../views/Student/utils/StudentDetail";
 import Setting from "views/Setting/Setting";
 import EditAdminProfile from "views/Setting/EditAdminProfile";
 import EditCompanyProfile from "views/Setting/EditCompanyProfile";
 import Expenses from "views/Setting/Expenses";
 import Register from "views/pages/authentication/authentication3/Register3";
 
-
-
-
-
 const Routes = () => {
   return (
     <Routers>
       <Route element={<PrivateRoutes />}>
         <Route element={<MainLayout />}>
-          <Route path='/' element={<Dashboard />} />
-          <Route path='/dashboard' element={<Dashboard />} exact />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} exact />
 
           {/*Inquiry routes*/}
-          <Route path='/inquiry' element={<Inquiry />} exact />
-          <Route path='/add-inquiry' element={<Inquiryform />} exact />
-          <Route path='/edit-inquiry/:id' element={<InquiryEdit />} exact />
+          <Route path="/inquiry" element={<Inquiry />} exact />
+          <Route path="/add-inquiry" element={<Inquiryform />} exact />
+          <Route path="/edit-inquiry/:id" element={<InquiryEdit />} exact />
 
           {/*Student routes*/}
-          <Route path='/student' element={<Student />} exact />
-          <Route path='/company/:companyId/add-student' element={<CreateStudentStepByStep />} exact />
-          <Route path='/company/:companyId/edit-student/:studentId' element={<EditStudent />} exact />
-          <Route path='/company/:companyId/student-details/:studentId' element={<FullStackStepper />} exact />
+          <Route path="/student" element={<Student />} exact />
+          <Route
+            path="/company/:companyId/add-student"
+            element={<CreateStudentStepByStep />}
+            exact
+          />
+          <Route
+            path="/company/:companyId/edit-student/:studentId"
+            element={<EditStudent />}
+            exact
+          />
+          <Route
+            path="/company/:companyId/student-details/:studentId"
+            element={<FullStackStepper />}
+            exact
+          />
 
           {/*Batches route*/}
-          <Route path='/batches' element={<Batches />} exact />
-          <Route path='/batch-student/:id' element={<BatchView />} exact />
+          <Route path="/batches" element={<Batches />} exact />
+          <Route path="/batch-student/:id" element={<BatchView />} exact />
 
           {/*Employee routes*/}
-          <Route path='/employee' element={<Employee/>} exact/>
-          <Route path='/add-employee' element={<EmployeeAdd/>} exact/>
-          <Route path='/edit-employee/:id' element={<Editemployee/>} exact/>
+          <Route path="/employee" element={<Employee />} exact />
+          <Route path="/add-employee" element={<EmployeeAdd />} exact />
+          <Route path="/edit-employee/:id" element={<Editemployee />} exact />
 
           {/*Calender routes*/}
-          <Route path='/calendar' element={<Calendar />} exact />
+          <Route path="/calendar" element={<Calendar />} exact />
 
           {/*Task routes*/}
-          <Route path='/task' element={<Task />} exact />
-          <Route path='/edit-task/:id' element={<EditTaskView/>} exact />
+          <Route path="/task" element={<Task />} exact />
+          <Route path="/edit-task/:id" element={<EditTaskView />} exact />
 
           {/*Account routes*/}
-          <Route path='/account' element={<Account />} exact />
+          <Route path="/account" element={<Account />} exact />
 
           {/*Demo routes*/}
-          <Route path='/demo' element={<Demo />} exact />
+          <Route path="/demo" element={<Demo />} exact />
 
           {/*Fees routes*/}
-          <Route path='/fees' element={<Fees />} exact />
-          <Route path='/fee-details/:studentId' element={<FeeDetailsPage />} exact />
+          <Route path="/fees" element={<Fees />} exact />
+          <Route
+            path="/fee-details/:studentId"
+            element={<FeeDetailsPage />}
+            exact
+          />
 
           {/*Seminar details*/}
-          <Route path='/seminar' element={<Seminar />} exact />
+          <Route path="/seminar" element={<Seminar />} exact />
 
           {/*Attendance routes*/}
-          <Route path='/attendance' element={<Attendance />} exact />
-
+          <Route path="/attendance" element={<Attendance />} exact />
 
           {/* Expence routes*/}
-          <Route path="/expense" element={<Expence />} exact  />
+          <Route path="/expense" element={<Expence />} exact />
 
           {/* Setting Route */}
-          <Route path="/settings" element={<Setting />} exact  />
-          <Route path="/settings/editadminprofile" element={<EditAdminProfile />} exact />
-          <Route path="/settings/editcompanyprofile" element={<EditCompanyProfile />} exact />
+          <Route path="/settings" element={<Setting />} exact />
+          <Route
+            path="/editadminprofile"
+            element={<EditAdminProfile />}
+            exact
+          />
+          <Route
+            path="/settings/editcompanyprofile"
+            element={<EditCompanyProfile />}
+            exact
+          />
           <Route path="/settings/expenses" element={<Expenses />} exact />
-          </Route>
+        </Route>
       </Route>
       <Route path="/login" element={<Login3 />} />
       <Route path="/register" element={<Register />} />
-      </Routers>
+    </Routers>
   );
 };
 
-export default Routes;  
+export default Routes;

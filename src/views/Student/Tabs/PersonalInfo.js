@@ -22,7 +22,7 @@ import { Stack } from "@mui/system";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { notification } from "antd";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { settingPersonalDetails } from '../StudentSlice';
 
 const ITEM_HEIGHT = 48;

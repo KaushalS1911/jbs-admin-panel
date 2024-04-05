@@ -41,8 +41,7 @@ const expenseType = [
 ];
 
 export const Expence = () => {
-
-
+  /* eslint-disable */
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
@@ -169,15 +168,21 @@ export const Expence = () => {
     setPage(0);
   }
 
-  function expenceForm() {
+  const expenceForm = () => {
     setAddModal(true);
     setEditExpence("");
     setEditButton(false);
-  }
+  };
+
   function handleCloseAddBatchDialog() {
     setAddModal(false);
     formik.handleReset();
   }
+
+  const handleOkExpenses = () => {
+    setAddModal(false);
+  };
+
   const initialValue = {
     type: editExpence.type || "",
     date: editExpence.date || currentDate,
@@ -242,8 +247,6 @@ export const Expence = () => {
     setSelectedRows(selectionModel);
   };
 
-
-
   const deletedAllExpense = async () => {
     if (selectedRows.length > 0) {
       try {
@@ -260,8 +263,6 @@ export const Expence = () => {
       }
     }
   };
-
-
 
   return (
     <>
@@ -371,9 +372,7 @@ export const Expence = () => {
         </FormControl>
       </MainCard>
       <MainCard style={{ marginTop: "20px" }}>
-        <div style={{ width: "100%",
-            height: "570px",
-            maxHeight: "100%", }}>
+        <div style={{ width: "100%", height: "570px", maxHeight: "100%" }}>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -413,9 +412,10 @@ export const Expence = () => {
       <Modal
         open={addModal}
         onCancel={handleCloseAddBatchDialog}
+        onOk={handleOkExpenses}
         maskClosable={false}
         footer={false}
-        width={300}
+        width={500}
         className="Follow_modal"
       >
         <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>

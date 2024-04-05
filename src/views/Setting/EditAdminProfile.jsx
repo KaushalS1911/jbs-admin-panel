@@ -6,23 +6,45 @@ import * as Yup from "yup";
 import "react-phone-input-2/lib/style.css";
 import { Box } from "@mui/system";
 import MainCard from "ui-component/cards/MainCard";
+import axios from "axios";
 
 function EditAdminProfile() {
   const [profilePic, setProfilePic] = useState("");
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    setProfilePic(URL.createObjectURL(file));
+    const user = JSON.parse(localStorage.getItem("user"));
+    const apiEndpoint = `${process.env.REACT_APP_LOGIN_URL}users/${user?._id}/profile-pic`;
+
+    if (file) {
+      const formData = new FormData();
+      formData.append("profile-pic", file);
+
+      try {
+        await axios.put(apiEndpoint, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log("Profile picture uploaded successfully");
+      } catch (error) {
+        console.error("Upload error:", error);
+      }
+    }
   };
 
+  const saveProfile = async (values, setSubmitting) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const apiEndpoint = `${process.env.REACT_APP_LOGIN_URL}users/${user?._id}`;
 
-
-  const saveProfile = async (values) => {
-    const formData = {
-      ...values,
-      profilePic: profilePic,
-    };
-    console.log(formData);
+    try {
+      const response=await axios.put(apiEndpoint, values);
+      console.log("Profile saved successfully",response);
+    } catch (error) {
+      console.error("Error saving profile:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -35,16 +57,15 @@ function EditAdminProfile() {
           contact: "",
         }}
         validationSchema={Yup.object({
-          firstName: Yup.string().required("Frist name is required"),
+          firstName: Yup.string().required("First name is required"),
           lastName: Yup.string().required("Last name is required"),
           email: Yup.string()
             .email("Invalid email address")
             .required("Email is required"),
-          contact: Yup.string().required("Contact no is required"),
+          contact: Yup.string().required("Contact number is required"),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          saveProfile(values);
-          setSubmitting(false);
+          saveProfile(values, setSubmitting);
         }}
       >
         {(formikProps) => (
@@ -93,7 +114,7 @@ function EditAdminProfile() {
                           marginBottom: "8px",
                         }}
                       >
-                        Monil Kakadiya
+                        Monil Kakadiya {/* You might want to dynamically change this */}
                       </Typography>
                       <Typography
                         sx={{
@@ -109,22 +130,7 @@ function EditAdminProfile() {
                 </Grid>
                 <Grid item xs={12} lg={6} md={6}>
                   <MainCard>
-                    <Grid container spacing={2}>
-                      <Grid
-                        xl={12}
-                        lg={12}
-                        sx={{
-                          borderBottom: "1px solid #e1e1e1",
-                          padding: "14px",
-                        }}
-                      >
-                        <Typography sx={{ fontSize: "24px", color: "#673ab7" }}>
-                          Profile
-                        </Typography>
-                        <Typography sx={{ fontSize: "14px" }}>
-                          The information can be edited!
-                        </Typography>
-                      </Grid>
+                    <Grid container spacing={3}>
                       <Grid item xl={6} lg={6} sm={12} xs={12}>
                         <TextField
                           label="First Name"
@@ -138,9 +144,9 @@ function EditAdminProfile() {
                           {...formikProps.getFieldProps("firstName")}
                         />
                         {formikProps.touched.firstName &&
-                        formikProps.errors.firstName ? (
-                          <div>{formikProps.errors.firstName}</div>
-                        ) : null}
+                          formikProps.errors.firstName && (
+                            <div>{formikProps.errors.firstName}</div>
+                          )}
                       </Grid>
                       <Grid item xl={6} lg={6} sm={12} xs={12}>
                         <TextField
@@ -155,9 +161,9 @@ function EditAdminProfile() {
                           {...formikProps.getFieldProps("lastName")}
                         />
                         {formikProps.touched.lastName &&
-                        formikProps.errors.lastName ? (
-                          <div>{formikProps.errors.lastName}</div>
-                        ) : null}
+                          formikProps.errors.lastName && (
+                            <div>{formikProps.errors.lastName}</div>
+                          )}
                       </Grid>
                       <Grid item xl={6} lg={6} sm={12} xs={12}>
                         <TextField
@@ -173,9 +179,9 @@ function EditAdminProfile() {
                           {...formikProps.getFieldProps("email")}
                         />
                         {formikProps.touched.email &&
-                        formikProps.errors.email ? (
-                          <div>{formikProps.errors.email}</div>
-                        ) : null}
+                          formikProps.errors.email && (
+                            <div>{formikProps.errors.email}</div>
+                          )}
                       </Grid>
                       <Grid item xl={6} lg={6} sm={12} xs={12}>
                         <PhoneInput
@@ -189,9 +195,9 @@ function EditAdminProfile() {
                           }}
                         />
                         {formikProps.touched.contact &&
-                        formikProps.errors.contact ? (
-                          <div>{formikProps.errors.contact}</div>
-                        ) : null}
+                          formikProps.errors.contact && (
+                            <div>{formikProps.errors.contact}</div>
+                          )}
                       </Grid>
                       <Grid
                         item

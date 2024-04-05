@@ -1,15 +1,23 @@
-import React from 'react';
+import React from "react";
+import Company_logo from "../../src/assets/images/JBS-IT-Institute-logo.png";
+
+
+
 const Logo = () => {
+  const logoStyle = {
+    width: "75px",
+    height: "50px",
+    aspectRatio:'1/2'
+  };
+
+const storedCompanylogo = localStorage.getItem('Companylogo');
+
+console.log(storedCompanylogo);
+
+
   return (
     <>
-      <div className="logo-text">
-        <div className="text">
-          J<span>B</span>S
-        </div>
-      </div>
-      <div>
-        <small className="small-text">IT INSTITUTE</small>
-      </div>
+      <img src={storedCompanylogo} alt="Comapny_logo" style={logoStyle} />
     </>
   );
 };

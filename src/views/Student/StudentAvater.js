@@ -40,7 +40,6 @@ const StudentAvater = () => {
           console.error("Upload error:", error);
         });
     }
-    // setSelectedFile(file);
   };
 
   const handleAvatarClick = () => {

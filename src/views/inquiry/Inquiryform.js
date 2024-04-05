@@ -250,7 +250,7 @@ function Inquiryform() {
                     />
                   </Grid>
                   <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
                       <MobileDatePicker
                         fullWidth
                         label="Date Of Birth"

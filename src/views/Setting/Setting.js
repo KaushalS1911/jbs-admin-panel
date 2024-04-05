@@ -1,13 +1,8 @@
 import React from "react";
 import {
-  Button,
   Grid,
-  MenuItem,
-  Select,
-  TextField,
   Typography,
 } from "@mui/material";
-import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 
 function Setting() {
@@ -22,10 +17,6 @@ function Setting() {
 
 
   const navigate = useNavigate();
-  // Profile
-  const showAdminProfile = () => {
-    navigate("/settings/editadminprofile");
-  };
   const showExpenses = () => {
     navigate("/settings/expenses");
   };
@@ -38,33 +29,6 @@ function Setting() {
   return (
     <div>
       <Grid container spacing={2}>
-        {/* Profile */}
-        <Grid item xs={12} sm={12} md={6} lg={4} onClick={showAdminProfile} sx={{cursor:'pointer'}}>
-          <Grid
-            style={gridItemStyle}
-            boxShadow={1}
-            sx={{
-              padding: "20px",
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "25px",
-                fontWeight: "500",
-                color: "#f8c46c",
-                marginBottom: "16px",
-              }}
-            >
-              Addmin Profile
-            </Typography>
-            <Typography
-              sx={{ fontSize: "16px", color: "#fff", marginBottom: "16px" }}>
-              Please Edit and Add Profile according to personal Details.
-            </Typography>
-          </Grid>
-        </Grid>
 
         {/* Expenses */}
         <Grid item xs={12} sm={12} md={6} lg={4} onClick={showExpenses} sx={{cursor:'pointer'}}>
@@ -75,6 +39,7 @@ function Setting() {
               padding: "20px",
               backgroundColor: "#fff",
               borderRadius: "10px",
+              aspectRatio:'0.9/0.3'
             }}
           >
             <Typography
@@ -104,6 +69,7 @@ function Setting() {
               padding: "20px",
               backgroundColor: "#fff",
               borderRadius: "10px",
+              aspectRatio:'0.9/0.3'
             }}
           >
             <Typography
