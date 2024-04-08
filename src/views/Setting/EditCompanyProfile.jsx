@@ -39,7 +39,7 @@ function EditCompanyProfile() {
         openNotificationWithIcon("success", response.data.data.message);
         const Companylogo = response.data.data.company.logo_url;
         localStorage.setItem('Companylogo', Companylogo);
-        window.location = "/";~
+        window.location = "/"
       } catch (error) {
         console.error("Upload error:", error);
       }
