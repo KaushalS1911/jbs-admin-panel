@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { notification } from "antd";
+import { Formik } from "formik";
+
 import {
   Avatar,
   Button,
@@ -8,21 +11,19 @@ import {
   FormControl,
 } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
-import { Formik } from "formik";
-import * as Yup from "yup";
 import "react-phone-input-2/lib/style.css";
 import { Box } from "@mui/system";
 import MainCard from "ui-component/cards/MainCard";
 import instance from "helpers/axios";
 
 function EditAdminProfile() {
-    //notification
-    const openNotificationWithIcon = (type, message) => {
-      Notification[type]({
-        message: message,
-      });
-    };
   const [profilePic, setProfilePic] = useState("");
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    contact: "",
+  });
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -45,6 +46,26 @@ function EditAdminProfile() {
         console.log("Error", error);
       }
     }
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setUserData({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        contact: user.contact,
+      });
+      setProfilePic(user.avatar_url);
+    }
+  }, []);
+
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
   };
 
   const saveProfile = async (values) => {
@@ -90,26 +111,12 @@ function EditAdminProfile() {
         size="small"
       >
         <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            email: "",
-            contact: "",
-          }}
-          validationSchema={Yup.object({
-            firstName: Yup.string().required("First name is required"),
-            lastName: Yup.string().required("Last name is required"),
-            email: Yup.string()
-              .email("Invalid email address")
-              .required("Email is required"),
-            contact: Yup.string().required("Contact number is required"),
-          })}
-          onSubmit={(values) => {
-            saveProfile(values);
-          }}
+          initialValues={userData}
+          enableReinitialize
+          onSubmit={(values) => saveProfile(values)}
         >
-          {(formikProps) => (
-            <form onSubmit={formikProps.handleSubmit}>
+          {({ values, handleChange, handleSubmit, setFieldValue }) => (
+            <form onSubmit={handleSubmit}>
               <Box sx={{ maxWidth: "1200px" }}>
                 <Grid container spacing={3} alignItems={"start"}>
                   <Grid item xs={12} lg={4} md={6} sx={{ padding: "20px" }}>
@@ -144,8 +151,7 @@ function EditAdminProfile() {
                             marginBottom: "8px",
                           }}
                         >
-                          Monil Kakadiya{" "}
-                          {/* You might want to dynamically change this */}
+                          {values.firstName} {values.lastName}
                         </Typography>
                         <Typography
                           sx={{
@@ -168,14 +174,9 @@ function EditAdminProfile() {
                               InputLabelProps={{
                                 style: { color: "#5559CE" },
                               }}
-                              {...formikProps.getFieldProps("firstName")}
+                              value={values.firstName}
+                              onChange={handleChange}
                             />
-                            {formikProps.touched.firstName &&
-                              formikProps.errors.firstName && (
-                                <div style={{ color: "red" }}>
-                                  {formikProps.errors.firstName}
-                                </div>
-                              )}
                           </Grid>
                           <Grid item xl={12} lg={12} sm={12} xs={12}>
                             <TextField
@@ -187,14 +188,9 @@ function EditAdminProfile() {
                               InputLabelProps={{
                                 style: { color: "#5559CE" },
                               }}
-                              {...formikProps.getFieldProps("lastName")}
+                              value={values.lastName}
+                              onChange={handleChange}
                             />
-                            {formikProps.touched.lastName &&
-                              formikProps.errors.lastName && (
-                                <div style={{ color: "red" }}>
-                                  {formikProps.errors.lastName}
-                                </div>
-                              )}
                           </Grid>
                           <Grid item xl={12} lg={12} sm={12} xs={12}>
                             <TextField
@@ -207,35 +203,16 @@ function EditAdminProfile() {
                               InputLabelProps={{
                                 style: { color: "#5559CE" },
                               }}
-                              {...formikProps.getFieldProps("email")}
+                              value={values.email}
+                              onChange={handleChange}
                             />
-                            {formikProps.touched.email &&
-                              formikProps.errors.email && (
-                                <div style={{ color: "red" }}>
-                                  {formikProps.errors.email}
-                                </div>
-                              )}
                           </Grid>
                           <Grid item xl={12} lg={12} sm={12} xs={12}>
                             <PhoneInput
                               country={"in"}
-                              value={formikProps.values.contact}
+                              value={values.contact}
                               onChange={(value, country, e, formattedValue) => {
-                                // Ensure formattedValue contains only numeric characters
-                                const numericValue = formattedValue.replace(
-                                  /\D/g,
-                                  ""
-                                );
-                                if (!isNaN(numericValue)) {
-                                  formikProps.setFieldValue(
-                                    "contact",
-                                    numericValue
-                                  );
-                                } else {
-                                  console.error(
-                                    "Error: 'contact' must be a number."
-                                  );
-                                }
+                                setFieldValue("contact", formattedValue);
                               }}
                             />
                           </Grid>
