@@ -25,21 +25,22 @@ function EditCompanyProfile() {
     event.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/company-logo`;
-
-    if (profilePic) { 
+  
+    if (profilePic) {
       const formData = new FormData();
-      formData.append("logo_url", profilePic); 
+      formData.append("logo_url", profilePic, profilePic.name); // Include file name
+      formData.append("quality", 1); // Set quality to 1 for highest quality (optional)
+  
       window.location = "/";
       try {
-        const response=await axios.put(apiEndpoint, formData, {
+        const response = await axios.put(apiEndpoint, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
         openNotificationWithIcon("success", response.data.data.message);
-         const Companylogo=response.data.data.company.logo_url;
-         localStorage.setItem('Companylogo', Companylogo);
-
+        const Companylogo = response.data.data.company.logo_url;
+        localStorage.setItem('Companylogo', Companylogo);
       } catch (error) {
         console.error("Upload error:", error);
       }
@@ -47,6 +48,7 @@ function EditCompanyProfile() {
       console.error("No profile picture selected");
     }
   };
+  
 
   return (
     <div>

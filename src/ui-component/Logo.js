@@ -1,23 +1,21 @@
 import React from "react";
-import Company_logo from "../../src/assets/images/JBS-IT-Institute-logo.png";
-
-
 
 const Logo = () => {
   const logoStyle = {
-    width: "75px",
-    height: "50px",
-    aspectRatio:'1/2'
+    width: "80px",
+    height: "60px",
+    aspectRatio: '1/2'
   };
 
-const storedCompanylogo = localStorage.getItem('Companylogo');
-
-console.log(storedCompanylogo);
-
+  const storedCompanylogo = localStorage.getItem('Companylogo');
 
   return (
     <>
-      <img src={storedCompanylogo} alt="Comapny_logo" style={logoStyle} />
+      {storedCompanylogo && storedCompanylogo.trim() !== "" ? (
+        <img src={storedCompanylogo} alt="Company_logo" style={logoStyle} />
+      ) : (
+        <img src="https://i.postimg.cc/x16BK65j/images.png" alt="Default_logo" style={logoStyle} />
+      )}
     </>
   );
 };
