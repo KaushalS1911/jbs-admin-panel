@@ -21,6 +21,7 @@ import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import { notification } from "antd";
 import noDataImg from "../../assets/images/no data found.png";
+import { gridSpacing } from "store/constant";
 
 
 const Employee = () => {
@@ -183,6 +184,7 @@ const Employee = () => {
         >
           <Grid
             container
+            spacing={gridSpacing}
             direction="row"
             justifyContent="space-between"
             alignItems="center"
@@ -205,7 +207,7 @@ const Employee = () => {
               </Grid>
             </Grid>
 
-            <Grid
+            <Grid item
             display={{ xs: "flex", sm: "flex", md: "flex", lg: "flex" }}
               justifyContent={{
                 xs: "normal",
@@ -220,7 +222,7 @@ const Employee = () => {
               xs={12}
               sm={12}
             >
-              <Grid style={{ marginLeft: "4px" }}>
+              <Grid  item style={{ marginLeft: "4px" }}>
                 <Button
                   variant="outlined"
                   onClick={EmployeeAdd}
@@ -319,7 +321,7 @@ const Employee = () => {
                   src={noDataImg}
                   alt="no data"
                   loading="lazy"
-                  style={{ maxWidth: "600px" }}
+                  style={{ maxWidth: "600px",width:'100%' }}
                 />
               </div>
             </>

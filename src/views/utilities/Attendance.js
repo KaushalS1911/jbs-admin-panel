@@ -4,14 +4,30 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
 import { useState } from "react";
-import { gridSpacing } from "store/constant";
-import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import {
+  Chip,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import moment from "moment";
+import { Button } from "antd";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/material_green.css";
 import DatePicker from "react-datepicker";
+
 import "react-datepicker/dist/react-datepicker.css";
 import AttendanceView from "./AttendanceView";
 
@@ -22,6 +38,7 @@ const Attendance = () => {
   const [batches, setBatches] = useState([]);
   const [select, setSelect] = useState("");
   const [option, setOption] = useState({});
+  // const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -35,7 +52,6 @@ const Attendance = () => {
       console.error("Error fetching data:", error);
     }
   };
-
   const handleChange = (_, newValue) => {
     setValue(newValue);
   };
@@ -55,6 +71,33 @@ const Attendance = () => {
         batch_members: item.batch_members,
       }))
     : [];
+  const columns = [
+    {
+      field: "id",
+      headerName: "ID",
+      disableColumnMenu: true,
+      sortable: false,
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "technology",
+      headerName: "Technology",
+      sortable: false,
+      width: 310,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "batch_time",
+      headerName: "Batch Time",
+      sortable: false,
+      width: 310,
+      headerAlign: "center",
+      align: "center",
+    },
+  ];
 
   function handleSelectChange(e) {
     let { value } = e.target;
@@ -62,6 +105,7 @@ const Attendance = () => {
   }
 
   function selectItem(option) {
+    console.log(option);
     setOption(option);
   }
 
@@ -74,121 +118,64 @@ const Attendance = () => {
               <TabList
                 onChange={handleChange}
                 aria-label="lab API tabs example"
-                style={{color:'#5559CE'}}
               >
-                <Tab label="Students" value="1"  style={{color:'#5559CE'}}/>
-                <Tab label="Employees" value="2"  style={{color:'#5559CE'}}/>
+                <Tab label="Students" value="1" />
+                <Tab label="Employees" value="2" />
               </TabList>
             </Box>
 
             <TabPanel value="1">
-              <MainCard>
-                <FormControl
-                  sx={{
-                    m: 1,
-                    p: 0,
-                    minWidth: 120,
-                    width: "100%",
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#5559CE",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "#5559CE",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#5559CE",
-                        borderWidth: "2px",
-                      },
-                    },
-                    size: "small",
-                  }}
-                >
-                  <Grid
-                    container
-                    spacing={gridSpacing}
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Grid item lg={4} md={12} xs={12} sm={12}>
-                      <Grid item>
-                        <FormControl item={true} fullWidth>
-                          <InputLabel id="interested-in-label" style={{ color: "#5559CE" }}>
-                            Interested In
-                          </InputLabel>
-                          <Select
-                            labelId="interested-in-label"
-                            id="interested-in"
-                            label="interestedin"
-                            onChange={handleSelectChange}
-                          >
-                            {rows?.map((option) => (
-                              <MenuItem
-                                key={option}
-                                value={option.technology}
-                                onClick={() => selectItem(option)}
-                              >
-                                {option.technology}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      item
-                      display={{
-                        xs: "flex",
-                        sm: "flex",
-                        md: "flex",
-                        lg: "flex",
-                      }}
-                      justifyContent={{
-                        xs: "normal",
-                        sm: "space-between",
-                        md: "space-between",
-                        lg: "flex-end",
-                      }}
-                      flexDirection={{
-                        xs: "column",
-                        sm: "row",
-                        md: "row",
-                        lg: "row",
-                      }}
-                      alignItems={"center"}
-                      lg={8}
-                      md={12}
-                      xs={12}
-                      sm={12}
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Grid lg={7}>
+                  <FormControl item={true} fullWidth>
+                    <InputLabel id="interested-in-label">
+                      Interested In
+                    </InputLabel>
+                    <Select
+                      labelId="interested-in-label"
+                      id="interested-in"
+                      label="interestedin"
+                      onChange={handleSelectChange}
                     >
-                      <Box
-                        className="flatpicker"
-                        style={{
-                          outline: "none",
-                          margin: "10px",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        <label
-                          htmlFor="rows-per-page"
-                          style={{
-                            minWidth: "fit-content",
-                            marginRight: "5px",
-                          }}
+                      {rows?.map((option) => (
+                        <MenuItem
+                          key={option}
+                          value={option.technology}
+                          onClick={() => selectItem(option)}
                         >
-                          Date :
-                        </label>
-                        <DatePicker
-                          selected={startDate}
-                          onChange={(date) => setStartDate(date)}
-                        />
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </FormControl>
-              </MainCard>
+                          {option.technology}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
 
+                <Grid lg={4}>
+                  <Box
+                    className="flatpicker"
+                    style={{
+                      outline: "none",
+                      margin: "10px 0",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <label
+                      htmlFor="rows-per-page"
+                      style={{ minWidth: "fit-content", marginRight: "5px" }}
+                    >
+                      Date :
+                    </label>
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
               <AttendanceView
                 option={option}
                 handleSelectChange={handleSelectChange}

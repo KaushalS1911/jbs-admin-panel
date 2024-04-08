@@ -150,7 +150,7 @@ const AttendanceView = ({ option, startDate }) => {
                   src={noDataImg}
                   alt="no data"
                   loading="lazy"
-                  style={{ maxWidth: "600px" }}
+                  style={{ maxWidth: "600px",width:'100%' }}
                 />
               </div>
             </>

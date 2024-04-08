@@ -161,7 +161,6 @@ const AddTask = ({ openAddTaskDialog, setOpenAddTaskDialog,refetch }) => {
                                         }}
                                     >
                                         <MenuItem value="Employee">Employee</MenuItem>
-                                        <MenuItem value="Faculty">Faculty</MenuItem>
                                         <MenuItem value="Student">Student</MenuItem>
                                     </Select>
                                     {formik.touched.role && formik.errors.role && (
@@ -305,5 +304,3 @@ const AddTask = ({ openAddTaskDialog, setOpenAddTaskDialog,refetch }) => {
 };
 
 export default AddTask;
-
-

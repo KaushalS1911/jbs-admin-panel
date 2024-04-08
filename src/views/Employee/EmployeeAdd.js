@@ -78,6 +78,7 @@ const EmployeeAdd = () => {
         openNotificationWithIcon("success", response.data.message);
       } catch (error) {
         console.log(error);
+        openNotificationWithIcon("error", "All ready Exit!");
       }
     },
   });

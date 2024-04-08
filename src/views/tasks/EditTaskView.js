@@ -166,6 +166,7 @@ const EditTaskView = () => {
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleDeleteModal = () => {
+        navigate('/tasK')
         setOpenDialog(true);
     };
 

@@ -282,6 +282,7 @@ const Index = () => {
         >
           <Grid
             container
+            spacing={2}
             direction="row"
             sx={{
               display: "flex",
@@ -305,19 +306,19 @@ const Index = () => {
               />
             </Grid>
 
-            <Grid
+            <Grid 
+              item
               sx={{
                 display: "flex",
                 justifyContent: "end",
                 alignItems: "center",
               }}
-              item
               lg={4}
               md={12}
               xs={12}
               sm={12}
             >
-              <Grid style={{ marginLeft: "4px" }}>
+              <Grid  item style={{ marginLeft: "4px" }}>
                 {profileData.role === "Admin" && (
                   <Button
                     variant="outlined"
@@ -432,7 +433,7 @@ const Index = () => {
                   src={noDataImg}
                   alt="no data"
                   loading="lazy"
-                  style={{ maxWidth: "600px" }}
+                  style={{ maxWidth: "600px",width:'100%' }}
                 />
               </div>
             </>
