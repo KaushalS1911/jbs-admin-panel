@@ -29,9 +29,7 @@ function EditCompanyProfile() {
     if (profilePic) {
       const formData = new FormData();
       formData.append("logo_url", profilePic, profilePic.name); // Include file name
-      formData.append("quality", 1); // Set quality to 1 for highest quality (optional)
   
-      window.location = "/";
       try {
         const response = await axios.put(apiEndpoint, formData, {
           headers: {
@@ -41,6 +39,7 @@ function EditCompanyProfile() {
         openNotificationWithIcon("success", response.data.data.message);
         const Companylogo = response.data.data.company.logo_url;
         localStorage.setItem('Companylogo', Companylogo);
+        window.location = "/";~
       } catch (error) {
         console.error("Upload error:", error);
       }

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -16,7 +17,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import "react-datepicker/dist/react-datepicker.css";
+import "react-phone-input-2/lib/style.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import countrystatecity from "Countrystatecity.json";
@@ -33,23 +34,27 @@ import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { notification } from "antd";
 
 function Inquiryform() {
-  //notification
-  const openNotificationWithIcon = (type, message) => {
-    notification[type]({
-      message: message,
-    });
-  };
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
+  const InterestedOptions = [
+    { id: 1, name: "Web Designing" },
+    { id: 2, name: "Web Development" },
+    { id: 3, name: "iOS Development" },
+    { id: 4, name: "Full - Stack Development" },
+    { id: 5, name: "Android App Development" },
+    { id: 6, name: "Game Development" },
+    { id: 7, name: "Flutter Development" },
+    { id: 8, name: "Frontend Development" },
+    { id: 9, name: "Backend Development" },
+    { id: 10, name: "React Native" },
+    { id: 11, name: "UI / UX" },
+    { id: 12, name: "Other" },
+  ];
+  const [interested, setInterested] = useState([]);
+
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
-    occupation: Yup.string().required("Occupation is required"),
     contact: Yup.string().required("Contact no is required"),
-    father_contact: Yup.string().required("Contact no is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required")
@@ -57,21 +62,9 @@ function Inquiryform() {
         /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/,
         "Invalid email format"
       ),
-    education: Yup.string().required("Education is required"),
-    dob: Yup.date().required("Dob is required is required"),
-    address_line1: Yup.string().required("Address line 1 is required"),
-    address_line2: Yup.string().required("Address line 2 is required"),
-    zip_code: Yup.string()
-      .required("Zip code is required")
-      .matches(/^\d{1,6}$/, "Zip code must be at most 6 digits"),
-    reference_by: Yup.string().required("Reference By is required"),
-    fatherName: Yup.string().required("Father name is required"),
-    father_occupation: Yup.string().required("Father occupation is required"),
-    interested_in: Yup.array()
-      .min(2, "Select at least two options.")
-      .required("At least two options must be selected."),
-    suggested_by: Yup.string().required("Suggested by is required"),
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -98,10 +91,11 @@ function Inquiryform() {
     onSubmit: (values, { resetForm }) => {
       const companyId = profileData.company_id;
       submitForm(values, resetForm, companyId);
-    },
+    }
   });
 
   const submitForm = async (values, resetForm, companyId) => {
+    values.interested_in = interested.map(option => option.name);
     try {
       const response = await dispatch(
         createInquiry({ companyId, data: values })
@@ -111,38 +105,39 @@ function Inquiryform() {
       openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
       console.error("Error submitting data:", error);
-      openNotificationWithIcon("error", response.payload.data.message);
     }
   };
 
-  const InterestedOptions = [
-    "Web Designing",
-    "Web Development",
-    "iOS Development",
-    "Full - Stack Development",
-    "Android App Development",
-    "Game Development",
-    "Flutter Development",
-    "Frontend Development",
-    "Backend Development",
-    "React Native",
-    "UI / UX",
-    "Other",
-  ];
   const handleCheckboxChange = (event) => {
-    const selectedOptions = [...formik.values.interested_in];
+    const {
+      target: { value },
+    } = event;
 
-    if (event.target.checked) {
-      if (selectedOptions) {
-        selectedOptions.push(event.target.value);
+    const filterdValue = value.filter(
+      (item) => interested.findIndex((o) => o.id === item.id) >= 0
+    );
+
+    let duplicatesRemoved = value.filter((item, itemIndex) =>
+      value.findIndex((o, oIndex) => o.id === item.id && oIndex !== itemIndex)
+    );
+
+    let duplicateRemoved = [];
+
+    value.forEach((item) => {
+      if (duplicateRemoved.findIndex((o) => o.id === item.id) >= 0) {
+        duplicateRemoved = duplicateRemoved.filter((x) => x.id === item.id);
+      } else {
+        duplicateRemoved.push(item);
       }
-    } else {
-      const index = selectedOptions.indexOf(event.target.value);
-      if (index !== -1) {
-        selectedOptions.splice(index, 1);
-      }
-    }
-    formik.setFieldValue("interested_in", selectedOptions);
+    });
+    setInterested(duplicateRemoved);
+  };
+
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
   };
 
   return (
@@ -250,7 +245,10 @@ function Inquiryform() {
                     />
                   </Grid>
                   <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
+                    <LocalizationProvider
+                      dateAdapter={AdapterDateFns}
+                      fullWidth
+                    >
                       <MobileDatePicker
                         fullWidth
                         label="Date Of Birth"
@@ -262,10 +260,6 @@ function Inquiryform() {
                             {...props}
                             fullWidth
                             label="Select Date"
-                            error={
-                              formik.touched.dob && Boolean(formik.errors.dob)
-                            }
-                            helperText={formik.touched.dob && formik.errors.dob}
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start"></InputAdornment>
@@ -283,12 +277,6 @@ function Inquiryform() {
                       variant="outlined"
                       name="education"
                       value={formik.values.education}
-                      error={
-                        formik.touched.education && !!formik.errors.education
-                      }
-                      helperText={
-                        formik.touched.education && formik.errors.education
-                      }
                       onChange={formik.handleChange}
                       fullWidth
                       InputLabelProps={{
@@ -304,12 +292,6 @@ function Inquiryform() {
                       name="occupation"
                       value={formik.values.occupation}
                       onChange={formik.handleChange}
-                      error={
-                        formik.touched.occupation && !!formik.errors.occupation
-                      }
-                      helperText={
-                        formik.touched.occupation && formik.errors.occupation
-                      }
                       fullWidth
                       InputLabelProps={{
                         style: { color: "#5559CE" },
@@ -338,14 +320,6 @@ function Inquiryform() {
                       name="address_line1"
                       value={formik.values.address_line1}
                       onChange={formik.handleChange}
-                      error={
-                        formik.touched.address_line1 &&
-                        !!formik.errors.address_line1
-                      }
-                      helperText={
-                        formik.touched.address_line1 &&
-                        formik.errors.address_line1
-                      }
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
@@ -358,18 +332,10 @@ function Inquiryform() {
                       id="outlined-basic"
                       label="Address line 2"
                       name="address_line2"
+                      fullWidth
                       variant="outlined"
                       value={formik.values.address_line2}
                       onChange={formik.handleChange}
-                      error={
-                        formik.touched.address_line2 &&
-                        !!formik.errors.address_line2
-                      }
-                      helperText={
-                        formik.touched.address_line2 &&
-                        formik.errors.address_line2
-                      }
-                      fullWidth
                       InputLabelProps={{
                         style: { color: "#5559CE" },
                       }}
@@ -408,9 +374,6 @@ function Inquiryform() {
                           </MenuItem>
                         ))}
                       </Select>
-                      {formik.touched.country && formik.errors.country && (
-                        <div>{formik.errors.country}</div>
-                      )}
                     </FormControl>
                   </Grid>
 
@@ -441,9 +404,6 @@ function Inquiryform() {
                               </MenuItem>
                             ))}
                       </Select>
-                      {formik.touched.state && formik.errors.state && (
-                        <div>{formik.errors.state}</div>
-                      )}
                     </FormControl>
                   </Grid>
 
@@ -478,9 +438,6 @@ function Inquiryform() {
                               </MenuItem>
                             ))}
                       </Select>
-                      {formik.touched.city && formik.errors.city && (
-                        <div>{formik.errors.city}</div>
-                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
@@ -493,12 +450,6 @@ function Inquiryform() {
                       fullWidth
                       value={formik.values.zip_code}
                       onChange={formik.handleChange}
-                      error={
-                        formik.touched.zip_code && !!formik.errors.zip_code
-                      }
-                      helperText={
-                        formik.touched.zip_code && formik.errors.zip_code
-                      }
                       InputLabelProps={{
                         style: { color: "#5559CE" },
                       }}
@@ -528,12 +479,6 @@ function Inquiryform() {
                       fullWidth
                       value={formik.values.fatherName}
                       onChange={formik.handleChange}
-                      error={
-                        formik.touched.fatherName && !!formik.errors.fatherName
-                      }
-                      helperText={
-                        formik.touched.fatherName && formik.errors.fatherName
-                      }
                       InputLabelProps={{
                         style: { color: "#5559CE" },
                       }}
@@ -547,12 +492,6 @@ function Inquiryform() {
                         formik.setFieldValue("father_contact", formattedValue);
                       }}
                     />
-                    {formik.touched.father_contact &&
-                      formik.errors.father_contact && (
-                        <FormHelperText>
-                          {formik.errors.father_contact}
-                        </FormHelperText>
-                      )}
                   </Grid>
                   <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
                     <TextField
@@ -563,14 +502,6 @@ function Inquiryform() {
                       fullWidth
                       value={formik.values.father_occupation}
                       onChange={formik.handleChange}
-                      error={
-                        formik.touched.father_occupation &&
-                        !!formik.errors.father_occupation
-                      }
-                      helperText={
-                        formik.touched.father_occupation &&
-                        formik.errors.father_occupation
-                      }
                       InputLabelProps={{
                         style: { color: "#5559CE" },
                       }}
@@ -677,34 +608,28 @@ function Inquiryform() {
                         id="interested-in"
                         label="interestedin"
                         multiple
-                        value={formik.values.interested_in || "interested"}
+                        value={interested}
                         onChange={handleCheckboxChange}
-                        renderValue={(selected) => selected.join(", ")}
+                        renderValue={(selected) =>
+                          selected.map((x) => x.name).join(", ")
+                        }
                       >
-                        <MenuItem disabled value={"interested"}>
-                          -----Interested in----
-                        </MenuItem>
                         {InterestedOptions.map((option) => (
-                          <MenuItem key={option} value={option}>
+                          <MenuItem key={option.id} value={option}>
                             <Checkbox
-                              checked={formik.values.interested_in.includes(
-                                option
-                              )}
-                              onChange={handleCheckboxChange}
-                              value={option}
+                              checked={
+                                interested.findIndex(
+                                  (item) => item.id === option.id
+                                ) >= 0
+                              }
                             />
-                            <ListItemText primary={option} />
+                            <ListItemText primary={option.name} />
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
                   </Grid>
                 </Grid>
-                {formik.touched.interested_in && formik.errors.interested_in ? (
-                  <div style={{ color: "red" }}>
-                    {formik.errors.interested_in}
-                  </div>
-                ) : null}
               </Grid>
               {/* Why Choose */}
               <Grid>
@@ -735,11 +660,6 @@ function Inquiryform() {
                     label="Suggested by someone"
                   />
                 </RadioGroup>
-                {formik.touched.suggested_by && formik.errors.suggested_by ? (
-                  <div style={{ color: "red" }}>
-                    {formik.errors.suggested_by}
-                  </div>
-                ) : null}
               </Grid>
 
               <Grid container>
@@ -749,18 +669,22 @@ function Inquiryform() {
                     color="primary"
                     type="submit"
                     fullWidth
-                    disabled={Object.values(formik.values).some(
-                      (value) => value === "" || value === null
-                    )}
+                    disabled={
+                      formik.values.firstName === "" ||
+                      formik.values.lastName === "" ||
+                      formik.values.contact === "" ||
+                      formik.values.email === ""
+                    }
                     style={
-                      Object.values(formik.values).some(
-                        (value) => value === "" || value === null
-                      )
+                      formik.values.firstName === "" ||
+                      formik.values.lastName === "" ||
+                      formik.values.contact === "" ||
+                      formik.values.email === ""
                         ? {
+                            backgroundColor: "rgba(0, 0, 0, 0.12)",
                             color: "rgba(0, 0, 0, 0.26)",
                             width: "150px",
                             boxShadow: "none",
-                            backgroundColor: "rgba(0, 0, 0, 0.12)",
                           }
                         : {
                             background: "#5559ce",
