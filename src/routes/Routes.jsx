@@ -31,6 +31,7 @@ import EditAdminProfile from "views/Setting/EditAdminProfile";
 import EditCompanyProfile from "views/Setting/EditCompanyProfile";
 import Expenses from "views/Setting/Expenses";
 import Register from "views/pages/authentication/authentication3/Register3";
+import NotFound from "views/utilities/NotFound ";
 
 const Routes = () => {
   return (
@@ -115,6 +116,7 @@ const Routes = () => {
             exact
           />
           <Route path="/settings/expenses" element={<Expenses />} exact />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
       <Route path="/login" element={<Login3 />} />
