@@ -13,6 +13,9 @@ import AccountIc from "../../../assets/images/icone deshbord/Vector (4).png";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetDashboardData } from "../../../hooks/useGetDashboardData";
 import { Link } from "react-router-dom";
+import {useGetCompanyDetails} from "../../../hooks/useGetCompanyDetails";
+import {useRecoilState} from "recoil";
+import {profile} from "../../../atoms/authAtoms";
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {

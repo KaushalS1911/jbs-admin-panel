@@ -38,4 +38,5 @@ export const {
   settingGuardianDetails,
   removeAllStateData
 } = StudentSlice.actions;
+
 export const studentReducer = StudentSlice.reducer;

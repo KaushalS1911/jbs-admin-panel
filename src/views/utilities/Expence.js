@@ -266,7 +266,7 @@ export const Expence = () => {
 
   return (
     <>
-      <Mainbreadcrumbs title={"Expense"} />
+      <Mainbreadcrumbs title={"Expenses"} />
       <MainCard>
         <FormControl
           sx={{

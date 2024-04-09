@@ -1,23 +1,27 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {useGetCompanyDetails} from "../hooks/useGetCompanyDetails";
+import User1 from "../assets/images/users/user-round.svg";
+import {Avatar} from "@mui/material";
+import {useSelector} from "react-redux";
 
 const Logo = () => {
-  const logoStyle = {
-    width: "80px",
-    height: "60px",
-    aspectRatio: '1/2'
-  };
 
-  const storedCompanylogo = localStorage.getItem('Companylogo');
+    const {data, refetch} = useGetCompanyDetails()
+    const {configs} = useSelector((state) => state.configs)
 
-  return (
-    <>
-      {storedCompanylogo && storedCompanylogo.trim() !== "" ? (
-        <img src={storedCompanylogo} alt="Company_logo" style={logoStyle} />
-      ) : (
-        <img src="https://i.postimg.cc/x16BK65j/images.png" alt="Default_logo" style={logoStyle} />
-      )}
-    </>
-  );
+    useEffect(() => {
+        if(!configs && !configs.company_details){
+            refetch()
+        }
+    }, [])
+
+    const companyLogo = configs?.company_details?.logo || data?.logo_url;
+
+    return (
+        <>
+            <Avatar alt="Company Logo" src={companyLogo} sx={{ width: 56, height: 56, padding: "0" }}/>
+        </>
+    );
 };
 
 export default Logo;

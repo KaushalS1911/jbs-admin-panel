@@ -23,6 +23,7 @@ import { profile } from "../../../../atoms/authAtoms";
 import { useRecoilState } from "recoil";
 import PhoneInput from "react-phone-input-2";
 import { notification } from "antd";
+import config from "../../../../config";
 
 const AuthRegister = ({ setIsLoading }) => {
   const openNotificationWithIcon = (type, message) => {
@@ -36,7 +37,7 @@ const AuthRegister = ({ setIsLoading }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [userData, setUserData] = useState({
-    contact: contact,
+    contact,
     password: "",
     role: "Admin",
     firstName: "",
@@ -82,13 +83,12 @@ const AuthRegister = ({ setIsLoading }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setLoading(false);
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_LOGIN_URL}/register`,
         { ...userData }
       );
-      console.log(response);
       const data = response.data.data.tokens;
       localStorage.setItem("jwt", data.jwt);
       localStorage.setItem("jwtRefresh", data.jwtRefresh);

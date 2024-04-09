@@ -1,12 +1,10 @@
 // import PropTypes from 'prop-types';
-<<<<<<< HEAD
 // material-ui
 import { styled } from '@mui/material/styles';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import StudentIc from '../../../assets/images/icone deshbord/Vector (1).png';
-=======
 
 // material-ui
 import { styled } from '@mui/material/styles';
@@ -17,17 +15,13 @@ import MainCard from 'ui-component/cards/MainCard';
 import StudentIc from '../../../assets/images/icone deshbord/Vector (1).png';
 
 
->>>>>>> 2b531e6ccdcfc1f67f7b29f7dcb5669a43a823a4
 const CardWrapper = styled(MainCard)(() => ({
   backgroundColor: '#fff',
   color: '#fff',
   border: '1px solid #E5EBF0'
 }));
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
-<<<<<<< HEAD
-=======
 
->>>>>>> 2b531e6ccdcfc1f67f7b29f7dcb5669a43a823a4
 const TotalOrderLineChartCard = () => {
   return (
     <>
@@ -67,8 +61,5 @@ const TotalOrderLineChartCard = () => {
     </>
   );
 };
-<<<<<<< HEAD
+
 export default TotalOrderLineChartCard;
-=======
-export default TotalOrderLineChartCard;
->>>>>>> 2b531e6ccdcfc1f67f7b29f7dcb5669a43a823a4

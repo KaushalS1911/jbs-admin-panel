@@ -31,7 +31,15 @@ import EditAdminProfile from "views/Setting/EditAdminProfile";
 import EditCompanyProfile from "views/Setting/EditCompanyProfile";
 import Expenses from "views/Setting/Expenses";
 import Register from "views/pages/authentication/authentication3/Register3";
+<<<<<<< HEAD
 import NotFound from "views/utilities/NotFound ";
+=======
+import Roles from "../views/Setting/Roles";
+import Course from "../views/Setting/Course";
+import Classrooms from "../views/Setting/Classrooms";
+import DeveloperOptions from "../views/Setting/DeveloperOptions";
+import EmpRoles from "../views/Setting/EmpRoles";
+>>>>>>> 7e60be404237bae9f879e1c80354c452cac5fee2
 
 const Routes = () => {
   return (
@@ -106,17 +114,26 @@ const Routes = () => {
           {/* Setting Route */}
           <Route path="/settings" element={<Setting />} exact />
           <Route
-            path="/editadminprofile"
+            path="/my-profile"
             element={<EditAdminProfile />}
             exact
           />
           <Route
-            path="/settings/editcompanyprofile"
+            path="/settings/company-profile-config"
             element={<EditCompanyProfile />}
             exact
           />
+<<<<<<< HEAD
           <Route path="/settings/expenses" element={<Expenses />} exact />
           <Route path="*" element={<NotFound />} />
+=======
+          <Route path="/settings/expenses-config" element={<Expenses />} exact />
+          <Route path="/settings/role-config" element={<Roles />} exact />
+          <Route path="/settings/course-config" element={<Course />} exact />
+          <Route path="/settings/classroom-config" element={<Classrooms />} exact />
+          <Route path="/settings/emp-roles-config" element={<EmpRoles />} exact />
+          <Route path="/settings/developer-options-config" element={<DeveloperOptions />} exact />
+>>>>>>> 7e60be404237bae9f879e1c80354c452cac5fee2
         </Route>
       </Route>
       <Route path="/login" element={<Login3 />} />
