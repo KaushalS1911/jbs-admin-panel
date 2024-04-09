@@ -15,6 +15,9 @@ import EmployeIc from "../../../assets/images/icone deshbord/Vector (5).png";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetDashboardData } from "../../../hooks/useGetDashboardData";
 import { Link } from "react-router-dom";
+import {useGetCompanyDetails} from "../../../hooks/useGetCompanyDetails";
+import {useRecoilState} from "recoil";
+import {profile} from "../../../atoms/authAtoms";
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {
@@ -37,8 +40,8 @@ const Dashboard = () => {
       },
       {
         icon: FacultyIc,
-        roles: "Faculty",
-        roleValue: data?.facultyCount || 0,
+        roles: "Employee",
+        roleValue: data?.employeeCount || 0,
         roleColor: "#79AB78",
         linkTo: "/employee",
       },
@@ -54,13 +57,6 @@ const Dashboard = () => {
         roles: "Lab",
         roleValue: "8",
         roleColor: "#A682C7",
-      },
-      {
-        icon: EmployeIc,
-        roles: "Staff",
-        roleValue: data?.employeeCount || 0,
-        roleColor: "#F6C863",
-        linkTo: "/employee",
       },
       {
         icon: AccountIc,
