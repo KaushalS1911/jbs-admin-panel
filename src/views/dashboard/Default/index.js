@@ -10,7 +10,6 @@ import FacultyIc from "../../../assets/images/icone deshbord/Vector (1).png";
 import InquiryIc from "../../../assets/images/icone deshbord/Vector (2).png";
 import LabIc from "../../../assets/images/icone deshbord/Vector (3).png";
 import AccountIc from "../../../assets/images/icone deshbord/Vector (4).png";
-import EmployeIc from "../../../assets/images/icone deshbord/Vector (5).png";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetDashboardData } from "../../../hooks/useGetDashboardData";
 import { Link } from "react-router-dom";
@@ -20,7 +19,6 @@ const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
   const [dataObj, setDataObj] = useState([]);
   const { data, refetch } = useGetDashboardData();
-  console.log(data);
 
   useEffect(() => {
     setLoading(false);

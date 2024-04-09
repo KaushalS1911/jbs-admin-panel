@@ -82,9 +82,7 @@ const AuthRegister = ({ setIsLoading }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    console.log("registerData", userData);
     setLoading(false);
-
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_LOGIN_URL}/register`,

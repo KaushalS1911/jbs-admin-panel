@@ -51,10 +51,6 @@ const MainAccount = () => {
   };
 
   const {expenses, students, otherInfo, feesInfo} = accountData
-
-
-  console.log(otherInfo?.feesReceived?.totalAmount - otherInfo?.totalExpense)
-
   return (
     <>
       <MainCard>
@@ -91,7 +87,7 @@ const MainAccount = () => {
           container
           spacing={2}
           rowSpacing={3}
-          columnSpacing={{ xs: 1, sm: 2, md: 4 }}
+          columnSpacing={{ xs: 2, sm: 2, md: 4 }}
         >
           <Grid item xs={12} sm={6} md={6} lg={6}>
             <Grid
@@ -113,8 +109,8 @@ const MainAccount = () => {
                   Student Details
                 </Typography>
               </Box>
-              <Grid container direction="row">
-                <Grid lg={11} md={11} sm={12}>
+              <Grid container direction="row" >
+                <Grid lg={11} md={12} sm={12}>
                   <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
@@ -158,7 +154,7 @@ const MainAccount = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid lg={1} md={1} sm={12} sx={{ padding: "6px" }}>
+                <Grid lg={1} md={12} sm={12}>
                   <Grid
                     container
                     direction="column"
@@ -168,7 +164,7 @@ const MainAccount = () => {
                   >
                     <PeopleOutlineIcon
                       sx={{
-                        fontSize: "50px",
+                        fontSize: "35px",
                         opacity: "0.6",
                         color: "#16A34A",
                       }}
@@ -199,7 +195,7 @@ const MainAccount = () => {
                 </Typography>
               </Box>
               <Grid container direction="row">
-                <Grid lg={11} md={11} sm={12}>
+                <Grid lg={11} md={12} sm={12}>
                   <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
@@ -233,7 +229,7 @@ const MainAccount = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid lg={1} md={1} sm={12} sx={{ padding: "6px" }}>
+                <Grid lg={1} md={12} sm={12}>
                   <Grid
                       container
                       direction="column"
@@ -243,7 +239,7 @@ const MainAccount = () => {
                   >
                     <PeopleOutlineIcon
                         sx={{
-                          fontSize: "50px",
+                          fontSize: "40px",
                           opacity: "0.6",
                           color: "#16A34A",
                         }}
@@ -325,7 +321,7 @@ const MainAccount = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid lg={1} md={1} sm={12} sx={{ padding: "6px" }}>
+                <Grid lg={1} md={12} sm={12} sx={{ padding: "6px" }}>
                   <Grid
                     container
                     direction="column"
@@ -335,7 +331,7 @@ const MainAccount = () => {
                   >
                     <ReceiptIcon
                       sx={{
-                        fontSize: "50px",
+                        fontSize: "40px",
                         opacity: "0.6",
                         color: "#DC2626",
                       }}
@@ -345,7 +341,6 @@ const MainAccount = () => {
               </Grid>
             </Grid>
           </Grid>
-
           <Grid item xs={12} sm={6} md={6} lg={6}>
             <Grid
               sx={{
@@ -385,7 +380,7 @@ const MainAccount = () => {
                     })}
                   </Grid>
                 </Grid>
-                <Grid lg={1} md={1} sm={12} sx={{ padding: "6px" }}>
+                <Grid lg={1} md={12} sm={12} sx={{ padding: "6px" }}>
                   <Grid
                     container
                     direction="column"
@@ -395,7 +390,7 @@ const MainAccount = () => {
                   >
                     <CurrencyRupeeIcon
                       sx={{
-                        fontSize: "50px",
+                        fontSize: "45px",
                         opacity: "0.6",
                         color: "#F59E0B",
                       }}
@@ -405,7 +400,6 @@ const MainAccount = () => {
               </Grid>
             </Grid>
           </Grid>
-
           <Grid item xs={12} sm={6} md={6} lg={6}>
             <Grid
               sx={{
@@ -481,7 +475,7 @@ const MainAccount = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid lg={1} md={1} sm={12} sx={{ padding: "6px" }}>
+                <Grid lg={1} md={12} sm={12} sx={{ padding: "6px" }}>
                   <Grid
                     container
                     direction="column"
@@ -491,7 +485,7 @@ const MainAccount = () => {
                   >
                     <AccountBalanceIcon
                       sx={{
-                        fontSize: "50px",
+                        fontSize: "35px",
                         opacity: "0.6",
                         color: "#5559CE",
                       }}

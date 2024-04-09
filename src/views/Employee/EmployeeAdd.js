@@ -155,7 +155,6 @@ const EmployeeAdd = () => {
                     value={formik.values.contact}
                     onChange={(value, country, e, formattedValue) => {
                       formik.setFieldValue('contact', formattedValue);
-                      // formik.setFieldValue('contactCountry', country);
                     }}
                   />
                   {formik.touched.contact && formik.errors.contact && (

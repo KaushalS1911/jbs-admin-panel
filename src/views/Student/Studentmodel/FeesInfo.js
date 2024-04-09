@@ -156,7 +156,6 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         no_of_installments,
         discount,
       };
-      console.log(payload);
       await axios({
         method: "POST",
         baseURL: `${process.env.REACT_APP_API_URL}${companyId}/`,

@@ -1,25 +1,20 @@
-import { Button, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
+import { Radio, RadioGroup, FormControlLabel, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
-import React from "react";
-import { useState } from "react";
 import MainCard from "ui-component/cards/MainCard";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import noDataImg from "../../assets/images/no data found.png";
 
-
 const AttendanceView = ({ option, startDate }) => {
-  var columns;
   const [batchview, setBatchviewData] = useState([]);
-  const allStatus = ["Present", "Absent", "Late"];
-  const initialRadioStates = allStatus.reduce((acc, status) => {
-    acc[status] = "";
-    return acc;
-  }, {});
-  const [checked, setChecked] = useState(initialRadioStates);
+  const [checked, setChecked] = useState({});
   const [profileData, setProfileData] = useRecoilState(profile);
+
+  const allStatus = ["Present", "Absent", "Late"];
+
   const handleData = (e, params) => {
     const updatedRow = {
       studentId: params.row.studentId,
@@ -41,18 +36,18 @@ const AttendanceView = ({ option, startDate }) => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}attendance`;
     axios.post(apiEndpoint, { attendance: batchview });
 
-    setChecked(initialRadioStates);
+    setChecked({});
   };
 
   const rows = option.batch_members
     ? option.batch_members.map((item, index) => ({
         id: index + 1,
-        fullName: item.firstName + " " + item.lastName,
+        fullName: `${item.firstName} ${item.lastName}`,
         studentId: item.student_id,
       }))
     : [];
 
-  columns = [
+  const columns = [
     {
       field: "id",
       headerName: "ID",
@@ -82,13 +77,13 @@ const AttendanceView = ({ option, startDate }) => {
           row
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
+          value={checked[params.row.id] || ""}
           onChange={(e) => handleData(e, params)}
         >
           {allStatus.map((data, index) => (
             <FormControlLabel
               key={index}
               value={data}
-              checked={checked[params.row.id] == data}
               control={<Radio />}
               label={data}
             />
@@ -97,81 +92,64 @@ const AttendanceView = ({ option, startDate }) => {
       ),
     },
   ];
-  return (
-    <>
-      <Box>
-        <MainCard>
-          <div
-            style={{
-              height: "500",
-              width: "100%",
-              display: "flex",
-              justifyContent: "start",
-              alignItems: "center",
-            }}
-          >
-            <form>
-            {
-              rows.length >0 ?AttendanceView(
-                <div
-                style={{
-                  width: "100%",
-                  height: "570px",
-                  maxHeight: "100%",
-                }}
-              >
-                <DataGrid
-                  rows={rows}
-                  columns={columns}
-                  disableRowSelectionOnClick
-                  disableColumnMenu
-                  hideFooterSelectedRowCount={true}
-                  hideFooterPagination={true}
-                  sx={{
-                    "& .MuiDataGrid-columnHeaders": {
-                      backgroundColor: "#ede7f6",
-                      fontSize: 14,
-                      color: "#262626",
-                    },
-                  }}
-                />
-              </div>
-              ):
-              (
-                <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  src={noDataImg}
-                  alt="no data"
-                  loading="lazy"
-                  style={{ maxWidth: "600px",width:'100%' }}
-                />
-              </div>
-            </>
-              )
-            }
-             
 
-              <Box sx={{ textAlign: "right", marginTop: "15px" }}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleActionSubmit}
-                >
-                  Submit
-                </Button>
-              </Box>
-            </form>
-          </div>
-        </MainCard>
-      </Box>
-    </>
+  return (
+    <Box>
+      <MainCard>
+        <form>
+          {rows.length > 0 ? (
+            <div
+              style={{
+                width: "100%",
+                height: "570px",
+                maxHeight: "100%",
+              }}
+            >
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                disableRowSelectionOnClick
+                disableColumnMenu
+                hideFooterSelectedRowCount={true}
+                hideFooterPagination={true}
+                sx={{
+                  "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "#ede7f6",
+                    fontSize: 14,
+                    color: "#262626",
+                  },
+                }}
+              />
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={noDataImg}
+                alt="no data"
+                loading="lazy"
+                style={{ maxWidth: "600px", width: "100%" }}
+              />
+            </div>
+          )}
+
+          <Box sx={{ textAlign: "right", marginTop: "15px" }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleActionSubmit}
+            >
+              Submit
+            </Button>
+          </Box>
+        </form>
+      </MainCard>
+    </Box>
   );
 };
 

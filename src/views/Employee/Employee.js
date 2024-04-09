@@ -292,7 +292,6 @@ const Employee = () => {
             columns={columns}
             pageSizeOptions={[10, 15, 25, 50]}
             checkboxSelection
-            disableRowSelectionOnClick
             disableColumnMenu
             rowCount={rows.length}
             onPageChange={handleChangePage}

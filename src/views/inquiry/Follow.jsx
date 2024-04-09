@@ -109,7 +109,7 @@ function Follow({ id, setIsFollowOpen }) {
           container
           spacing={2}
           justifyContent={"flex-end"}
-          sx={{ padding: "20px 30px " }}
+          sx={{ padding: "20px 0 " }}
         >
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
             <FormControl

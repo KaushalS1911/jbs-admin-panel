@@ -37,6 +37,7 @@ import { green, red } from "@mui/material/colors";
 import AirplayIcon from "@mui/icons-material/Airplay";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import noDataImg from "../../assets/images/no data found.png";
+import { notification } from "antd";
 
 const Index = () => {
   const [openAddTaskDialog, setOpenAddTaskDialog] = useState(false);
@@ -51,13 +52,17 @@ const Index = () => {
   const [editAttendanceId, setEditAttendanceId] = useState("");
   const [seminarOverData, setSeminarOverData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-
   const user = useRecoilValue(profile);
 
   const handleTaskClick = () => {
     setOpenAddTaskDialog(true);
   };
-
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
   const { data: seminar, refetch } = useGetSeminar(
     page + 1,
     rowsPerPage,
@@ -161,13 +166,12 @@ const Index = () => {
       }))
     : [];
 
-  const handleSelectionModelChange = (selectionModel) => {
-    const selectedRowIds = selectionModel
-      .map((selectedIndex) => rows[selectedIndex]?._id)
-      .filter((id) => id !== undefined);
-
-    setSelectedRows(selectedRowIds);
-  };
+    const handleSelectionModelChange = (selectionModel) => {
+      const selectedRowIds = selectionModel
+        .map((selectedIndex) => rows[selectedIndex]?._id)
+        .filter((id) => id !== undefined);
+      setSelectedRows(selectedRowIds);
+    };
 
   const handleRowIdlick = (params) => {
     setEditId(params.row._id);
@@ -176,23 +180,22 @@ const Index = () => {
   };
 
   const handleDeleteButtonClick = async () => {
-    try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}${user.company_id}/delete/multipleSeminar`,
-        {
-          data: { ids: selectedRows },
-        }
-      );
-
-      if (response.status === 200) {
-        refetch();
-        const remainingRows = selectedRows.filter(
-          (id) => !rows.find((row) => row._id === id)
+    if (selectedRows.length > 0) {
+      try {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}${user.company_id}/delete/multipleSeminar`,
+          {  data: { ids: selectedRows } }
         );
-        setSelectedRows(remainingRows);
+        if (response.status === 200) {
+          refetch();
+          const remainingRows = selectedRows.filter(id => !rows.find(row => row._id === id));
+          setSelectedRows(remainingRows);
+          openNotificationWithIcon("success", response.data.message);
+          refetch();
+        }
+      } catch (error) {
+        console.error("Error deleting multiple tasks:", error);
       }
-    } catch (error) {
-      console.error("Error deleting multiple tasks:", error);
     }
   };
 
@@ -219,6 +222,7 @@ const Index = () => {
       if (response.status === 200) {
         setOpenHowToRegDialog(false);
         refetch();
+        openNotificationWithIcon("success", response.data.message);
       }
     } catch (error) {
       console.error("Error updating attendance:", error);
@@ -244,6 +248,7 @@ const Index = () => {
         }));
         setSeminarOverData(formattedData);
         setOpenDialog(true);
+        openNotificationWithIcon("success", response.message);
       } else {
         console.error(
           "Error fetching seminar overview. Status:",
@@ -289,6 +294,7 @@ const Index = () => {
           <Grid
             container
             direction="row"
+            spacing={2}
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -298,26 +304,36 @@ const Index = () => {
             <Grid item lg={4} md={12} xs={12} sm={6}>
               <Grid item>
                 <TextField
+                  item
                   type="text"
+                  label="Search"
                   fullWidth
+                  variant="outlined"
                   size="small"
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
+                  InputLabelProps={{
+                    style: { color: "#5559CE", marginBottom: "0" },
+                  }}
                 />
               </Grid>
             </Grid>
 
             <Grid
-              sx={{
-                display: "flex",
-                justifyContent: "end",
-                alignItems: "center",
-              }}
               item
-              lg={6}
-              md={6}
+              display={{ xs: "flex", sm: "flex", md: "flex", lg: "flex" }}
+              justifyContent={{
+                xs: "normal",
+                sm: "space-between",
+                md: "space-between",
+                lg: "flex-end",
+              }}
+              flexDirection={{ xs: "column", sm: "row", md: "row", lg: "row" }}
+              alignItems={"center"}
+              lg={8}
+              md={12}
               xs={12}
-              sm={6}
+              sm={12}
             >
               <Grid style={{ marginLeft: "4px" }}>
                 {user.role === "Admin" && (
@@ -389,7 +405,6 @@ const Index = () => {
                         },
                       }}
                       onClick={handleDeleteButtonClick}
-                      disabled={selectedRows.length < 2}
                     >
                       Delete
                     </Button>
@@ -456,7 +471,7 @@ const Index = () => {
                     src={noDataImg}
                     alt="no data"
                     loading="lazy"
-                    style={{ maxWidth: "600px",width:'100%' }}
+                    style={{ maxWidth: "600px", width: "100%" }}
                   />
                 </div>
               </>

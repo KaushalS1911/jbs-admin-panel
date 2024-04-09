@@ -31,6 +31,7 @@ const AttendanceInfo = ({ formData }) => {
     
       const onDateChange = (dates) => {
         setSelectedDates(dates);
+
       };
 
   function handleChangeRowsPerPage(event) {
@@ -46,6 +47,7 @@ const AttendanceInfo = ({ formData }) => {
         date: moment(item.date).format("DD/MM/YYYY"),
       }))
     : [];
+    
   const columns = [
     {
       field: "id",
