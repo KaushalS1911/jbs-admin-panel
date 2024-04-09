@@ -31,6 +31,8 @@ export const courses = [
   { value: "cCC- Basic Computer Course", label: "CCC- Basic Computer Course" },
   { value: "adobe XD", label: "Adobe XD" },
   { value: "adobe Illustrator", label: "Adobe Illustrator" },
+  { value: "Frontend Development", label: "Frontend Development" },
+  { value: "Backend Development", label: "Backend Development" },
 ];
 
 export const courseProgress = (course) => {
@@ -214,5 +216,9 @@ export const courseProgress = (course) => {
       return ["Adobe XD"];
     case "adobe Illustrator":
       return ["Adobe Illustrator"];
+    case "Frontend Development":
+      return ["Frontend Development"];
+    case "Backend Development":
+      return ["Backend Development"];
   }
 };
