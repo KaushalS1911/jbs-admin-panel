@@ -5,13 +5,11 @@ import PopularCard from "./Atofthemonth";
 import TotalGrowthBarChart from "./Totalrevenue";
 import TotelStudentsVisite from "./TotelStudentsVisite";
 import UpcomingDemo from "./UpcomingDemo";
-import { gridSpacing } from "store/constant";
 import StudentIc from "../../../assets/images/icone deshbord/Vector.png";
 import FacultyIc from "../../../assets/images/icone deshbord/Vector (1).png";
 import InquiryIc from "../../../assets/images/icone deshbord/Vector (2).png";
 import LabIc from "../../../assets/images/icone deshbord/Vector (3).png";
 import AccountIc from "../../../assets/images/icone deshbord/Vector (4).png";
-import EmployeIc from "../../../assets/images/icone deshbord/Vector (5).png";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetDashboardData } from "../../../hooks/useGetDashboardData";
 import { Link } from "react-router-dom";
@@ -72,7 +70,7 @@ const Dashboard = () => {
   return (
     <>
       <Mainbreadcrumbs title={"Dashboard"} />
-      <Grid container spacing={gridSpacing}>
+      <Grid container spacing={3}>
         {dataObj.map((item, index) => (
           <Grid key={index} item lg={2} md={4} sm={4} xs={6}>
             {/* Wrap the grid item with Link component */}
@@ -87,7 +85,7 @@ const Dashboard = () => {
           </Grid>
         ))}
         <Grid item xs={12}>
-          <Grid container spacing={gridSpacing}>
+          <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               <TotalGrowthBarChart isLoading={isLoading} />
             </Grid>
@@ -97,7 +95,7 @@ const Dashboard = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Grid container spacing={gridSpacing}>
+          <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
               <UpcomingDemo isLoading={isLoading} />
             </Grid>

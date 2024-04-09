@@ -79,7 +79,6 @@ function Batch() {
   };
 
   const Batchview = (id) => {
-    console.log(id);
     navigate(`/batch-student/${id}`);
   };
 
@@ -143,7 +142,7 @@ function Batch() {
     {
       field: "srNo",
       headerName: "srNo",
-      width: 40,
+      width: 100,
       disableColumnMenu: true,
       sortable: false,
       headerAlign: "center",

@@ -35,21 +35,6 @@ import { notification } from "antd";
 
 function Inquiryform() {
   const [profileData, setProfileData] = useRecoilState(profile);
-  const InterestedOptions = [
-    { id: 1, name: "Web Designing" },
-    { id: 2, name: "Web Development" },
-    { id: 3, name: "iOS Development" },
-    { id: 4, name: "Full - Stack Development" },
-    { id: 5, name: "Android App Development" },
-    { id: 6, name: "Game Development" },
-    { id: 7, name: "Flutter Development" },
-    { id: 8, name: "Frontend Development" },
-    { id: 9, name: "Backend Development" },
-    { id: 10, name: "React Native" },
-    { id: 11, name: "UI / UX" },
-    { id: 12, name: "Other" },
-  ];
-  const [interested, setInterested] = useState([]);
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name is required"),
@@ -91,11 +76,10 @@ function Inquiryform() {
     onSubmit: (values, { resetForm }) => {
       const companyId = profileData.company_id;
       submitForm(values, resetForm, companyId);
-    }
+    },
   });
 
   const submitForm = async (values, resetForm, companyId) => {
-    values.interested_in = interested.map(option => option.name);
     try {
       const response = await dispatch(
         createInquiry({ companyId, data: values })
@@ -105,32 +89,37 @@ function Inquiryform() {
       openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
       console.error("Error submitting data:", error);
+      openNotificationWithIcon("error","Inquiry all ready Exit");
     }
   };
 
+  const InterestedOptions = [
+    "Web Designing",
+    "Web Development",
+    "iOS Development",
+    "Full - Stack Development",
+    "Android App",
+    "Game Development",
+    "Flutter",
+    "React Native",
+    "UI / UX",
+    "Other",
+  ];
+  
   const handleCheckboxChange = (event) => {
-    const {
-      target: { value },
-    } = event;
+    const selectedOptions = [...formik.values.interested_in];
 
-    const filterdValue = value.filter(
-      (item) => interested.findIndex((o) => o.id === item.id) >= 0
-    );
-
-    let duplicatesRemoved = value.filter((item, itemIndex) =>
-      value.findIndex((o, oIndex) => o.id === item.id && oIndex !== itemIndex)
-    );
-
-    let duplicateRemoved = [];
-
-    value.forEach((item) => {
-      if (duplicateRemoved.findIndex((o) => o.id === item.id) >= 0) {
-        duplicateRemoved = duplicateRemoved.filter((x) => x.id === item.id);
-      } else {
-        duplicateRemoved.push(item);
+    if (event.target.checked) {
+      if (selectedOptions) {
+        selectedOptions.push(event.target.value);
       }
-    });
-    setInterested(duplicateRemoved);
+    } else {
+      const index = selectedOptions.indexOf(event.target.value);
+      if (index !== -1) {
+        selectedOptions.splice(index, 1);
+      }
+    }
+    formik.setFieldValue("interested_in", selectedOptions);
   };
 
   //notification
@@ -608,22 +597,23 @@ function Inquiryform() {
                         id="interested-in"
                         label="interestedin"
                         multiple
-                        value={interested}
+                        value={formik.values.interested_in || "interested"}
                         onChange={handleCheckboxChange}
-                        renderValue={(selected) =>
-                          selected.map((x) => x.name).join(", ")
-                        }
+                        renderValue={(selected) => selected.join(", ")}
                       >
+                        <MenuItem disabled value={"interested"}>
+                          -----Interested in----
+                        </MenuItem>
                         {InterestedOptions.map((option) => (
-                          <MenuItem key={option.id} value={option}>
+                          <MenuItem key={option} value={option}>
                             <Checkbox
-                              checked={
-                                interested.findIndex(
-                                  (item) => item.id === option.id
-                                ) >= 0
-                              }
+                              checked={formik.values.interested_in.includes(
+                                option
+                              )}
+                              onChange={handleCheckboxChange}
+                              value={option}
                             />
-                            <ListItemText primary={option.name} />
+                            <ListItemText primary={option} />
                           </MenuItem>
                         ))}
                       </Select>

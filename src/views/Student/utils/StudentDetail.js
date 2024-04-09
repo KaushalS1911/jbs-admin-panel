@@ -3,23 +3,17 @@ import { List, Button, Typography } from "@mui/material";
 import { courseProgress } from "../../../contants/courseConstants";
 import MainCard from "ui-component/cards/MainCard";
 import { useTheme } from "@mui/material/styles";
-import { styled } from "@mui/material/styles";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-
-import StepConnector, {
-  stepConnectorClasses,
-} from "@mui/material/StepConnector";
 import Box from "@mui/material/Box";
-import {useParams} from "react-router-dom";
-import {useGetSingleStudent} from "../../../hooks/useGetSingleStudent";
+import { useParams } from "react-router-dom";
+import { useGetSingleStudent } from "../../../hooks/useGetSingleStudent";
 import instance from "../../../helpers/axios";
-import {notification} from "antd";
-// Define the full-stack development courses
+import { notification } from "antd";
 
 const StudentDetail = ({ course }) => {
-  const {companyId, studentId} = useParams()
+  const { companyId, studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
   const theme = useTheme();
   const [completedCourses, setCompletedCourses] = useState([]);
@@ -27,24 +21,27 @@ const StudentDetail = ({ course }) => {
   const [index, setIndex] = useState();
   const [dates, setDates] = useState([]);
 
-
   const one = () => {
     const selectedCourse = courseProgress(course);
+    if (!selectedCourse) {
+        return;
+    }
     setCourses(selectedCourse);
     const initialDates = selectedCourse.map((course, index) =>
-        data?.assignmentCompleted.some(item => item.index === index) ? data?.assignmentCompleted.find(item => item.index === index).date : "--"
+        data?.assignmentCompleted.some((item) => item.index === index)
+        ? data?.assignmentCompleted.find((item) => item.index === index).date
+        : "--"
     );
+    setDates(initialDates);
+};
 
-      setDates(initialDates);
-  };
 
   useEffect(() => {
     one();
-    refetch()
+    refetch();
 
-    if(data?.assignmentCompleted && data?.assignmentCompleted.length !== 0){
-      setCompletedCourses(data?.assignmentCompleted)
-
+    if (data?.assignmentCompleted && data?.assignmentCompleted.length !== 0) {
+      setCompletedCourses(data?.assignmentCompleted);
     }
   }, []);
 
@@ -64,48 +61,54 @@ const StudentDetail = ({ course }) => {
         return newDates;
       });
 
-      const payload = {...data, assignmentCompleted: [...completedCourses, { index, date: completionDate }]}
-
+      const payload = {
+        ...data,
+        assignmentCompleted: [
+          ...completedCourses,
+          { index, date: completionDate },
+        ],
+      };
 
       await instance({
         method: "PUT",
         url: `company/${companyId}/${studentId}/updateStudent`,
         data: payload,
       })
-          .then((response) => {
-            setCompletedCourses([...completedCourses, { index, date: completionDate }]);
-            openNotificationWithIcon("success", response.data.data.message);
-            refetch()
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .then((response) => {
+          setCompletedCourses([
+            ...completedCourses,
+            { index, date: completionDate },
+          ]);
+          openNotificationWithIcon("success", response.data.data.message);
+          refetch();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
   const isCourseCompleted = (index) => {
-    return data?.assignmentCompleted.some(item => item.index === index);
+    return data?.assignmentCompleted.some((item) => item.index === index);
   };
 
   const handleReset = async () => {
-
-    const payload = {...data, assignmentCompleted: []}
+    const payload = { ...data, assignmentCompleted: [] };
 
     await instance({
       method: "PUT",
       url: `company/${companyId}/${studentId}/updateStudent`,
       data: payload,
     })
-        .then((response) => {
-          setCompletedCourses([]);
-          openNotificationWithIcon("success", "Progress reset successfully.");
-          refetch()
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      .then((response) => {
+        setCompletedCourses([]);
+        openNotificationWithIcon("success", "Progress reset successfully.");
+        refetch();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
 
   return (
     <MainCard>
@@ -160,9 +163,9 @@ const StudentDetail = ({ course }) => {
                       "&:hover": isCourseCompleted(index)
                         ? ""
                         : {
-                          background: theme.palette.secondary.dark,
-                          color: theme.palette.secondary.light,
-                        },
+                            background: theme.palette.secondary.dark,
+                            color: theme.palette.secondary.light,
+                          },
                     }}
                     disabled={isCourseCompleted(index)}
                     onClick={() => {

@@ -78,6 +78,7 @@ const EmployeeAdd = () => {
         openNotificationWithIcon("success", response.data.message);
       } catch (error) {
         console.log(error);
+        openNotificationWithIcon("error", "All ready Exit!");
       }
     },
   });
@@ -154,7 +155,6 @@ const EmployeeAdd = () => {
                     value={formik.values.contact}
                     onChange={(value, country, e, formattedValue) => {
                       formik.setFieldValue('contact', formattedValue);
-                      // formik.setFieldValue('contactCountry', country);
                     }}
                   />
                   {formik.touched.contact && formik.errors.contact && (

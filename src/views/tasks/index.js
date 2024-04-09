@@ -104,7 +104,7 @@ const columns = [
   {
     field: "taskTitle",
     headerName: "Task Title",
-    width: 425,
+    width: 225,
     disableColumnMenu: true,
     sortable: false,
     headerAlign: "start",
@@ -244,6 +244,7 @@ const Index = () => {
           (id) => !rows.find((row) => row._id === id)
         );
         setSelectedRows(remainingRows);
+
       }
     } catch (error) {
       console.error("Error deleting multiple tasks:", error);
@@ -282,6 +283,7 @@ const Index = () => {
         >
           <Grid
             container
+            spacing={2}
             direction="row"
             sx={{
               display: "flex",
@@ -305,19 +307,23 @@ const Index = () => {
               />
             </Grid>
 
-            <Grid
-              sx={{
-                display: "flex",
-                justifyContent: "end",
-                alignItems: "center",
+            <Grid 
+             item
+              display={{ xs: "flex", sm: "flex", md: "flex", lg: "flex" }}
+              justifyContent={{
+                xs: "normal",
+                sm: "space-between",
+                md: "space-between",
+                lg: "flex-end",
               }}
-              item
-              lg={4}
+              flexDirection={{ xs: "column", sm: "row", md: "row", lg: "row" }}
+              alignItems={"center"}
+              lg={8}
               md={12}
               xs={12}
               sm={12}
             >
-              <Grid style={{ marginLeft: "4px" }}>
+              <Grid  item style={{ marginLeft: "4px" }}>
                 {profileData.role === "Admin" && (
                   <Button
                     variant="outlined"
@@ -367,7 +373,6 @@ const Index = () => {
                         },
                       }}
                       onClick={handleDeleteButtonClick}
-                      disabled={selectedRows.length < 2}
                     >
                      Delete
                     </Button>
@@ -432,7 +437,7 @@ const Index = () => {
                   src={noDataImg}
                   alt="no data"
                   loading="lazy"
-                  style={{ maxWidth: "600px" }}
+                  style={{ maxWidth: "600px",width:'100%' }}
                 />
               </div>
             </>
