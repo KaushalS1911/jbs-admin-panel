@@ -123,17 +123,14 @@ const Routes = () => {
             element={<EditCompanyProfile />}
             exact
           />
-<<<<<<< HEAD
           <Route path="/settings/expenses" element={<Expenses />} exact />
           <Route path="*" element={<NotFound />} />
-=======
           <Route path="/settings/expenses-config" element={<Expenses />} exact />
           <Route path="/settings/role-config" element={<Roles />} exact />
           <Route path="/settings/course-config" element={<Course />} exact />
           <Route path="/settings/classroom-config" element={<Classrooms />} exact />
           <Route path="/settings/emp-roles-config" element={<EmpRoles />} exact />
           <Route path="/settings/developer-options-config" element={<DeveloperOptions />} exact />
->>>>>>> 7e60be404237bae9f879e1c80354c452cac5fee2
         </Route>
       </Route>
       <Route path="/login" element={<Login3 />} />
