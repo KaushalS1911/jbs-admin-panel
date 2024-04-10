@@ -31,15 +31,14 @@ import EditAdminProfile from "views/Setting/EditAdminProfile";
 import EditCompanyProfile from "views/Setting/EditCompanyProfile";
 import Expenses from "views/Setting/Expenses";
 import Register from "views/pages/authentication/authentication3/Register3";
-<<<<<<< HEAD
+
 import NotFound from "views/utilities/NotFound ";
-=======
+
 import Roles from "../views/Setting/Roles";
 import Course from "../views/Setting/Course";
 import Classrooms from "../views/Setting/Classrooms";
 import DeveloperOptions from "../views/Setting/DeveloperOptions";
 import EmpRoles from "../views/Setting/EmpRoles";
->>>>>>> 7e60be404237bae9f879e1c80354c452cac5fee2
 
 const Routes = () => {
   return (
