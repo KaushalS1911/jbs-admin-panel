@@ -36,8 +36,8 @@ import Course from "../views/Setting/Course";
 import Classrooms from "../views/Setting/Classrooms";
 import DeveloperOptions from "../views/Setting/DeveloperOptions";
 import EmpRoles from "../views/Setting/EmpRoles";
-import Invite from "views/Setting/Invite";
 import AttendanceLogs from "../views/utilities/AttendanceLogs";
+import Invite from "views/pages/authentication/authentication3/Invite3";
 
 const Routes = () => {
 

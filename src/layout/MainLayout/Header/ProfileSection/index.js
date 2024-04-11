@@ -140,84 +140,16 @@ const ProfileSection = () => {
               }}
             >
               <List>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <IconSettings stroke={1.5} size="1.3rem" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2">Account Settings</Typography>
-                    }
-                  />
-                </ListItemButton>
-
-                <ListItemButton
-                  sx={{
-                    borderRadius: `${customization.borderRadius}px`,
-                  }}
-                  selected={selectedIndex === 1}
-                  onClick={(event) => handleListItemClick(event, 0, "/invite")}
-                >
-                  <ListItemIcon>
-                    <IconShare stroke={1.5} size="1.3rem" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={<Typography variant="body2">Invite</Typography>}
-                  />
-                </ListItemButton>
-
-                <ListItemButton
-                  sx={{
-                    borderRadius: `${customization.borderRadius}px`,
-                  }}
-                  selected={selectedIndex === 2}
-                  onClick={(event) =>
-                    handleListItemClick(event, 1, "/my-profile")
-                  }
-                >
-                  <ListItemIcon>
-                    <IconUser stroke={1.5} size="1.3rem" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Grid
-                        container
-                        spacing={1}
-                        justifyContent="space-between"
-                      >
-                        <Grid item>
-                          <Typography variant="body2">My Profile</Typography>
-                        </Grid>
-                      </Grid>
-                    }
-                  />
-                </ListItemButton>
-
-                <ListItemButton
-                  sx={{
-                    borderRadius: `${customization.borderRadius}px`,
-                  }}
-                  selected={selectedIndex === 4}
-                  onClick={mutate}
-                >
-                  <ListItemIcon>
-                    <IconLogout stroke={1.5} size="1.3rem" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={<Typography variant="body2">Logout</Typography>}
-                  />
-                </ListItemButton>
                 <Typography style={{ fontSize: "15px", fontWeight: 600 }}>
-                {user.firstName} {user.lastName}
-              </Typography>
-              <Typography
-                style={{ fontSize: "12px", fontWeight: 400 }}
-                mt={0.1}
-              >
-                {user.role}
-              </Typography>
+                  {user.firstName} {user.lastName}
+                </Typography>
+                <Typography
+                  style={{ fontSize: "12px", fontWeight: 400 }}
+                  mt={0.1}
+                >
+                  {user.role}
+                </Typography>
               </List>
-             
             </div>
           </Box>
         }
@@ -386,6 +318,24 @@ const ProfileSection = () => {
                                   </Typography>
                                 </Grid>
                               </Grid>
+                            }
+                          />
+                        </ListItemButton>
+                        <ListItemButton
+                          sx={{
+                            borderRadius: `${customization.borderRadius}px`,
+                          }}
+                          selected={selectedIndex === 1}
+                          onClick={(event) =>
+                            handleListItemClick(event, 0, "/invite")
+                          }
+                        >
+                          <ListItemIcon>
+                            <IconShare stroke={1.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <Typography variant="body2">Invite</Typography>
                             }
                           />
                         </ListItemButton>
