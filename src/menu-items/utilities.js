@@ -11,8 +11,7 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 import ReduceCapacityIcon from '@mui/icons-material/ReduceCapacity';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-
-import AddTaskIcon from '@mui/icons-material/AddTask';// constant
+import AddTaskIcon from '@mui/icons-material/AddTask';
 
 const icons = {
   DashboardIcon,
@@ -31,7 +30,6 @@ const icons = {
   CurrencyRupeeIcon,
 };
 
-// ==============================|| UTILITIES MENU ITEMS ||============================== //
 
 const utilities = {
   id: "utilities",
@@ -44,6 +42,7 @@ const utilities = {
       url: "dashboard",
       icon: icons.DashboardIcon,
       breadcrumbs: false,
+      role:"Admin"
     },
     {
       id: "Inquiry",
@@ -52,6 +51,7 @@ const utilities = {
       url: "inquiry",
       icon: icons.CalendarTodayIcon,
       breadcrumbs: false,
+      role:'Srudent,Recepnist'
     },
     {
       id: "Student",

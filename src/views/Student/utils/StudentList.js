@@ -60,6 +60,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
   }
 
   const handleSelectChange = (params, value) => {
+    console.log(params);
     setAddDialogbox(true);
     setSelectedStudentId(params.id);
     setAdditionalState(value);

@@ -3,16 +3,13 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   FormControl,
-  FormControlLabel,
   Grid,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
   TextField,
 } from "@mui/material";
 import AnimateButton from "ui-component/extended/AnimateButton";
@@ -23,22 +20,24 @@ import { profile } from "../../../../atoms/authAtoms";
 import { useRecoilState } from "recoil";
 import PhoneInput from "react-phone-input-2";
 import { notification } from "antd";
+import { useSelector } from "react-redux";
+import { Select, MenuItem } from "@mui/material";
 
-const AuthRegister = ({ setIsLoading }) => {
+const AuthInvite = ({ setIsLoading }) => {
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
     });
   };
 
-  const [checked, setChecked] = useState(true);
+  const { configs: role } = useSelector((state) => state.configs);
   const [contact, setContact] = useState("+91");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [userData, setUserData] = useState({
     contact,
     password: "",
-    role: "Admin",
+    role: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -83,6 +82,7 @@ const AuthRegister = ({ setIsLoading }) => {
     event.preventDefault();
     setLoading(true);
 
+    console.log(userData);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_LOGIN_URL}/register`,
@@ -118,7 +118,7 @@ const AuthRegister = ({ setIsLoading }) => {
       .then((response) => {
         if (response.status === 200) {
           setProfileData(response.data.data);
-          window.location = "/";
+          window.location = "/inquiry";
         }
         setIsLoading(false);
       })
@@ -149,6 +149,40 @@ const AuthRegister = ({ setIsLoading }) => {
         }}
       >
         <Grid container spacing={3}>
+          <Grid item lg={12} sm={12} xs={12}>
+            <FormControl item={true} fullWidth variant="outlined">
+              <InputLabel id="role-label" style={{ color: "#5559ce" }}>
+                Role
+              </InputLabel>
+              <Grid item lg={12} sm={12} xs={12}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="role-label">Role</InputLabel>
+                  <Select
+                    labelId="role-label"
+                    id="role"
+                    label="Role"
+                    name="role"
+                    value={userData.role || "Default Role"}
+                    variant="outlined"
+                    onChange={handleChange}
+                    InputLabelProps={{
+                      style: { color: "#5559CE" },
+                    }}
+                  >
+                    <MenuItem value={"Default Role"} disabled>
+                      Default Role
+                    </MenuItem>
+                    {role.roles.map((item, index) => (
+                      <MenuItem key={index} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </FormControl>
+          </Grid>
+
           <Grid item lg={12} sm={12} xs={12}>
             <TextField
               label="First Name"
@@ -251,24 +285,6 @@ const AuthRegister = ({ setIsLoading }) => {
             </FormControl>
           </Grid>
         </Grid>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          spacing={1}
-        >
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={checked}
-                onChange={(event) => setChecked(event.target.checked)}
-                name="checked"
-                color="primary"
-              />
-            }
-            label="Remember me"
-          />
-        </Stack>
         {error && <Alert severity="error">{error}</Alert>}
         <Box sx={{ mt: 2 }}>
           <AnimateButton>
@@ -297,4 +313,4 @@ const AuthRegister = ({ setIsLoading }) => {
   );
 };
 
-export default AuthRegister;
+export default AuthInvite;

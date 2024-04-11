@@ -1,9 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-// material-ui
 import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
@@ -23,19 +20,10 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-
-// third-party
 import PerfectScrollbar from "react-perfect-scrollbar";
-
-// project imports
 import MainCard from "ui-component/cards/MainCard";
 import Transitions from "ui-component/extended/Transitions";
-
-// import User1 from 'assets/images/users/user-round.svg';
-
-// assets
-import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
-// import axios from 'axios';
+import { IconLogout, IconSettings, IconUser,IconShare } from "@tabler/icons";
 import { useRecoilValue } from "recoil";
 import { profile } from "../../../../atoms/authAtoms";
 import { useLogout } from "../../../../hooks/useLogout";
@@ -53,9 +41,6 @@ const ProfileSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
 
-  /**
-   * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-   * */
   const anchorRef = useRef(null);
 
   const handleClose = (event) => {
@@ -305,14 +290,37 @@ const ProfileSection = () => {
                             }
                           />
                         </ListItemButton>
-                        
+
                         <ListItemButton
                           sx={{
                             borderRadius: `${customization.borderRadius}px`,
                           }}
                           selected={selectedIndex === 1}
                           onClick={(event) =>
-                            handleListItemClick(event, 1, "/editadminprofile")
+                            handleListItemClick(event, 0, "/invite")
+                          }
+                        >
+                          <ListItemIcon>
+                            <IconShare stroke={1.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                variant="body2"
+                              >
+                                Invite
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
+                        
+                        <ListItemButton
+                          sx={{
+                            borderRadius: `${customization.borderRadius}px`,
+                          }}
+                          selected={selectedIndex === 2}
+                          onClick={(event) =>
+                            handleListItemClick(event, 1, "/my-profile")
                           }
                         >
                           <ListItemIcon>
@@ -334,6 +342,8 @@ const ProfileSection = () => {
                             }
                           />
                         </ListItemButton>
+
+
                         <ListItemButton
                           sx={{
                             borderRadius: `${customization.borderRadius}px`,
