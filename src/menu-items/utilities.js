@@ -11,8 +11,9 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 import ReduceCapacityIcon from '@mui/icons-material/ReduceCapacity';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import GradingIcon from '@mui/icons-material/Grading';
 
-import AddTaskIcon from '@mui/icons-material/AddTask';// constant
+import AddTaskIcon from '@mui/icons-material/AddTask';
 
 const icons = {
   DashboardIcon,
@@ -29,6 +30,7 @@ const icons = {
   CalendarMonthIcon,
   AddTaskIcon,
   CurrencyRupeeIcon,
+  GradingIcon
 };
 
 // ==============================|| UTILITIES MENU ITEMS ||============================== //
@@ -123,6 +125,14 @@ const utilities = {
       type: "item",
       url: "attendance",
       icon: icons.HowToRegIcon,
+      breadcrumbs: false,
+    },
+    {
+      id: "Attendance logs",
+      title: "Attendance logs",
+      type: "item",
+      url: "attendance-logs",
+      icon: icons.GradingIcon,
       breadcrumbs: false,
     },
     {

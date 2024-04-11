@@ -4,7 +4,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { useState } from "react";
 import {
   Avatar,
-  Chip,
+  Chip, Dialog, DialogActions, DialogContent,
   FormControl,
   Grid,
   ListItemText,
@@ -20,6 +20,8 @@ import moment from "moment";
 import noDataImg from "../../../assets/images/no data found.png";
 import { useGetAllStudents } from "hooks/useGetAllStudents";
 import axios from "axios";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 const StudentList = ({ searchText, onSelectRow }) => {
   // eslint-disable-next-line
@@ -33,7 +35,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
   const [singleStudent, setSingleStudent] = useState({});
   const [additionalState, setAdditionalState] = useState();
   const [selectedRows, setSelectedRows] = useState([]);
-  const [AddDialogbox, setAddDialogbox] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const { data, refetch } = useGetAllStudents(
     page + 1,
@@ -60,10 +62,32 @@ const StudentList = ({ searchText, onSelectRow }) => {
   }
 
   const handleSelectChange = (params, value) => {
-    setAddDialogbox(true);
+    setAddDialogOpen(true);
     setSelectedStudentId(params.id);
     setAdditionalState(value);
   };
+
+  function handleCloseDialog() {
+    setAdditionalState("");
+    setAddDialogOpen(false);
+    fetchSingleStudent();
+  }
+
+  function handleUpdate() {
+    setAddDialogOpen(false);
+    const payload = { ...singleStudent, status: additionalState };
+    axios
+        .put(
+            `${process.env.REACT_APP_API_URL}${profileData.company_id}/${selectedStudentId}/updateStudent`,
+            payload
+        )
+        .then(() => {
+          fetchSingleStudent();
+        })
+        .catch((error) => {
+          console.error(error); // Changed console.log to console.error
+        });
+  }
 
   useEffect(() => {
     if (selectedStudentId) {
@@ -137,8 +161,8 @@ const StudentList = ({ searchText, onSelectRow }) => {
       ),
     },
     {
-      field: "coures",
-      headerName: "coures",
+      field: "course",
+      headerName: "course",
       width: 225,
       sortable: false,
       headerAlign: "center",
@@ -160,14 +184,14 @@ const StudentList = ({ searchText, onSelectRow }) => {
       headerAlign: "center",
       align: "center",
     },
-    {
-      field: "email",
-      headerName: "Email",
-      width: 225,
-      sortable: false,
-      headerAlign: "center",
-      align: "center",
-    },
+    // {
+    //   field: "email",
+    //   headerName: "Email",
+    //   width: 225,
+    //   sortable: false,
+    //   headerAlign: "center",
+    //   align: "center",
+    // },
     {
       field: "moreDetails",
       headerName: "More Details",
@@ -227,12 +251,12 @@ const StudentList = ({ searchText, onSelectRow }) => {
             {item.personal_info?.firstName} {item.personal_info?.lastName}
           </Grid>
         ),
-        coures: item.personal_info?.course,
+        course: item.personal_info?.course,
         joiningDate: moment(item.personal_info?.joining_date).format(
           "YYYY-MM-DD"
         ),
         contact: item.personal_info?.contact,
-        email: item.personal_info?.email,
+        // email: item.personal_info?.email,
         moreDetails: "view more",
       }))
     : [];
@@ -300,6 +324,51 @@ const StudentList = ({ searchText, onSelectRow }) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      <Dialog
+          open={addDialogOpen}
+          onClose={handleCloseDialog}
+          sx={{ width: "300px" }}
+      >
+        <DialogContent sx={{ fontSize: "18px" }}>
+          <Typography sx={{ textAlign: "center" }}>
+            Are you sure you want to change status?
+          </Typography>
+        </DialogContent>
+        <DialogActions
+            sx={{
+              textAlign: "center",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+        >
+          <Button
+              onClick={handleCloseDialog}
+              variant="contained"
+              style={{
+                width: { xs: "150px" },
+                marginLeft: "10px",
+                display: "block",
+                backgroundColor: "#5559CE",
+                color: "#EDE7F6",
+              }}
+          >
+            Cancel
+          </Button>
+          <Button
+              style={{
+                width: { xs: "150px" },
+                marginLeft: "10px",
+                display: "block",
+                backgroundColor: "#EDE7F6",
+                color: "#5559CE",
+              }}
+              onClick={handleUpdate} // Removed unnecessary parameter
+          >
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

@@ -34,7 +34,6 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
             paddingLeft: "16px",
             paddingTop: "8px",
             paddingRight: "16px",
-            paddingTop:'32px'
           }}
         >
           <MenuList />

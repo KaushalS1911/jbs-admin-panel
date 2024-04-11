@@ -383,7 +383,7 @@ function FeeDetailsPage() {
               spacing={2}
             >
               <Grid item xs>
-                <Typography variant="h4" component="div">
+                <Typography variant="h3" component="div">
                   {data?.personal_info?.firstName}{" "}
                   {data?.personal_info?.lastName}
                 </Typography>

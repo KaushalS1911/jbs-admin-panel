@@ -89,7 +89,7 @@ function EditAdminProfile() {
   };
 
   return (
-    <div>
+    <Box>
       <FormControl
         defaultValue=""
         required
@@ -119,10 +119,10 @@ function EditAdminProfile() {
             <form onSubmit={handleSubmit}>
               <Box sx={{ maxWidth: "1200px" }}>
                 <Grid container spacing={3} alignItems={"start"}>
-                  <Grid item xs={12} lg={4} md={6} sx={{ padding: "20px" }}>
-                    <Grid sx={{ textAlign: "center" }}>
-                      <MainCard>
-                        <Box sx={{ marginBottom: "20px" }}>
+                  <Grid item xs={12} lg={4} md={6} >
+                    <Grid sx={{ textAlign: "center" }} >
+                      <MainCard sx={{padding: "20px"}}>
+                        <Box>
                           <input
                             id="file-input"
                             type="file"
@@ -243,7 +243,7 @@ function EditAdminProfile() {
           )}
         </Formik>
       </FormControl>
-    </div>
+    </Box>
   );
 }
 

@@ -58,6 +58,7 @@ function Follow({ id, setIsFollowOpen }) {
           note: values.note,
           date: formattedDate,
           time: formattedTime,
+          status: "Pending"
         },
       ],
       inquiry_id: id,

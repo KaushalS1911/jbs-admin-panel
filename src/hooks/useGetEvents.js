@@ -23,7 +23,8 @@ export const useGetEvents = () => {
             leave_startTime: formattedStartDate,
             leave_endTime: formattedEndDate,
             leave_status:event.leave_status,
-            denied_reason:event.denied_reason
+            denied_reason:event.denied_reason,
+            name: `${event.firstName} ${event.lastName}`
           };
         });
       }

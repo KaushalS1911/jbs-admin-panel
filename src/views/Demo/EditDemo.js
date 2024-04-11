@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import {
   Button,
   FormControl,
-  InputLabel,
+  InputLabel, ListItemText,
   MenuItem,
   Select,
   TextField,
@@ -24,6 +24,7 @@ const initialValues = {
   note: "",
   date: null,
   time: null,
+  status: "Pending"
 };
 const validationSchema = Yup.object({
   faculty_name: Yup.string().required("Faculty name is required"),
@@ -59,7 +60,9 @@ const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
       note: values.note,
       date: formattedDate,
       time: formattedTime,
+      status: values.status
     };
+
     const user = JSON.parse(localStorage.getItem("user"));
     try {
       const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${myRowId}/${entryData._id}/updateDemo`;
@@ -181,6 +184,23 @@ const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
               {formik.touched.note && formik.errors.note && (
                 <div style={{ color: "red" }}>{formik.errors.note}</div>
               )}
+            </Grid>
+            <Grid item fullWidth xl={12} lg={12} md={12} sm={12} xs={12}>
+              <Select
+                  fullWidth
+                  id="type"
+                  name="type"
+                  value={formik.values.status}
+                  size='medium'
+                  InputLabelProps={{
+                    style: { color: "#5559CE" },
+                  }}
+                  onChange={(e) => formik.setFieldValue("status", e.target.value)}
+              >
+                <MenuItem value={"Pending"}>Pending</MenuItem>
+                <MenuItem value={"Completed"}>Completed</MenuItem>
+                <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+              </Select>
             </Grid>
             <Grid>
               <Button

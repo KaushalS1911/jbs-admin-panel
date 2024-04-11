@@ -67,6 +67,7 @@ const Root = styled('div')(({ theme }) => ({
 function CalendarApp() {
   const [open, setOpen] = useState(false);
   const { data: events, refetch } = useGetEvents();
+
   const calendarRef = useRef();
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [openDeleteEventDialog, setOpenDeleteEventDialog] = useState(false);
@@ -221,7 +222,7 @@ function CalendarApp() {
                         fontSize: "13px",
                       }}
                     >
-                      {eventInfo.event._def.title}
+                      {eventInfo.event.extendedProps.name} on {eventInfo.event._def.title}
                     </div>
                   );
                 }}
