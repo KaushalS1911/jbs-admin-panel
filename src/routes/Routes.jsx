@@ -37,6 +37,7 @@ import Classrooms from "../views/Setting/Classrooms";
 import DeveloperOptions from "../views/Setting/DeveloperOptions";
 import EmpRoles from "../views/Setting/EmpRoles";
 import Invite from "views/Setting/Invite";
+import AttendanceLogs from "../views/utilities/AttendanceLogs";
 
 const Routes = () => {
 
@@ -106,6 +107,7 @@ const Routes = () => {
 
           {/*Attendance routes*/}
           <Route path="/attendance" element={<Attendance />} exact />
+          <Route path="/attendance-logs" element={<AttendanceLogs />} exact />
 
           {/* Expence routes*/}
           <Route path="/expense" element={<Expence />} exact />

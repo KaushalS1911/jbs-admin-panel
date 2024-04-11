@@ -148,6 +148,9 @@ const Index = () => {
                         <b>Note</b>
                       </TableCell>
                       <TableCell align="center">
+                        <b>Status</b>
+                      </TableCell>
+                      <TableCell align="center">
                         <b>Action</b>
                       </TableCell>
                     </TableRow>
@@ -259,6 +262,28 @@ const Index = () => {
                           align="center"
                           sx={{
                             width: "100%",
+                            fontWeight: 600,
+                            color: entry.status === 'Completed' ? "green" : entry.status === "Pending" ? "skyblue" : "red",
+                            [theme.breakpoints.up("sm")]: {
+                              width: "150px",
+                            },
+                            [theme.breakpoints.up("md")]: {
+                              width: "200px",
+                            },
+                            [theme.breakpoints.up("lg")]: {
+                              width: "250px",
+                            },
+                            [theme.breakpoints.up("xl")]: {
+                              width: "300px",
+                            },
+                          }}
+                        >
+                          {entry.status}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            width: "100%",
                             [theme.breakpoints.up("sm")]: {
                               width: "150px",
                             },
@@ -275,7 +300,7 @@ const Index = () => {
                         >
                           <EditNoteTwoTone
                             sx={{
-                              color: "#D9DAF9",
+                              color: "#5559CE",
                               marginRight: "10px",
                               height: "30px",
                               lineHeight: "30px",

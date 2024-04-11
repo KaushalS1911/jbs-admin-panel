@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
-import moment from "moment";
 import { Grid, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AttendanceView from "./AttendanceView";
-import { display } from "@mui/system";
 
 const Attendance = () => {
   const [value, setValue] = useState("1");
@@ -59,13 +54,6 @@ const Attendance = () => {
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <MainCard>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="Students" value="1" />
-              <Tab label="Employees" value="2" />
-            </TabList>
-          </Box>
-          <TabPanel value="1">
             <Grid item style={{padding:'10px'}}>
               <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -92,16 +80,16 @@ const Attendance = () => {
                   >
                     <InputLabel
                       id="interested-in-label"
-                      style={{ color: "#5559ce" }}
+                      style={{ color: "#5559ce", fontWeight: 500 }}
                     >
-                      Interested In
+                      Select Batch
                     </InputLabel>
                     <Select
                       labelId="interested-in-label"
                       id="interested-in"
                       value={select}
                       onChange={handleSelectChange}
-                      label="interestedin"
+                      label=""
                     >
                       {batches.map((option) => (
                         <MenuItem key={option._id} value={option.technology}>
@@ -137,9 +125,7 @@ const Attendance = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <AttendanceView option={option} startDate={startDate} />
-          </TabPanel>
-          <TabPanel value="2"></TabPanel>
+            <AttendanceView option={option} startDate={startDate} setSelect={setSelect} />
         </MainCard>
       </TabContext>
     </Box>

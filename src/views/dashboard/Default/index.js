@@ -16,50 +16,59 @@ import { Link } from "react-router-dom";
 import {useGetCompanyDetails} from "../../../hooks/useGetCompanyDetails";
 import {useRecoilState} from "recoil";
 import {profile} from "../../../atoms/authAtoms";
+import {useGetAccountData} from "../../../hooks/useGetAccountData";
+import {useDispatch, useSelector} from "react-redux";
+import {getConfigs} from "../../Setting/SettingSlice";
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
   const [dataObj, setDataObj] = useState([]);
   const { data, refetch } = useGetDashboardData();
+  const {data: account, refetch: refetchAccount } = useGetAccountData()
+  const {configs} = useSelector((state) => state.configs)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setLoading(false);
+    refetchAccount()
+    dispatch(getConfigs())
   }, []);
+
 
   useEffect(() => {
     const updatedDataObj = [
       {
         icon: StudentIc,
-        roles: "Student",
+        roles: "Students",
         roleValue: data?.studentCount || 0,
         roleColor: "#FE8D3D",
         linkTo: "/student",
       },
       {
         icon: FacultyIc,
-        roles: "Employee",
+        roles: "Employees",
         roleValue: data?.employeeCount || 0,
         roleColor: "#79AB78",
         linkTo: "/employee",
       },
       {
         icon: InquiryIc,
-        roles: "Inquiry",
+        roles: "Inquiries",
         roleValue: data?.inquiryCount || 0,
         roleColor: "#68ACE3",
         linkTo: "/inquiry",
       },
       {
         icon: LabIc,
-        roles: "Lab",
-        roleValue: "8",
+        roles: "Classrooms",
+        roleValue: configs?.classrooms?.length,
         roleColor: "#A682C7",
       },
       {
         icon: AccountIc,
         roles: "Account",
-        roleValue: "0",
+        roleValue: account?.otherInfo?.feesReceived?.totalAmount - account?.otherInfo?.totalExpense,
         roleColor: "#F35A79",
         linkTo: "/account",
       },

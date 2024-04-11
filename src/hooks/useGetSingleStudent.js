@@ -5,7 +5,6 @@ import { profile } from '../atoms/authAtoms'
 
 
 export const useGetSingleStudent = (id) => {
-  /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile)
   return useQuery(['student'], async () => {
     return axios
