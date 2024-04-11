@@ -40,6 +40,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import { notification } from "antd";
+import Mainbreadcrumbs from "../../contants/Mainbreadcrumbs";
 
 const validationSchema = yup.object({
   title: yup.string().required("Task title is required"),
@@ -208,6 +209,7 @@ const EditTaskView = () => {
 
   return (
     <>
+      <Mainbreadcrumbs title={"Task"}/>
       <MainCard
         secondary={
           <SecondaryAction link="https://next.material-ui.com/system/typography/" />

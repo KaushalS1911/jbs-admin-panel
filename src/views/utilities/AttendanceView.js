@@ -105,7 +105,6 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
 
   return (
     <Box>
-      <MainCard>
         <form>
           {rows.length > 0 ? (
             <div
@@ -148,8 +147,9 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
             </div>
           )}
 
-          <Box sx={{ textAlign: "right", marginTop: "15px" }}>
+          <Box sx={{ textAlign: "right", marginTop: "10px", padding: "10px " }}>
             <Button
+
               variant="contained"
               color="secondary"
               onClick={handleActionSubmit}
@@ -158,7 +158,6 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
             </Button>
           </Box>
         </form>
-      </MainCard>
     </Box>
   );
 };

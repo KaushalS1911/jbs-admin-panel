@@ -76,56 +76,6 @@ const StudentInfo = ({
   const dispatch = useDispatch();
   const { studentId } = useParams();
 
-  // const {personalDetails} = useSelector((state) => state.student)
-
-  // const [fileList, setFileList] = useState([]);
-  // const [previewOpen, setPreviewOpen] = useState(false);
-  // const [previewImage, setPreviewImage] = useState('');
-  // const [previewTitle, setPreviewTitle] = useState('');
-
-  // const handlePreview = async (file) => {
-  //   if (!file.url && !file.preview) {
-  //     file.preview = await getBase64(file.originFileObj);
-  //   }
-  //
-  //   setPreviewImage(file.url || file.preview);
-  //   setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
-  //   setPreviewOpen(true);
-  // };
-
-  // const handleCancel = () => setPreviewOpen(false);
-
-  // const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-
-  // const uploadButton = (
-  //   <button
-  //     style={{
-  //       border: 0,
-  //       background: 'none',
-  //     }}
-  //     type="button"
-  //   >
-  //     <AddIcon />
-  //     <div
-  //       style={{
-  //         marginTop: 8,
-  //       }}
-  //     >
-  //       Upload Profile
-  //     </div>
-  //   </button>
-  // );
-
-  // function formatDate(inputDate) {
-  //   const originalDate = new Date(inputDate);
-  //   const day = originalDate.getDate();
-  //   const month = originalDate.getMonth() + 1;
-  //   const year = originalDate.getFullYear();
-  //   const formattedDay = (day < 10) ? `0${day}` : day;
-  //   const formattedMonth = (month < 10) ? `0${month}` : month;
-  //   return `${year}-${formattedMonth}-${formattedDay}`;
-  // }
-
   const onDateChange = (selectedDates) => {
     formik.setFieldValue("dob", selectedDates[0]);
   };

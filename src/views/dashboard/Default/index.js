@@ -24,8 +24,8 @@ import {getConfigs} from "../../Setting/SettingSlice";
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
   const [dataObj, setDataObj] = useState([]);
-  const { data, refetch } = useGetDashboardData();
   const {data: account, refetch: refetchAccount } = useGetAccountData()
+  const { data } = useGetDashboardData();
   const {configs} = useSelector((state) => state.configs)
   const dispatch = useDispatch()
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
       {
         icon: AccountIc,
         roles: "Account",
-        roleValue: account?.otherInfo?.feesReceived?.totalAmount - account?.otherInfo?.totalExpense,
+        roleValue: account?.otherInfo?.feesReceived?.totalAmount - account?.otherInfo?.totalExpense || 0,
         roleColor: "#F35A79",
         linkTo: "/account",
       },

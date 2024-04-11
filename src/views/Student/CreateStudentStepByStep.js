@@ -80,7 +80,7 @@ function CreateStudentStepByStep() {
 
   return (
     <>
-      <Mainbreadcrumbs title={"Student"} subtitle={"Add Student"} />
+      <Mainbreadcrumbs title={"Student"} />
       <MainCard>
         <div style={{ marginTop: "10px" }}>
           <Stepper activeStep={activeStep}>

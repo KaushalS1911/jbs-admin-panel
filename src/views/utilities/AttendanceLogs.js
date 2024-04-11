@@ -10,6 +10,7 @@ import {useGetAttendanceLogs} from "../../hooks/useGetAttendanceLogs";
 import Box from "@mui/material/Box";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import Mainbreadcrumbs from "../../contants/Mainbreadcrumbs";
 
 function AttendanceLogs(props) {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -23,6 +24,7 @@ function AttendanceLogs(props) {
 
     return (
         <div>
+            <Mainbreadcrumbs title={'Attendance logs'}/>
             <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Box
                     className="flatpicker"

@@ -7,6 +7,7 @@ import { Grid, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AttendanceView from "./AttendanceView";
+import Mainbreadcrumbs from "../../contants/Mainbreadcrumbs";
 
 const Attendance = () => {
   const [value, setValue] = useState("1");
@@ -51,6 +52,8 @@ const Attendance = () => {
     : [];
 
   return (
+      <>
+          <Mainbreadcrumbs title={"Attendance"}/>
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <MainCard>
@@ -129,6 +132,7 @@ const Attendance = () => {
         </MainCard>
       </TabContext>
     </Box>
+      </>
   );
 };
 
