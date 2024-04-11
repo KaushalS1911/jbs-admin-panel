@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {EditNoteTwoTone, RestoreFromTrashTwoTone} from "@mui/icons-material";
 import axios from "axios";
 import {getConfigs} from "./SettingSlice";
+import PageTitle from "../../contants/PageTitle";
 
 function Expenses() {
 
@@ -39,6 +40,8 @@ function Expenses() {
 
   return (
     <>
+      <PageTitle title={"Settings"} subtitle={"Expenses Categories"}/>
+
       <MainCard sx={{width: "100%", maxWidth: "600px", marginBottom: "10px", padding: "10px"}}>
         <Typography sx={{fontSize: "1.3rem", fontWeight: "600", marginBottom: "10px"}}>
           Add Expense category

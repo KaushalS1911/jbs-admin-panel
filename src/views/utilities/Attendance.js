@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
-import moment from "moment";
 import { Grid, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AttendanceView from "./AttendanceView";
-import { display } from "@mui/system";
 
 const Attendance = () => {
   const [value, setValue] = useState("1");
@@ -130,7 +125,7 @@ const Attendance = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <AttendanceView option={option} startDate={startDate} />
+            <AttendanceView option={option} startDate={startDate} setSelect={setSelect} />
         </MainCard>
       </TabContext>
     </Box>

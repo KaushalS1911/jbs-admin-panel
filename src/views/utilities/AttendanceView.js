@@ -7,13 +7,20 @@ import MainCard from "ui-component/cards/MainCard";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import noDataImg from "../../assets/images/no data found.png";
+import {notification} from "antd";
 
-const AttendanceView = ({ option, startDate }) => {
+const AttendanceView = ({ option, startDate, setSelect }) => {
   const [batchview, setBatchviewData] = useState([]);
   const [checked, setChecked] = useState({});
   const [profileData, setProfileData] = useRecoilState(profile);
 
   const allStatus = ["Present", "Absent", "Late"];
+
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  }
 
   const handleData = (e, params) => {
     const updatedRow = {
@@ -34,7 +41,10 @@ const AttendanceView = ({ option, startDate }) => {
 
   const handleActionSubmit = () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}attendance`;
-    axios.post(apiEndpoint, { attendance: batchview });
+    axios.post(apiEndpoint, { attendance: batchview }).then((res) => {
+      openNotificationWithIcon("success", res.data.data.message)
+      setSelect("")
+    });
 
     setChecked({});
   };

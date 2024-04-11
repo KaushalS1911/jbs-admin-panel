@@ -1,16 +1,23 @@
 import React, {useState} from "react";
-import {Avatar, Button, Grid} from "@mui/material";
+import {AppBar, Avatar, Button, Grid, Toolbar, Typography} from "@mui/material";
 import {Box} from "@mui/system";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
 import {notification} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {getConfigs} from "./SettingSlice";
+import IconButton from "@mui/material/IconButton";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import {Link} from "react-router-dom";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PageTitle from "../../contants/PageTitle";
 
 function EditCompanyProfile() {
     const [profilePic, setProfilePic] = useState(null);
     const {configs} = useSelector((state) => state.configs)
     const dispatch = useDispatch()
+
+    const {company_details} = configs
 
     //Notification
     const openNotificationWithIcon = (type, message) => {
@@ -42,6 +49,7 @@ function EditCompanyProfile() {
 
     return (
         <div>
+            <PageTitle title={"Settings"} subtitle={"Company Profile"}/>
             <Box sx={{maxWidth: "1200px"}}>
                 <Grid container spacing={3} rowSpacing={3} alignItems={"start"}>
                     <Grid item xs={12} lg={4} md={6} sm={12}>
@@ -55,7 +63,7 @@ function EditCompanyProfile() {
                                 />
                                 <Avatar
                                     alt="Avatar"
-                                    src={configs?.company_details?.logo ? configs?.company_details?.logo : ""}
+                                    src={company_details?.logo ? company_details?.logo : ""}
                                     onClick={() =>
                                         document.getElementById("file-input").click()
                                     }
@@ -67,7 +75,13 @@ function EditCompanyProfile() {
                                     }}
                                 />
                             </Box>
-
+                            <Typography sx={{
+                                fontSize: "1.1rem",
+                                fontWeight: 600,
+                                textAlign: "center"
+                            }}>
+                                {company_details?.name}
+                            </Typography>
                         </MainCard>
                     </Grid>
                 </Grid>
