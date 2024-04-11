@@ -81,7 +81,6 @@ function EditAdminProfile() {
                 url: apiEndpoint,
                 data: payload,
             });
-            console.log("Update_user", response.data);
             localStorage.setItem('user', JSON.stringify(response.data));
             window.location = "/";
         } catch (error) {
@@ -148,9 +147,9 @@ function EditAdminProfile() {
                                                             }
                                                             style={{
                                                                 cursor: "pointer",
-                                                                width: 96,
-                                                                height: 100,
-                                                                margin: "auto",
+                                                                width: 126,
+                                                                height: 126,
+                                                                margin: "0 auto 20px",
                                                             }}
                                                         />
                                                     </Box>

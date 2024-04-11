@@ -16,7 +16,6 @@ function Index() {
   return (
     <>
       
-      <MainCard>
         <FormControl
           sx={{
             m: 1,
@@ -82,8 +81,7 @@ function Index() {
             ></Grid>
           </Grid>
         </FormControl>
-      </MainCard>
-      <MainCard sx={{ margin: "20px 0" }}>
+      <MainCard sx={{ margin: "10px 0" }}>
         <StudentList searchText={searchText} />
       </MainCard>
     </>

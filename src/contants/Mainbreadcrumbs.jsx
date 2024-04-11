@@ -12,10 +12,9 @@ function Mainbreadcrumbs({ title, subtitle }) {
           <Typography
             color="primary"
             sx={{
-              fontSize: '24px',
+              fontSize: '28px',
               color: '#5559ce',
               fontWeight: '600',
-              fontFamily: 'Chivo',
             }}
           >
             {title}
@@ -23,11 +22,11 @@ function Mainbreadcrumbs({ title, subtitle }) {
         </Grid>
         <Grid>
           <Breadcrumbs>
-            <Link color="#5559ce" to="/">
+            <Link  style={{fontSize: '14px', fontWeight: '500',color: "#5559ce"}} to="/">
               <HomeOutlinedIcon />
             </Link>
-            <Link to={`/${title.toLowerCase()}`} color='#5559ce'>{title}</Link>
-            <Typography sx={{ fontSize: '14px', fontWeight: '500', color: '#5559ce' }}>{subtitle}</Typography>
+            <Link to={`/${title.toLowerCase().replace(" ", "-")}`} style={{fontSize: '14px', fontWeight: '500',color: "#5559ce"}}>{title}</Link>
+
           </Breadcrumbs>
         </Grid>
       </Grid>

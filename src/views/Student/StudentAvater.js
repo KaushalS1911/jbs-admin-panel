@@ -46,29 +46,10 @@ const StudentAvater = () => {
     document.getElementById("file-input").click();
   };
 
-  const Backbutton=()=>{
-    navigate(-1);
-  }
   
   return (
     <div>
       <Grid container spacing={gridSpacing} sx={{ padding: "30px" }}>
-        <Grid container sx={{ marginBottom: "10px" }}>
-          <Grid
-            item
-            xl={8}
-            lg={8}
-            md={8}
-            sm={8}
-            xs={12}
-            sx={{ display: "flex", alignItems: "center" }}
-          >
-            <KeyboardBackspaceIcon onClick={Backbutton} style={{cursor:'pointer'}} />
-            <Typography variant="h5" gutterBottom sx={{ margin: " 0 10px" }}>
-              Student
-            </Typography>
-          </Grid>
-        </Grid>
         <Grid
           container
           alignItems={"center"}
@@ -90,7 +71,7 @@ const StudentAvater = () => {
               alt="Avatar"
               src= {student?.personal_info?.profile_pic}
               onClick={handleAvatarClick}
-              style={{ cursor: "pointer", width: 96, height: 96 }}
+              style={{ cursor: "pointer", width: 126, height: 126 }}
             />
 
             <Grid
