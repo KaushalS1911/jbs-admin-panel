@@ -31,6 +31,9 @@ import EditAdminProfile from "views/Setting/EditAdminProfile";
 import EditCompanyProfile from "views/Setting/EditCompanyProfile";
 import Expenses from "views/Setting/Expenses";
 import Register from "views/pages/authentication/authentication3/Register3";
+
+import NotFound from "views/utilities/NotFound ";
+
 import Roles from "../views/Setting/Roles";
 import Course from "../views/Setting/Course";
 import Classrooms from "../views/Setting/Classrooms";
@@ -121,6 +124,8 @@ const Routes = () => {
             element={<EditCompanyProfile />}
             exact
           />
+          <Route path="/settings/expenses" element={<Expenses />} exact />
+          <Route path="*" element={<NotFound />} />
           <Route path="/settings/expenses-config" element={<Expenses />} exact />
           <Route path="/settings/role-config" element={<Roles />} exact />
           <Route path="/settings/course-config" element={<Course />} exact />
