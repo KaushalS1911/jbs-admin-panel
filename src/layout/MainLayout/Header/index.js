@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import {useTheme} from '@mui/material/styles';
-import {Avatar, Box, ButtonBase} from '@mui/material';
+import {Avatar, Box, ButtonBase, Typography} from '@mui/material';
 
 // project imports
 import LogoSection from '../LogoSection';
@@ -12,11 +12,13 @@ import NotificationSection from './NotificationSection';
 
 // assets
 import {IconMenu2} from '@tabler/icons';
+import {useSelector} from "react-redux";
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
 const Header = ({handleLeftDrawerToggle}) => {
     const theme = useTheme();
+    const {configs} = useSelector((state) => state.configs)
 
     return (
         <>
@@ -54,11 +56,15 @@ const Header = ({handleLeftDrawerToggle}) => {
             </Box>
 
             {/* header search */}
-            <Box sx={{flexGrow: 1}}/>
+            <Box sx={{marginLeft: "4rem", flexGrow: 1}}>
+                <Typography variant='h2' color='secondary'>
+                    {configs?.company_details?.name}
+                </Typography>
+            </Box>
             <Box sx={{flexGrow: 1}}/>
 
             {/* notification & profile */}
-            <NotificationSection/>
+            {/*<NotificationSection/>*/}
             <ProfileSection/>
         </>
     );

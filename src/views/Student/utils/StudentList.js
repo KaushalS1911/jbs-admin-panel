@@ -168,7 +168,7 @@ const StudentList = ({searchText, onSelectRow}) => {
             headerAlign: "center",
             align: "center",
             renderCell: (params) => (
-                <Grid style={{color: "#5559CE", cursor: "pointer"}}>
+                <Grid style={{color: "#5559CE", cursor: "pointer", fontSize: "16px", fontWeight: 500}}>
                     {params.row.studentName}
                 </Grid>
             ),
