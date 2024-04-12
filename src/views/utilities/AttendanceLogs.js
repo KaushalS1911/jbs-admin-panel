@@ -24,7 +24,7 @@ function AttendanceLogs(props) {
 
     return (
         <div>
-            <Mainbreadcrumbs title={'Attendance logs'}/>
+            <Mainbreadcrumbs title={'Logs'}/>
             <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Box
                     className="flatpicker"

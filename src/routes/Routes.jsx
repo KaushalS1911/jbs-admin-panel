@@ -107,7 +107,7 @@ const Routes = () => {
 
           {/*Attendance routes*/}
           <Route path="/attendance" element={<Attendance />} exact />
-          <Route path="/attendance-logs" element={<AttendanceLogs />} exact />
+          <Route path="/logs" element={<AttendanceLogs />} exact />
 
           {/* Expence routes*/}
           <Route path="/expense" element={<Expence />} exact />

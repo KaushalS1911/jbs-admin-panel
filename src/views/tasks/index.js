@@ -27,7 +27,7 @@ const getPriorityStyle = (priority) => {
       return {
         backgroundColor: "#F98364",
         color: "#ffffff",
-        fontWeight: 800,
+        fontWeight: 600,
         width: "70px",
         borderRadius: "5px",
       };
@@ -35,7 +35,7 @@ const getPriorityStyle = (priority) => {
       return {
         backgroundColor: "#14CDA2",
         color: "#ffffff",
-        fontWeight: 800,
+        fontWeight: 600,
         width: "70px",
         borderRadius: "5px",
       };
@@ -43,7 +43,7 @@ const getPriorityStyle = (priority) => {
       return {
         backgroundColor: "#DEDDEF",
         color: "#5559CE",
-        fontWeight: 800,
+        fontWeight: 600,
         width: "70px",
         borderRadius: "5px",
       };
@@ -58,7 +58,7 @@ const getStatusStyle = (status) => {
       return {
         backgroundColor: "#DEDDEF",
         color: "#5559CE",
-        fontWeight: 800,
+        fontWeight: 600,
         width: "80px",
         borderRadius: "5px",
       };
@@ -66,7 +66,8 @@ const getStatusStyle = (status) => {
       return {
         backgroundColor: "#14CDA2",
         color: "#ffffff",
-        fontWeight: 800,
+        fontWeight: 600,
+        fontSize: "20px",
         width: "80px",
         borderRadius: "5px",
       };
@@ -74,7 +75,7 @@ const getStatusStyle = (status) => {
       return {
         backgroundColor: "",
         color: "",
-        fontWeight: 800,
+        fontWeight: 600,
         width: "80px",
         borderRadius: "5px",
       };
