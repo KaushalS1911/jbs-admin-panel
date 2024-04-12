@@ -296,6 +296,23 @@ export const Expence = () => {
             justifyContent="end"
             alignItems="center"
           >
+            <Grid item lg={4} md={12} xs={12} sm={12}>
+              <Grid item>
+                <TextField
+                    item
+                    label="Search"
+                    fullWidth
+                    size="small"
+                    style={{ width: "100%", minWidth: "220px", margin: "auto" }}
+                    variant="outlined"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    InputLabelProps={{
+                      style: { color: "#5559CE", marginBottom: "0" },
+                    }}
+                />
+              </Grid>
+            </Grid>
             <Grid
               item
               display={{ xs: "flex", sm: "flex", md: "flex", lg: "flex" }}
