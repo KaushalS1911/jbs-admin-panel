@@ -112,7 +112,7 @@ const EditTaskView = () => {
         console.error("Delete request failed:", response);
       }
     } catch (error) {
-      console.error("Error deleting task:", error);
+      openNotificationWithIcon("error", error.response.data.message);
     }
   };
 

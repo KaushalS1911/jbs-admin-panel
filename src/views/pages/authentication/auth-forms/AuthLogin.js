@@ -37,7 +37,6 @@ const FirebaseLogin = ({ setIsLoading }) => {
   const [checked, setChecked] = useState(true);
   const [contact, setContact] = useState("+91");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [userData, setUserData] = useState({
     contact: contact,
     password: "",
@@ -81,18 +80,18 @@ const FirebaseLogin = ({ setIsLoading }) => {
     })
       .then((res) => {
         console.log(res);
-        const data = res.data.data.tokens;
-        localStorage.setItem("jwt", data.jwt);
-        localStorage.setItem("jwtRefresh", data.jwtRefresh);
-        window.location = "/";
-        setLoading(false);
-        openNotificationWithIcon("success", "Login successful!");
-        setError("");
+        if (res.status === 200) {
+          const data = res.data.data.tokens;
+          localStorage.setItem("jwt", data.jwt);
+          localStorage.setItem("jwtRefresh", data.jwtRefresh);
+          openNotificationWithIcon("success", res.data.data.message);
+          window.location = "/";
+          setLoading(false);
+        }
       })
       .catch((error) => {
         setLoading(false);
-        setError(error.response.data.message);
-        console.error("Error:", error);
+        openNotificationWithIcon("error", error.response.data.message);
       });
   };
 
@@ -222,7 +221,6 @@ const FirebaseLogin = ({ setIsLoading }) => {
             label="Remember me"
           />
         </Stack>
-        {error ? <Alert severity="error">{error}</Alert> : ""}
         <Box sx={{ mt: 2 }}>
           <AnimateButton>
             <Button

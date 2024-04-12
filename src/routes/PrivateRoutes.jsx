@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Outlet, Route } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import instance from "../helpers/axios";
 import Loading from "../ui-component/Loading";
 import { profile } from "../atoms/authAtoms";
-import Account from "views/utilities/Account";
 
 const PrivateRoutes = () => {
   const [isAuth, setIsAuth] = useState(false);

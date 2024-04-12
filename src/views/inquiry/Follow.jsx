@@ -71,7 +71,7 @@ function Follow({ id, setIsFollowOpen }) {
       setIsFollowOpen(false)
       resetForm();
     } catch (error) {
-      console.error("Error sending data:", error);
+      openNotificationWithIcon("error", error.response.data.message);
     }
   };
   const formik = useFormik({

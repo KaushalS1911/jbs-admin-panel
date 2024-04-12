@@ -63,7 +63,6 @@ function FeeDetailsPage() {
     try {
       const apiEndpoint = `${process.env.REACT_APP_API_URL}${profileData.company_id}/student/${studentId}/fee-detail/${selectedRow.id}`;
       const response = await axios.put(apiEndpoint, finalObject);
-
       setOpenDialog(false);
       if (response.status === 200) {
         refetch();

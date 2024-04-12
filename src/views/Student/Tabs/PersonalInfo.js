@@ -106,7 +106,8 @@ function PersonalInfo({ formData, studentData, refetch }) {
         refetch()
       })
       .catch((error) => {
-        console.log(error);
+        openNotificationWithIcon("error", error.response.data.message);
+
       });
   }
 

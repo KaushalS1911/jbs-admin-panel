@@ -13,8 +13,14 @@ import { useEffect } from "react";
 import {useRecoilState} from "recoil";
 import {profile} from "../../atoms/authAtoms";
 import moment from "moment";
+import { notification } from "antd";
 
 const MainAccount = () => {
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
   const [selectedDates, setSelectedDates] = useState([]);
   const [accountData, setAccountData] = useState([]);
   const [profileData, setProfileData] = useRecoilState(profile)
@@ -39,14 +45,15 @@ const MainAccount = () => {
       startDate = today.startOf('month').format("YYYY-MM-DD");
       endDate = today.endOf('month').format("YYYY-MM-DD");
     }
-
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${profileData.company_id}/account?startDate=${startDate}&endDate=${endDate}`;
-
     try {
       const response = await axios.get(apiEndpoint);
       setAccountData(response.data.data.data);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
+      openNotificationWithIcon("error", error.response.data.message);
+
     }
   };
 

@@ -118,12 +118,14 @@ const AuthInvite = ({ setIsLoading }) => {
       .then((response) => {
         if (response.status === 200) {
           setProfileData(response.data.data);
-          window.location = "/inquiry";
+          openNotificationWithIcon("success", response.data.data.message);
+          window.location = "/";
         }
         setIsLoading(false);
       })
       .catch(() => {
         setIsLoading(false);
+        openNotificationWithIcon("error", error.response.data.message);
       });
   }
 

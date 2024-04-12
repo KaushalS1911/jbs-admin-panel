@@ -88,16 +88,18 @@ const AuthRegister = ({ setIsLoading }) => {
         `${process.env.REACT_APP_LOGIN_URL}/register`,
         { ...userData }
       );
-      const data = response.data.data.tokens;
-      localStorage.setItem("jwt", data.jwt);
-      localStorage.setItem("jwtRefresh", data.jwtRefresh);
-      window.location = "/";
-      setLoading(false);
-      openNotificationWithIcon("success", "Registration successful!");
-      setError("");
+      if(response.status ===200){
+        const data = response.data.data.tokens;
+        localStorage.setItem("jwt", data.jwt);
+        localStorage.setItem("jwtRefresh", data.jwtRefresh);
+        window.location = "/";
+        setLoading(false);
+        openNotificationWithIcon("success", response.data.data.message);
+        setError("");
+      }
     } catch (error) {
       setLoading(false);
-      setError(error.response?.data?.message || "An error occurred.");
+      openNotificationWithIcon("error", error.response.data.message);
       console.error("Error:", error);
     }
   };

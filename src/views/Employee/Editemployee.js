@@ -141,7 +141,8 @@ const Editemployee = () => {
       openNotificationWithIcon("success", response.payload.message);
     } catch (error) {
       console.error("Error updating data:", error);
-      openNotificationWithIcon("error", response.payload.message);
+      openNotificationWithIcon("error", error.response.data.message);
+
     }
   };
 
@@ -179,7 +180,8 @@ const Editemployee = () => {
       navigate("/employee");
       openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
-      console.error("Error deleting Inquiry:", error);
+      openNotificationWithIcon("error", error.response.data.message);
+
     }
   };
 

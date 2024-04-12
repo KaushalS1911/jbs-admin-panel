@@ -24,17 +24,16 @@ const StudentDetail = ({ course }) => {
   const one = () => {
     const selectedCourse = courseProgress(course);
     if (!selectedCourse) {
-        return;
+      return;
     }
     setCourses(selectedCourse);
     const initialDates = selectedCourse.map((course, index) =>
-        data?.assignmentCompleted.some((item) => item.index === index)
+      data?.assignmentCompleted.some((item) => item.index === index)
         ? data?.assignmentCompleted.find((item) => item.index === index).date
         : "--"
     );
     setDates(initialDates);
-};
-
+  };
 
   useEffect(() => {
     one();
@@ -83,7 +82,7 @@ const StudentDetail = ({ course }) => {
           refetch();
         })
         .catch((error) => {
-          console.log(error);
+          openNotificationWithIcon("error", error.response.data.message);
         });
     }
   };
@@ -100,13 +99,14 @@ const StudentDetail = ({ course }) => {
       url: `company/${companyId}/${studentId}/updateStudent`,
       data: payload,
     })
-      .then((response) => {
+      .then(() => {
         setCompletedCourses([]);
         openNotificationWithIcon("success", "Progress reset successfully.");
         refetch();
       })
       .catch((error) => {
         console.log(error);
+        openNotificationWithIcon("error", error.response.data.message);
       });
   };
 
