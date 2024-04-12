@@ -31,7 +31,7 @@ const Header = ({handleLeftDrawerToggle}) => {
                 }}
             >
                 <LogoSection/>
-                <ButtonBase sx={{borderRadius: '12px', overflow: 'hidden'}}>
+                <ButtonBase sx={{borderRadius: '12px', overflow: 'hidden',marginLeft:'15px'}}>
                     <Avatar
                         variant="sqaure"
                         sx={{

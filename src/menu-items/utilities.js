@@ -33,7 +33,6 @@ const icons = {
   GradingIcon
 };
 
-// ==============================|| UTILITIES MENU ITEMS ||============================== //
 
 const utilities = {
   id: "utilities",
@@ -46,6 +45,7 @@ const utilities = {
       url: "dashboard",
       icon: icons.DashboardIcon,
       breadcrumbs: false,
+      role:"Admin"
     },
     {
       id: "Inquiry",
@@ -54,6 +54,7 @@ const utilities = {
       url: "inquiry",
       icon: icons.CalendarTodayIcon,
       breadcrumbs: false,
+      role:'Srudent,Recepnist'
     },
     {
       id: "Student",

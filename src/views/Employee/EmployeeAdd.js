@@ -393,7 +393,8 @@ const EmployeeAdd = () => {
                           style: { color: '#5559CE' },
                         }}
                       >
-                        <MenuItem disabled value={'Default Country'} style={{ color: '#5559CE' }}>-----Selected Country----</MenuItem>
+                        <MenuItem disabled value={'Default Country'} style={{ color: '#5559CE' }}>
+                        -----Selected Country----</MenuItem>
                         {countrystatecity.map((country) => (
                           <MenuItem key={country.id} value={country.name}>
                             {country.name}
