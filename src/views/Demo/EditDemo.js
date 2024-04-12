@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import {
   Button,
   FormControl,
-  InputLabel, ListItemText,
+  InputLabel, 
   MenuItem,
   Select,
   TextField,
@@ -75,6 +75,8 @@ const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
       }
     } catch (error) {
       console.error("API Error:", error);
+      openNotificationWithIcon("error", error.response.data.message);
+
     }
   };
   const formik = useFormik({

@@ -152,7 +152,8 @@ const Employee = () => {
         openNotificationWithIcon("success", response.data.data.message);
         refetch();
       } catch (error) {
-        console.log("Error deleting employees:", error);
+        openNotificationWithIcon("error", error.response.data.message);
+
       }
     }
   };

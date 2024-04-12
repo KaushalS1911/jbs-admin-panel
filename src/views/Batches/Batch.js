@@ -94,6 +94,7 @@ function Batch() {
       setTotalBatches(response.data.data.total);
     } catch (error) {
       console.error("Error fetching data:", error);
+      
     }
   };
 
@@ -121,6 +122,8 @@ function Batch() {
       }
     } catch (error) {
       console.error("Error deleting data:", error);
+      openNotificationWithIcon("error", error.response.data.message);
+
     } finally {
       handleCloseConfirmationDialog();
     }

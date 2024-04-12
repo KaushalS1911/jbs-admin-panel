@@ -87,6 +87,8 @@ const Index = () => {
       openNotificationWithIcon("success", response.data.message);
     } catch (error) {
       console.error('Error deleting student data:', error)
+      openNotificationWithIcon("error", error.response.data.message);
+
     } finally {
       handleCloseDialog()
     }

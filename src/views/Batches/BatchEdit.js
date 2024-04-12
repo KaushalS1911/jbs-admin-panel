@@ -42,18 +42,16 @@ const labs = [
 ];
 
 function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
-
-//notification
-const openNotificationWithIcon = (type, message) => {
-  notification[type]({
-    message: message,
-  });
-};
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
 
   const [options, setOptions] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const { data: students, refetch } = useGetAllStudents();
-
 
   useEffect(() => {
     refetch();
@@ -122,9 +120,10 @@ const openNotificationWithIcon = (type, message) => {
         resetForm();
       } catch (error) {
         console.error("API Error:", error);
+        openNotificationWithIcon("error", error.response.data.message);
       }
     },
-  }); 
+  });
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -238,7 +237,7 @@ const openNotificationWithIcon = (type, message) => {
             </FormControl>
           </Grid>
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-          <Autocomplete
+            <Autocomplete
               multiple
               options={options}
               getOptionLabel={(option) =>

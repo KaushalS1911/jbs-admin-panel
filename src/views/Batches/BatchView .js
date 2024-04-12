@@ -58,6 +58,8 @@ const BatchView = () => {
       handleCloseConfirmationDialog();
     } catch (error) {
       console.error("Error deleting data:", error);
+      openNotificationWithIcon("error", error.response.data.message);
+
     }
   };
 
@@ -83,6 +85,8 @@ const BatchView = () => {
         fetchData();
       } catch (error) {
         console.log("Error deleting employees:", error);
+        openNotificationWithIcon("error", error.response.data.message);
+
       }
     }
   };
