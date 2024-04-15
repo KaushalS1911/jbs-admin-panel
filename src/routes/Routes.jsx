@@ -46,7 +46,7 @@ const Routes = () => {
   return (
     <Routers>
       <Route element={<PrivateRoutes />}>
-        <Route element={<MainLayout />}>
+        <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} exact />
           {/*Inquiry routes*/}
