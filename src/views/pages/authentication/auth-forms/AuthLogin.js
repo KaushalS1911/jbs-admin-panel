@@ -12,11 +12,8 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  // TextField,
 } from "@mui/material";
-// project imports
 import AnimateButton from "ui-component/extended/AnimateButton";
-// assets
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
