@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import MainCard from "ui-component/cards/MainCard";
 import {useDispatch, useSelector} from "react-redux";
-import {EditNoteTwoTone, RestoreFromTrashTwoTone} from "@mui/icons-material";
+import {RestoreFromTrashTwoTone} from "@mui/icons-material";
 import axios from "axios";
 import {getConfigs} from "./SettingSlice";
 import PageTitle from "../../contants/PageTitle";

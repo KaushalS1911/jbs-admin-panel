@@ -13,9 +13,6 @@ import AccountIc from "../../../assets/images/icone deshbord/Vector (4).png";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetDashboardData } from "../../../hooks/useGetDashboardData";
 import { Link } from "react-router-dom";
-import {useGetCompanyDetails} from "../../../hooks/useGetCompanyDetails";
-import {useRecoilState} from "recoil";
-import {profile} from "../../../atoms/authAtoms";
 import {useGetAccountData} from "../../../hooks/useGetAccountData";
 import {useDispatch, useSelector} from "react-redux";
 import {getConfigs} from "../../Setting/SettingSlice";
@@ -82,7 +79,6 @@ const Dashboard = () => {
       <Grid container spacing={3}>
         {dataObj.map((item, index) => (
           <Grid key={index} item lg={2} md={4} sm={4} xs={6}>
-            {/* Wrap the grid item with Link component */}
             <Link to={item.linkTo}>
               <Allofcounter
                 icone={item.icon}
@@ -96,20 +92,20 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-              <TotalGrowthBarChart isLoading={isLoading} />
+              <TotelStudentsVisite isLoading={isLoading} />
             </Grid>
             <Grid item xs={12} md={4}>
-              <PopularCard isLoading={isLoading} />
+              <UpcomingDemo isLoading={isLoading} />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
-              <UpcomingDemo isLoading={isLoading} />
+              <PopularCard isLoading={isLoading} />
             </Grid>
             <Grid item xs={12} md={8}>
-              <TotelStudentsVisite isLoading={isLoading} />
+              <TotalGrowthBarChart isLoading={isLoading} />
             </Grid>
           </Grid>
         </Grid>

@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { numberofinstallmentConstants } from "../../../contants/numberofinstallmentConstants";
+import { notification } from "antd";
 
 
 const initialValues = {
@@ -44,6 +45,15 @@ const MenuProps = {
 };
 
 const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
+
+
+    //notification
+    const openNotificationWithIcon = (type, message) => {
+      notification[type]({
+        message: message,
+      });
+    };
+
  
   const dispatch = useDispatch();
   const { companyId, studentId } = useParams();
@@ -166,14 +176,14 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         .then((res) => {
           if (res.status === 200) {
             dispatch(removeAllStateData())
+            openNotificationWithIcon(res.data.data.message)
             window.location = "/student";
           }
         })
         .catch((error) => {
           dispatch(removeAllStateData())
-          console.error("Error:", error);
+          openNotificationWithIcon(error.data.message)
         });
-
       resetForm();
     },
   });

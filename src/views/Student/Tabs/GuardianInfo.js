@@ -73,7 +73,9 @@ const GuardianInfo = ({ studentData }) => {
         openNotificationWithIcon("success", response.data.data.message);
       }
     } catch (error) {
-      console.error("Error deleting data:", error);
+      openNotificationWithIcon("error", error.response.data.message);
+     
+
     }
   };
 

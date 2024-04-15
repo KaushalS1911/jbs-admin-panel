@@ -77,7 +77,6 @@ const EmployeeAdd = () => {
         navigate('/employee');
         openNotificationWithIcon("success", response.data.message);
       } catch (error) {
-        console.log(error);
         openNotificationWithIcon("error", error.response.data.message);
 
       }
