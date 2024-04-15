@@ -177,10 +177,10 @@ const AdminMenu = [
 ]
 
 function getMenuItemsByRole(user) {
-    if(user.role === "Admin"){
+    if(user?.role === "Admin"){
         return AdminMenu
     }else{
-        return AdminMenu.filter(menuItem => menuItem.role !== "Admin");
+        return AdminMenu.filter(menuItem => menuItem?.role !== "Admin");
     }
 }
 
