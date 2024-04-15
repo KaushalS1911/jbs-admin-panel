@@ -40,6 +40,7 @@ const ProfileSection = () => {
   const [notification, setNotification] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
+  const user = useRecoilValue(profile)
 
   const anchorRef = useRef(null);
   /**
@@ -88,7 +89,6 @@ const ProfileSection = () => {
   //   }
   // };
   // const greeting = getGreeting();
-  const user = useRecoilValue(profile);
 
   return (
     <>
@@ -196,72 +196,13 @@ const ProfileSection = () => {
                       overflowX: "hidden",
                     }}
                   >
-                    <Box sx={{ p: 2 }}>
-                      <Card
-                        sx={{
-                          bgcolor: theme.palette.primary.light,
-                          my: 2,
-                        }}
-                      >
-                        <CardContent>
-                          <Grid container spacing={3} direction="column">
-                            <Grid item>
-                              <Grid
-                                item
-                                container
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">
-                                    Start DND Mode
-                                  </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    color="primary"
-                                    checked={sdm}
-                                    onChange={(e) => setSdm(e.target.checked)}
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                            <Grid item>
-                              <Grid
-                                item
-                                container
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">
-                                    Allow Notifications
-                                  </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    checked={notification}
-                                    onChange={(e) =>
-                                      setNotification(e.target.checked)
-                                    }
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card>
-                      <Divider />
+                    <Box >
                       <List
                         component="nav"
                         sx={{
                           width: "100%",
                           maxWidth: 350,
-                          minWidth: 300,
+                          minWidth: 240,
                           backgroundColor: theme.palette.background.paper,
                           borderRadius: "10px",
                           [theme.breakpoints.down("md")]: {
@@ -272,26 +213,28 @@ const ProfileSection = () => {
                           },
                         }}
                       >
-                        <ListItemButton
-                          sx={{
-                            borderRadius: `${customization.borderRadius}px`,
-                          }}
-                          selected={selectedIndex === 0}
-                          onClick={(event) =>
-                            handleListItemClick(event, 0, "/settings")
+                          {
+                              user?.role === "Admin" && <ListItemButton
+                                  sx={{
+                                      borderRadius: `${customization.borderRadius}px`,
+                                  }}
+                                  selected={selectedIndex === 0}
+                                  onClick={(event) =>
+                                      handleListItemClick(event, 0, "/settings")
+                                  }
+                              >
+                                  <ListItemIcon>
+                                      <IconSettings stroke={1.5} size="1.3rem" />
+                                  </ListItemIcon>
+                                  <ListItemText
+                                      primary={
+                                          <Typography variant="body2">
+                                              Account Settings
+                                          </Typography>
+                                      }
+                                  />
+                              </ListItemButton>
                           }
-                        >
-                          <ListItemIcon>
-                            <IconSettings stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Typography variant="body2">
-                                Account Settings
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
 
                         <ListItemButton
                           sx={{
@@ -321,24 +264,24 @@ const ProfileSection = () => {
                             }
                           />
                         </ListItemButton>
-                        <ListItemButton
-                          sx={{
-                            borderRadius: `${customization.borderRadius}px`,
-                          }}
-                          selected={selectedIndex === 1}
-                          onClick={(event) =>
-                            handleListItemClick(event, 0, "/invite")
-                          }
-                        >
-                          <ListItemIcon>
-                            <IconShare stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Typography variant="body2">Invite</Typography>
-                            }
-                          />
-                        </ListItemButton>
+                          {user?.role === "Admin" && <ListItemButton
+                              sx={{
+                                  borderRadius: `${customization.borderRadius}px`,
+                              }}
+                              selected={selectedIndex === 1}
+                              onClick={(event) =>
+                                  handleListItemClick(event, 0, "/invite")
+                              }
+                          >
+                              <ListItemIcon>
+                                  <IconShare stroke={1.5} size="1.3rem" />
+                              </ListItemIcon>
+                              <ListItemText
+                                  primary={
+                                      <Typography variant="body2">Invite</Typography>
+                                  }
+                              />
+                          </ListItemButton>}
                         <ListItemButton
                           sx={{
                             borderRadius: `${customization.borderRadius}px`,
