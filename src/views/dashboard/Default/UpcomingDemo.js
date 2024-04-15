@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import {
     Button,
@@ -16,7 +16,6 @@ import SkeletonPopularCard from "ui-component/cards/Skeleton/PopularCard";
 import {gridSpacing} from "store/constant";
 import {Box} from "@mui/system";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-import axios from "axios";
 import {useGetUpcomingDemo} from "../../../hooks/useGetUpcomingDemo";
 
 const UpcomingDemo = ({isLoading}) => {
@@ -24,7 +23,7 @@ const UpcomingDemo = ({isLoading}) => {
 
     useEffect(() => {
         refetch()
-    }, []);
+    }, [data]);
 
     return (
         <>
@@ -32,7 +31,7 @@ const UpcomingDemo = ({isLoading}) => {
                 <SkeletonPopularCard/>
             ) : (
                 <MainCard content={false}>
-                    <CardContent style={{height: "445px"}}>
+                    <CardContent style={{height: "400px"}}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12}>
                                 <Grid

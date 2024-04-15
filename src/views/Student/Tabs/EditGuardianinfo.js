@@ -62,7 +62,8 @@ const EditGuardianinfo = ({ guardianData, refetch, guardianCancel }) => {
           console.error("Unable to update guardian", response);
         }
       } catch (error) {
-        console.error("Error deleting data:", error);
+        openNotificationWithIcon("error", error.response.data.message);
+
       }
     },
   });

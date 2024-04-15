@@ -89,7 +89,7 @@ function Inquiryform() {
       openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
       console.error("Error submitting data:", error);
-      openNotificationWithIcon("error","Inquiry all ready Exit");
+      openNotificationWithIcon("error", error.response.data.message);
     }
   };
 

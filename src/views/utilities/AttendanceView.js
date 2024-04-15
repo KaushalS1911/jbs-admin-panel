@@ -3,7 +3,6 @@ import { Box } from "@mui/system";
 import { Radio, RadioGroup, FormControlLabel, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
-import MainCard from "ui-component/cards/MainCard";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import noDataImg from "../../assets/images/no data found.png";
@@ -12,10 +11,9 @@ import {notification} from "antd";
 const AttendanceView = ({ option, startDate, setSelect }) => {
   const [batchview, setBatchviewData] = useState([]);
   const [checked, setChecked] = useState({});
+  /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
-
   const allStatus = ["Present", "Absent", "Late"];
-
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -149,7 +147,6 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
 
           <Box sx={{ textAlign: "right", marginTop: "10px", padding: "10px " }}>
             <Button
-
               variant="contained"
               color="secondary"
               onClick={handleActionSubmit}
