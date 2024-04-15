@@ -18,6 +18,7 @@ import { useRecoilState } from 'recoil'
 import { profile } from '../../atoms/authAtoms'
 import axios from 'axios';
 import Mainbreadcrumbs from 'contants/Mainbreadcrumbs';
+import {useSelector} from "react-redux";
 
 
 const EmployeeAdd = () => {
@@ -29,6 +30,8 @@ const EmployeeAdd = () => {
   };
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile)
+  const {configs} = useSelector((state) => state.configs)
+  const {emp_type, developer_type} = configs
   const navigate = useNavigate();
   const validationSchema = yup.object({
     firstName: yup.string().required('First Name is required'),
@@ -223,8 +226,9 @@ const EmployeeAdd = () => {
                         style: { color: '#5559CE' }
                       }}
                     >
-                      <MenuItem value="Employee">Employee</MenuItem>
-                      <MenuItem value="Faculty">Faculty</MenuItem>
+                      {emp_type && emp_type?.length !== 0 && emp_type.map((e) => {
+                        return(<MenuItem value={e}>{e}</MenuItem>)
+                      })}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -263,12 +267,9 @@ const EmployeeAdd = () => {
                         style: { color: '#5559CE' }
                       }}
                     >
-                      <MenuItem value="Web Designer">Web Designer</MenuItem>
-                      <MenuItem value="Web Developer">Web Developer</MenuItem>
-                      <MenuItem value="Ui/ux Designer">Ui/ux Designer</MenuItem>
-                      <MenuItem value="Flutter Developer">Flutter Developer</MenuItem>
-                      <MenuItem value="Fullstack Devloper">Fullstack Developer</MenuItem>
-                      <MenuItem value="Frontend Devloper">Frontend Developer</MenuItem>
+                      {developer_type && developer_type?.length !== 0 && developer_type.map((e) => {
+                        return(<MenuItem value={e}>{e}</MenuItem>)
+                      })}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -293,7 +294,7 @@ const EmployeeAdd = () => {
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <MobileDatePicker
                       fullWidth
-                      label="Date Of Birth"
+                      label="Date of Birth"
                       clearable
                       value={formik.values.dob}
                       onChange={(date) => formik.setFieldValue('dob', date)}
@@ -320,7 +321,7 @@ const EmployeeAdd = () => {
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <MobileDatePicker
                       fullWidth
-                      label="Joinning Date"
+                      label="Joining Date"
                       value={formik.values.joining_date}
                       onChange={(joining_date) => formik.setFieldValue('joining_date', joining_date)}
                       renderInput={(props) => (

@@ -20,7 +20,7 @@ import PhoneInput from "react-phone-input-2";
 import countrystatecity from "Countrystatecity.json";
 import "react-phone-input-2/lib/style.css";
 import MainCard from "ui-component/cards/MainCard";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
   EditEmployee,
   deleteEmployee,
@@ -37,6 +37,8 @@ import { gridSpacing } from "store/constant";
 import axios from "axios";
 
 const Editemployee = () => {
+  const {configs} = useSelector((state) => state.configs)
+  const {emp_type, developer_type} = configs
   //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -478,8 +480,9 @@ const Editemployee = () => {
                         style: { color: "#5559CE" },
                       }}
                     >
-                      <MenuItem value="Employee">Employee</MenuItem>
-                      <MenuItem value="Faculty">Faculty</MenuItem>
+                      {emp_type && emp_type?.length !== 0 && emp_type.map((e) => {
+                        return(<MenuItem value={e}>{e}</MenuItem>)
+                      })}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -548,18 +551,9 @@ const Editemployee = () => {
                         style: { color: "#5559CE" },
                       }}
                     >
-                      <MenuItem value="Web Designer">Web Designer</MenuItem>
-                      <MenuItem value="Web Developer">Web Developer</MenuItem>
-                      <MenuItem value="Ui/ux Designer">Ui/ux Designer</MenuItem>
-                      <MenuItem value="Flutter Developer">
-                        Flutter Developer
-                      </MenuItem>
-                      <MenuItem value="Fullstack Devloper">
-                        Fullstack Developer
-                      </MenuItem>
-                      <MenuItem value="Frontend Devloper">
-                        Frontend Developer
-                      </MenuItem>
+                      {developer_type && developer_type?.length !== 0 && developer_type.map((e) => {
+                        return(<MenuItem value={e}>{e}</MenuItem>)
+                      })}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -604,7 +598,7 @@ const Editemployee = () => {
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <MobileDatePicker
                       fullWidth
-                      label="Date Of Birth"
+                      label="Date of Birth"
                       clearable
                       value={formik.values.dob}
                       onChange={(date) => formik.setFieldValue("dob", date)}
@@ -640,7 +634,7 @@ const Editemployee = () => {
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <MobileDatePicker
                       fullWidth
-                      label="Joinning Date"
+                      label="Joining Date"
                       clearable
                       value={formik.values.joining_date}
                       onChange={(joining_date) =>
