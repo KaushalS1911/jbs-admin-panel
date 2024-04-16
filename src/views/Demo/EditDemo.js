@@ -19,7 +19,6 @@ import dayjs from "dayjs";
 import axios from "axios";
 import moment from "moment";
 import { notification } from "antd";
-import {useGetFaculties} from "../../hooks/useGetFaculties";
 import {useRecoilValue} from "recoil";
 import {profile} from "../../atoms/authAtoms";
 const initialValues = {
