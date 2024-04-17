@@ -55,6 +55,16 @@ const AdminMenu = [
 
     },
     {
+        id: "Demo",
+        title: "Demo",
+        type: "item",
+        url: "demo",
+        icon: icons.OndemandVideoIcon,
+        breadcrumbs: false,
+        role: ""
+
+    },
+    {
         id: "Student",
         title: "Student",
         type: "item",
@@ -120,16 +130,6 @@ const AdminMenu = [
         type: "item",
         url: "fees",
         icon: icons.ReceiptIcon,
-        breadcrumbs: false,
-        role: ""
-
-    },
-    {
-        id: "Demo",
-        title: "Demo",
-        type: "item",
-        url: "demo",
-        icon: icons.OndemandVideoIcon,
         breadcrumbs: false,
         role: ""
 
