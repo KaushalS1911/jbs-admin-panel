@@ -17,10 +17,13 @@ import { useGetAccountData } from "../../../hooks/useGetAccountData";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfigs } from "../../Setting/SettingSlice";
 import Loading from "../../../ui-component/Loading";
+import {useRecoilValue} from "recoil";
+import {profile} from "../../../atoms/authAtoms";
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
+  const user = useRecoilValue(profile)
   const { data: account } = useGetAccountData();
   const { data } = useGetDashboardData();
   const { configs } = useSelector((state) => state.configs);
@@ -36,45 +39,79 @@ const Dashboard = () => {
     }
   }, [data, account]);
 
-  const dataObj = [
-    {
-      icon: StudentIc,
-      roles: "Students",
-      roleValue: data?.studentCount || 0,
-      roleColor: "#FE8D3D",
-      linkTo: "/student",
-    },
-    {
-      icon: FacultyIc,
-      roles: "Employees",
-      roleValue: data?.employeeCount || 0,
-      roleColor: "#79AB78",
-      linkTo: "/employee",
-    },
-    {
-      icon: InquiryIc,
-      roles: "Inquiries",
-      roleValue: data?.inquiryCount || 0,
-      roleColor: "#68ACE3",
-      linkTo: "/inquiry",
-    },
-    {
-      icon: LabIc,
-      roles: "Classrooms",
-      roleValue: configs?.classrooms?.length || 0,
-      roleColor: "#A682C7",
-    },
-    {
-      icon: AccountIc,
-      roles: "Account",
-      roleValue:
-          account?.otherInfo?.feesReceived?.totalAmount -
-          account?.otherInfo?.totalExpense ||
-          0,
-      roleColor: "#F35A79",
-      linkTo: "/account",
-    },
-  ];
+  let dataObj
+
+  if(user?.role === "Admin"){
+    dataObj = [
+      {
+        icon: StudentIc,
+        roles: "Students",
+        roleValue: data?.studentCount || 0,
+        roleColor: "#FE8D3D",
+        linkTo: "/student",
+      },
+      {
+        icon: FacultyIc,
+        roles: "Employees",
+        roleValue: data?.employeeCount || 0,
+        roleColor: "#79AB78",
+        linkTo: "/employee",
+      },
+      {
+        icon: InquiryIc,
+        roles: "Inquiries",
+        roleValue: data?.inquiryCount || 0,
+        roleColor: "#68ACE3",
+        linkTo: "/inquiry",
+      },
+      {
+        icon: LabIc,
+        roles: "Classrooms",
+        roleValue: configs?.classrooms?.length || 0,
+        roleColor: "#A682C7",
+      },
+      {
+        icon: AccountIc,
+        roles: "Account",
+        roleValue:
+            account?.otherInfo?.feesReceived?.totalAmount -
+            account?.otherInfo?.totalExpense ||
+            0,
+        roleColor: "#F35A79",
+        linkTo: "/account",
+      },
+    ];
+  }else{
+    dataObj = [
+      {
+        icon: StudentIc,
+        roles: "Students",
+        roleValue: data?.studentCount || 0,
+        roleColor: "#FE8D3D",
+        linkTo: "/student",
+      },
+      {
+        icon: FacultyIc,
+        roles: "Employees",
+        roleValue: data?.employeeCount || 0,
+        roleColor: "#79AB78",
+        linkTo: "/employee",
+      },
+      {
+        icon: InquiryIc,
+        roles: "Inquiries",
+        roleValue: data?.inquiryCount || 0,
+        roleColor: "#68ACE3",
+        linkTo: "/inquiry",
+      },
+      {
+        icon: LabIc,
+        roles: "Classrooms",
+        roleValue: configs?.classrooms?.length || 0,
+        roleColor: "#A682C7",
+      },
+    ];
+  }
 
   return (
       <>

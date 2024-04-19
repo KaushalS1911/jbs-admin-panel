@@ -69,7 +69,7 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 
   const handleLeftDrawerToggle = () => {
-    dispatch(setMenu(!leftDrawerOpened)); // Dispatching the action
+    dispatch(setMenu(!leftDrawerOpened));
   };
 
   return (

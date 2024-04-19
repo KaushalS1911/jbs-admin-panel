@@ -34,155 +34,155 @@ const icons = {
 
 const user = JSON.parse(localStorage.getItem("user"))
 
-const AdminMenu = [
-    {
-        id: "default",
-        title: "Dashboard",
-        type: "item",
-        url: "dashboard",
-        icon: icons.DashboardIcon,
-        breadcrumbs: false,
-        role: ""
-    },
-    {
-        id: "Inquiry",
-        title: "Inquiry",
-        type: "item",
-        url: "inquiry",
-        icon: icons.CalendarTodayIcon,
-        breadcrumbs: false,
-        role: ""
+const userMenu = [];
 
-    },
-    {
-        id: "Demo",
-        title: "Demo",
-        type: "item",
-        url: "demo",
-        icon: icons.OndemandVideoIcon,
-        breadcrumbs: false,
-        role: ""
+if(user){
+    const AdminMenu = [
+        {
+            id: "default",
+            title: "Dashboard",
+            type: "item",
+            url: "dashboard",
+            icon: icons.DashboardIcon,
+            breadcrumbs: false,
+            role: ""
+        },
+        {
+            id: "Inquiry",
+            title: "Inquiry",
+            type: "item",
+            url: "inquiry",
+            icon: icons.CalendarTodayIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Student",
-        title: "Student",
-        type: "item",
-        url: "student",
-        icon: icons.Person4Icon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Demo",
+            title: "Demo",
+            type: "item",
+            url: "demo",
+            icon: icons.OndemandVideoIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Batches",
-        title: "Batches",
-        type: "item",
-        url: "batches",
-        icon: icons.ReduceCapacityIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Student",
+            title: "Student",
+            type: "item",
+            url: "student",
+            icon: icons.Person4Icon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Employee",
-        title: "Employee",
-        type: "item",
-        url: "employee",
-        icon: icons.Diversity3Icon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Batches",
+            title: "Batches",
+            type: "item",
+            url: "batches",
+            icon: icons.ReduceCapacityIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Calendar",
-        title: "Calendar",
-        type: "item",
-        url: "calendar",
-        icon: icons.CalendarMonthIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Employee",
+            title: "Employee",
+            type: "item",
+            url: "employee",
+            icon: icons.Diversity3Icon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Task",
-        title: "Task",
-        type: "item",
-        url: "task",
-        icon: icons.AddTaskIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Calendar",
+            title: "Calendar",
+            type: "item",
+            url: "calendar",
+            icon: icons.CalendarMonthIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Account",
-        title: "Account",
-        type: "item",
-        url: "account",
-        icon: icons.AccountBalanceIcon,
-        breadcrumbs: false,
-        role: "Admin"
+        },
+        {
+            id: "Task",
+            title: "Task",
+            type: "item",
+            url: "task",
+            icon: icons.AddTaskIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Fees",
-        title: "Fees",
-        type: "item",
-        url: "fees",
-        icon: icons.ReceiptIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Account",
+            title: "Account",
+            type: "item",
+            url: "account",
+            icon: icons.AccountBalanceIcon,
+            breadcrumbs: false,
+            role: "Admin"
 
-    },
-    {
-        id: "Attendance",
-        title: "Attendance",
-        type: "item",
-        url: "attendance",
-        icon: icons.HowToRegIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Fees",
+            title: "Fees",
+            type: "item",
+            url: "fees",
+            icon: icons.ReceiptIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Seminar",
-        title: "Seminar",
-        type: "item",
-        url: "seminar",
-        icon: icons.ReviewsIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Attendance",
+            title: "Attendance",
+            type: "item",
+            url: "attendance",
+            icon: icons.HowToRegIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Expenses",
-        title: "Expenses",
-        type: "item",
-        url: "expense",
-        icon: icons.CurrencyRupeeIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Seminar",
+            title: "Seminar",
+            type: "item",
+            url: "seminar",
+            icon: icons.ReviewsIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-    {
-        id: "Logs",
-        title: "Logs",
-        type: "item",
-        url: "logs",
-        icon: icons.GradingIcon,
-        breadcrumbs: false,
-        role: ""
+        },
+        {
+            id: "Expenses",
+            title: "Expenses",
+            type: "item",
+            url: "expense",
+            icon: icons.CurrencyRupeeIcon,
+            breadcrumbs: false,
+            role: ""
 
-    },
-]
+        },
+        {
+            id: "Logs",
+            title: "Logs",
+            type: "item",
+            url: "logs",
+            icon: icons.GradingIcon,
+            breadcrumbs: false,
+            role: ""
 
-function getMenuItemsByRole(user) {
-    if(user?.role === "Admin"){
-        return AdminMenu
-    }else{
-        return AdminMenu.filter(menuItem => menuItem?.role !== "Admin");
-    }
+        },
+    ]
+
+    const userRole = user.role;
+
+    userMenu.push(...AdminMenu.filter(menuItem => menuItem.role === "" || menuItem.role === userRole));
 }
 
-export const userMenu = getMenuItemsByRole(user);
+export { userMenu };
 
