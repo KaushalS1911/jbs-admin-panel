@@ -32,12 +32,7 @@ const icons = {
     GradingIcon
 };
 
-const user = JSON.parse(localStorage.getItem("user"))
-
-const userMenu = [];
-
-if(user){
-    const AdminMenu = [
+const userMenu = [
         {
             id: "default",
             title: "Dashboard",
@@ -178,11 +173,6 @@ if(user){
 
         },
     ]
-
-    const userRole = user.role;
-
-    userMenu.push(...AdminMenu.filter(menuItem => menuItem.role === "" || menuItem.role === userRole));
-}
 
 export { userMenu };
 

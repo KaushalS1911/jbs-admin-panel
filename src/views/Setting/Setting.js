@@ -6,9 +6,11 @@ import {
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {getConfigs} from "./SettingSlice";
+import {useRecoilValue} from "recoil";
+import {profile} from "../../atoms/authAtoms";
 
 function Setting() {
-
+    const user = useRecoilValue(profile)
     const dispatch = useDispatch()
 
     const backgroundImageUrl =
@@ -44,7 +46,7 @@ function Setting() {
     };
 
     useEffect(() => {
-        dispatch(getConfigs())
+        dispatch(getConfigs(user.company_id))
     }, []);
 
 

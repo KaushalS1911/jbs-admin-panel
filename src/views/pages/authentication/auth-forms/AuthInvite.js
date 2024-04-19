@@ -52,7 +52,7 @@ const AuthInvite = ({ setIsLoading }) => {
 
 
   useEffect(() => {
-    dispatch(getConfigs());
+    dispatch(getConfigs(profileData.company_id));
   }, []);
 
   const handleClickShowPassword = () => {

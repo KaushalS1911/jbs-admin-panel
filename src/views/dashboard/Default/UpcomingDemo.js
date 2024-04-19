@@ -19,11 +19,11 @@ import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import {useGetUpcomingDemo} from "../../../hooks/useGetUpcomingDemo";
 
 const UpcomingDemo = ({isLoading}) => {
-    const {data, refetch} = useGetUpcomingDemo()
+    const { data, refetch } = useGetUpcomingDemo();
 
     useEffect(() => {
-        refetch()
-    }, [data]);
+        refetch();
+    }, [data, refetch]);
 
     return (
         <>
@@ -59,7 +59,7 @@ const UpcomingDemo = ({isLoading}) => {
                                 <Table aria-label="table with ellipsis texts" noWrap>
                                     <TableBody style={{cursor: "pointer"}}>
                                         {data && data.length !== 0 && data.map((entry, index) => {
-                                            const faculty_name = entry.faculty_name.split(" ")[0];
+                                            const faculty_name = entry.faculty_name;
                                             const avatarPhotoUrl = `https://api.adorable.io/avatars/100/${faculty_name}.png`;
                                             return (
                                                 <tr
@@ -156,11 +156,11 @@ const UpcomingDemo = ({isLoading}) => {
                             </Grid>
                         </Grid>
                     </CardContent>
-                    <CardActions sx={{padding: "20px 0", justifyContent: "center"}}>
+                    <CardActions sx={{padding: "10px 0", justifyContent: "center"}}>
                         <Button
                             size="small"
                             disableElevation
-                            sx={{fontSize: "14px", color: "#5559CE", fontWeight: "500"}}
+                            sx={{fontSize: "14px", color: "#5559CE", fontWeight: "500", marginTop: 6}}
                         >
                             View All
                             <ChevronRightOutlinedIcon/>

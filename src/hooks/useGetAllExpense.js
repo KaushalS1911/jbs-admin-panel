@@ -1,8 +1,10 @@
 import { useQuery } from "react-query";
 import axios from "axios";
+import {useRecoilValue} from "recoil";
+import {profile} from "../atoms/authAtoms";
 
-const user = JSON.parse(localStorage.getItem("user"));
 export const useGetAllExpenses = (page, perPage, searchText) => {
+  const user = useRecoilValue(profile)
   return useQuery(["expense"], async () => {
     const url =
       searchText.trim() !== ""

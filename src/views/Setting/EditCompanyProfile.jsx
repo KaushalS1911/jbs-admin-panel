@@ -11,8 +11,11 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import {Link} from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PageTitle from "../../contants/PageTitle";
+import {useRecoilValue} from "recoil";
+import {profile} from "../../atoms/authAtoms";
 
 function EditCompanyProfile() {
+    const user = useRecoilValue(profile)
     const [profilePic, setProfilePic] = useState(null);
     const {configs} = useSelector((state) => state.configs)
     const dispatch = useDispatch()
@@ -29,7 +32,7 @@ function EditCompanyProfile() {
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
         setProfilePic(file)
-        const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs?.company_id}/company-logo`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/company-logo`;
 
         const formData = new FormData();
         formData.append("logo_url", file, file.name);
@@ -41,7 +44,7 @@ function EditCompanyProfile() {
                 },
             });
             openNotificationWithIcon("success", response.data.data.message);
-            dispatch(getConfigs())
+            dispatch(getConfigs(user.company_id))
         } catch (error) {
             console.error("Upload error:", error);
         }

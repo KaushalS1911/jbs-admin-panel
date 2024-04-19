@@ -24,7 +24,7 @@ function Classrooms() {
         const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs.company_id}/configs/${configs._id}`;
         const payload = {...configs, classrooms: [...configs.classrooms, inputVal]}
         axios.put(apiEndpoint, payload).then((res) => {
-            dispatch(getConfigs())
+            dispatch(getConfigs(configs.company_id))
             setInputVal("")
         }).catch((err) => console.log(err))
     }
@@ -34,7 +34,7 @@ function Classrooms() {
         const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs.company_id}/configs/${configs._id}`;
         const payload = {...configs, classrooms: filteredClassrooms}
         axios.put(apiEndpoint, payload).then((res) => {
-            dispatch(getConfigs())
+            dispatch(getConfigs(configs.company_id))
         }).catch((err) => console.log(err))
     }
 

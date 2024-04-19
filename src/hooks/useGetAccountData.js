@@ -12,7 +12,7 @@ export const useGetAccountData = () => {
             const startDate = today.startOf('month').format("YYYY-MM-DD");
             const endDate = today.endOf('month').format("YYYY-MM-DD");
 
-            const apiUrl = `${process.env.REACT_APP_API_URL}${user.company_id}/account?startDate=${startDate}&endDate=${endDate}`;
+            const apiUrl = `${process.env.REACT_APP_API_URL}${user?.company_id}/account?startDate=${startDate}&endDate=${endDate}`;
             return axios
                 .get(apiUrl, {
                     withCredentials: false,

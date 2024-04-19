@@ -19,6 +19,7 @@ export const useLogout = () => {
       .then((res) => {
         if (res.status === 200) {
           setProfileData({})
+          localStorage.clear()
           navigate('/login', { replace: true })
         }
       })

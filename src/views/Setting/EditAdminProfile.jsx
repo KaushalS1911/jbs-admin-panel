@@ -16,8 +16,11 @@ import {Box} from "@mui/system";
 import MainCard from "ui-component/cards/MainCard";
 import instance from "helpers/axios";
 import PageTitle from "../../contants/PageTitle";
+import {useRecoilValue} from "recoil";
+import {profile} from "../../atoms/authAtoms";
 
 function EditAdminProfile() {
+    const user = useRecoilValue(profile)
     const [profilePic, setProfilePic] = useState("");
     const [userData, setUserData] = useState({
         firstName: "",
@@ -28,7 +31,6 @@ function EditAdminProfile() {
 
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
-        const user = JSON.parse(localStorage.getItem("user"));
         const apiEndpoint = `${process.env.REACT_APP_LOGIN_URL}users/${user?._id}/profile-pic`;
 
         if (file) {

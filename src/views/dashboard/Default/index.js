@@ -30,10 +30,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getConfigs());
-  }, [dispatch]);
-
-  useEffect(() => {
+    dispatch(getConfigs(user.company_id));
     if (data && account) {
       setLoading(false);
     }
