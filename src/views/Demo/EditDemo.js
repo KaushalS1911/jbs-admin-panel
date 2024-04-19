@@ -19,6 +19,8 @@ import dayjs from "dayjs";
 import axios from "axios";
 import moment from "moment";
 import { notification } from "antd";
+import {useRecoilValue} from "recoil";
+import {profile} from "../../atoms/authAtoms";
 const initialValues = {
   faculty_name: "",
   note: "",
@@ -32,11 +34,35 @@ const validationSchema = Yup.object({
 });
 const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
   const [formData, setFormData] = useState("");
+  const [faculties, setFaculties] = useState([])
+  const user = useRecoilValue(profile)
+
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
     });
   };
+
+  useEffect(() => {
+    fetchFaculties()
+  }, []);
+
+  function fetchFaculties(){
+    const apiUrl = `${process.env.REACT_APP_API_URL}${user.company_id}/faculty`;
+    return axios
+        .get(apiUrl, {
+          withCredentials: false,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setFaculties(res.data.data)
+          }
+        })
+        .catch((err) => {
+          return err.response
+        })  }
+
+
   useEffect(() => {
     if (entryData && entryData._id) {
       setFormData(entryData);
@@ -138,11 +164,9 @@ const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
                   onBlur={formik.handleBlur}
                   inputProps={{ style: { color: "#5559CE" } }}
                 >
-                  <MenuItem value={"Arshil sir"}>Arshil sir</MenuItem>
-                  <MenuItem value={"Ariyan sir"}>Ariyan sir</MenuItem>
-                  <MenuItem value={"Abhishek sir"}>Abhishek sir</MenuItem>
-                  <MenuItem value={"Rutvik sir"}>Rutvik sir</MenuItem>
-                  <MenuItem value={"Jay sir"}>Jay sir</MenuItem>
+                  {faculties && faculties?.length !== 0 && faculties.map((e) => {
+                    return(<MenuItem value={`${e.firstName} ${e.lastName}`}>{e.firstName} {e.lastName}</MenuItem>)
+                  })}
                 </Select>
                 {formik.touched.faculty_name && formik.errors.faculty_name && (
                   <div style={{ color: "red" }}>

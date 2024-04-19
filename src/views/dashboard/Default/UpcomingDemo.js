@@ -31,7 +31,7 @@ const UpcomingDemo = ({isLoading}) => {
                 <SkeletonPopularCard/>
             ) : (
                 <MainCard content={false}>
-                    <CardContent style={{height: "400px"}}>
+                    <CardContent style={{height: "400px",overflowY:'scroll'}}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12}>
                                 <Grid

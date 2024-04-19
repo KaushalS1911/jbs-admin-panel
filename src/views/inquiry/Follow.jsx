@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Grid from "@mui/material/Grid";
 import * as Yup from "yup";
 import {
@@ -15,9 +15,32 @@ import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import { useFormik } from "formik";
 import axios from "axios";
 import {notification } from "antd";
+import {useRecoilValue} from "recoil";
+import {profile} from "../../atoms/authAtoms";
 
 
 function Follow({ id, setIsFollowOpen }) {
+  const [faculties, setFaculties] = useState([])
+  const user = useRecoilValue(profile)
+
+  useEffect(() => {
+      fetchFaculties()
+  }, []);
+
+  function fetchFaculties(){
+    const apiUrl = `${process.env.REACT_APP_API_URL}${user.company_id}/faculty`;
+    return axios
+        .get(apiUrl, {
+          withCredentials: false,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setFaculties(res.data.data)
+          }
+        })
+        .catch((err) => {
+          return err.response
+        })  }
   //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -137,11 +160,9 @@ function Follow({ id, setIsFollowOpen }) {
                 onBlur={formik.handleBlur}
                 inputProps={{ style: { color: "#5559CE" } }}
               >
-                <MenuItem value={"Arshil sir"}>Arshil sir</MenuItem>
-                <MenuItem value={"Ariyan sir"}>Ariyan sir</MenuItem>
-                <MenuItem value={"Abhishek sir"}>Abhishek sir</MenuItem>
-                <MenuItem value={"Rutvik sir"}>Rutvik sir</MenuItem>
-                <MenuItem value={"Jay sir"}>Jay sir</MenuItem>
+                {faculties && faculties?.length !== 0 && faculties.map((e) => {
+                  return(<MenuItem value={`${e.firstName} ${e.lastName}`}>{e.firstName} {e.lastName}</MenuItem>)
+                })}
               </Select>
               {formik.touched.faculty_name && formik.errors.faculty_name && (
                 <div style={{ color: "red" }}>{formik.errors.faculty_name}</div>

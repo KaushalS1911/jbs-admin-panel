@@ -20,8 +20,10 @@ import { profile } from "../../../../atoms/authAtoms";
 import { useRecoilState } from "recoil";
 import PhoneInput from "react-phone-input-2";
 import { notification } from "antd";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Select, MenuItem } from "@mui/material";
+import {getConfigs} from "../../../Setting/SettingSlice";
+import instance from "../../../../helpers/axios";
 
 const AuthInvite = ({ setIsLoading }) => {
   const openNotificationWithIcon = (type, message) => {
@@ -30,7 +32,8 @@ const AuthInvite = ({ setIsLoading }) => {
     });
   };
 
-  const { configs: role } = useSelector((state) => state.configs);
+  const dispatch = useDispatch()
+  const { configs} = useSelector((state) => state.configs);
   const [contact, setContact] = useState("+91");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -47,9 +50,10 @@ const AuthInvite = ({ setIsLoading }) => {
   // eslint-disable-next-line
   const [profileData, setProfileData] = useRecoilState(profile);
 
+
   useEffect(() => {
-    registerUser();
-  }, [setProfileData]);
+    dispatch(getConfigs());
+  }, []);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -82,18 +86,14 @@ const AuthInvite = ({ setIsLoading }) => {
     event.preventDefault();
     setLoading(true);
 
-    console.log(userData);
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_LOGIN_URL}/register`,
-        { ...userData }
+      const response = await instance.post(
+        `${process.env.REACT_APP_LOGIN_URL}company/${profileData?.company_id}/invite-user`,
+        { ...userData, company_name: configs?.company_details?.name }
       );
-      const data = response.data.data.tokens;
-      localStorage.setItem("jwt", data.jwt);
-      localStorage.setItem("jwtRefresh", data.jwtRefresh);
       window.location = "/";
       setLoading(false);
-      openNotificationWithIcon("success", "Registration successful!");
+      openNotificationWithIcon("success", "User added successfully!");
       setError("");
     } catch (error) {
       setLoading(false);
@@ -125,7 +125,7 @@ const AuthInvite = ({ setIsLoading }) => {
       })
       .catch(() => {
         setIsLoading(false);
-        openNotificationWithIcon("error", error.response.data.message);
+        openNotificationWithIcon("error", error.response?.data?.message);
       });
   }
 
@@ -174,7 +174,7 @@ const AuthInvite = ({ setIsLoading }) => {
                     <MenuItem value={"Default Role"} disabled>
                       Default Role
                     </MenuItem>
-                    {role.roles.map((item, index) => (
+                    {configs?.roles?.map((item, index) => (
                       <MenuItem key={index} value={item}>
                         {item}
                       </MenuItem>
@@ -232,7 +232,7 @@ const AuthInvite = ({ setIsLoading }) => {
               id="outlined-basic"
               label="Company name"
               name="company_name"
-              value={userData.company_name}
+              value={configs?.company_details?.name}
               onChange={handleChange}
               variant="outlined"
               fullWidth

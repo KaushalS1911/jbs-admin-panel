@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -27,11 +27,11 @@ import { useNavigate } from "react-router-dom";
 import MainCard from "ui-component/cards/MainCard";
 import PhoneInput from "react-phone-input-2";
 import { useDispatch } from "react-redux";
-import { createInquiry } from "store/slices/inquiryslice";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { notification } from "antd";
+import axios from 'axios';
 
 function Inquiryform() {
   const [profileData, setProfileData] = useRecoilState(profile);
@@ -48,7 +48,6 @@ function Inquiryform() {
         "Invalid email format"
       ),
   });
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -79,16 +78,17 @@ function Inquiryform() {
     },
   });
 
-  const submitForm = async (values, resetForm, companyId) => {
+  const submitForm = async (values, { resetForm }) => {
     try {
-      const response = await dispatch(
-        createInquiry({ companyId, data: values })
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}${profileData?.company_id}/inquiry`,
+        values
       );
       resetForm();
       navigate("/inquiry");
       openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
-      console.error("Error submitting data:", error);
+      console.log(error);
       openNotificationWithIcon("error", error.response.data.message);
     }
   };
@@ -105,7 +105,7 @@ function Inquiryform() {
     "UI / UX",
     "Other",
   ];
-  
+
   const handleCheckboxChange = (event) => {
     const selectedOptions = [...formik.values.interested_in];
 
@@ -576,7 +576,7 @@ function Inquiryform() {
               </Grid>
               {/* Interested In */}
               <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
-                <Grid item xl={3} lg={3} md={3} sm={6} xs={12}>
+                <Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
                   <Typography
                     sx={{
                       marginBottom: "10px",

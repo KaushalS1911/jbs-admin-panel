@@ -153,7 +153,11 @@
   }
 }
 .backdropimg {
+<<<<<<< HEAD
   background-image: url("../images/BackGround 1.webp");
+=======
+  background-image: url("../images/bg1.png");
+>>>>>>> 64c534aad53b84d1cd010cbe9d28948d5d644672
   background-repeat: no-repeat;
   background-size: cover;
 }

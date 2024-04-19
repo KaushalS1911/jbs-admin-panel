@@ -12,7 +12,6 @@ export const createInquiry = createAsyncThunk(
       return response;
     } catch (error) {
       console.error("Error creating inquiry:", error);
-      throw error;
     }
   }
 );
