@@ -7,8 +7,21 @@ import {profile} from "../../../../../atoms/authAtoms";
 
 const NavGroup = ({ item }) => {
   const user = useRecoilValue(profile)
-  const listItem = user.role === 'Admin' ? item.children : item.children.filter((e) => e.role === "")
-  const items = listItem?.map((menu) => {
+    const adminMenuItems = item.children.filter((e) => e.role.includes("Admin"))
+    const studentMenuItems = item.children.filter((e) => e.role.includes("Student"))
+    const employeeMenuItems = item.children.filter((e) => e.role.includes("Employee"))
+
+  let listItems
+
+  if(user.role === "Admin"){
+    listItems = adminMenuItems
+  }else if(user.role === "Student"){
+    listItems = studentMenuItems
+  }else{
+    listItems = employeeMenuItems
+  }
+
+  const items = listItems?.map((menu) => {
     switch (menu.type) {
       case 'item':
         return <NavItem key={menu.id} item={menu} level={1} />;
