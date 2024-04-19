@@ -32,7 +32,6 @@ const MenuProps = {
 };
 
 function Batchform({ setIsBatchOpen, fetchData }) {
-  //notification
   const { configs } = useSelector((state) => state.configs);
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -46,7 +45,7 @@ function Batchform({ setIsBatchOpen, fetchData }) {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   useEffect(() => {
     if (students && students.length !== 0) {
@@ -60,7 +59,7 @@ function Batchform({ setIsBatchOpen, fetchData }) {
 
       setOptions(refactoredStudentList);
     }
-  }, []);
+  }, [students]);
 
   const validationSchema = Yup.object({
     technology: Yup.string().required("technology is required"),
@@ -203,7 +202,7 @@ function Batchform({ setIsBatchOpen, fetchData }) {
                   style: { color: "#5559CE" },
                 }}
               >
-                {configs?.classrooms.map((LabItem) => (
+                {configs && configs.classrooms && configs?.classrooms?.length !== 0 && configs?.classrooms.map((LabItem) => (
                   <MenuItem key={LabItem} value={LabItem}>
                     {LabItem}
                   </MenuItem>
@@ -213,31 +212,31 @@ function Batchform({ setIsBatchOpen, fetchData }) {
           </Grid>
           <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
             <Autocomplete
-              multiple
-              options={options}
-              getOptionLabel={(option) =>
-                `${option.firstName} ${option.lastName}`
-              }
-              value={selectedStudents}
-              onChange={(event, newValue) => {
-                setSelectedStudents(newValue);
-              }}
-              fullWidth
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Student Name"
-                  label="Student Name"
-                  variant="outlined"
-                  className="mt-8 mx-4"
-                  // error={errors?.studentIds}
-                  // helperText={errors?.studentIds?.message}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  required
-                />
-              )}
+                multiple
+                options={options}
+                getOptionLabel={(option) =>
+                    `${option.firstName} ${option.lastName}`
+                }
+                value={selectedStudents}
+                onChange={(event, newValue) => {
+                  setSelectedStudents(newValue);
+                }}
+                getOptionSelected={(option, value) =>
+                    option.student_id === value.student_id
+                }
+                fullWidth
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        placeholder="Student Name"
+                        label="Student Name"
+                        variant="outlined"
+                        className="mt-8 mx-4"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                    />
+                )}
             />
           </Grid>
           <Grid>
