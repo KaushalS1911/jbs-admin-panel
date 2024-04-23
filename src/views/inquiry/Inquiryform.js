@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -26,16 +27,17 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { useNavigate } from "react-router-dom";
 import MainCard from "ui-component/cards/MainCard";
 import PhoneInput from "react-phone-input-2";
-import { useDispatch } from "react-redux";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { notification } from "antd";
-import axios from 'axios';
+import axios from "axios";
+import { useState } from "react";
 
 function Inquiryform() {
+  /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
-
+  const [loading, setLoading] = useState(false);
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
@@ -78,18 +80,22 @@ function Inquiryform() {
     },
   });
 
-  const submitForm = async (values, { resetForm }) => {
+  const submitForm = async (values, resetForm) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}${profileData?.company_id}/inquiry`,
         values
       );
+      console.log(response);
+      openNotificationWithIcon("success", response.data.message);
       resetForm();
       navigate("/inquiry");
-      openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
       console.log(error);
       openNotificationWithIcon("error", error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -684,7 +690,7 @@ function Inquiryform() {
                           }
                     }
                   >
-                    Submit
+                    {loading ? <CircularProgress size={24} /> : "Submit"}
                   </Button>
                 </Grid>
               </Grid>

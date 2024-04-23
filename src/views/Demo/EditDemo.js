@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import * as Yup from "yup";
 import {
   Button,
+  CircularProgress,
   FormControl,
   InputLabel, 
   MenuItem,
@@ -34,6 +35,7 @@ const validationSchema = Yup.object({
 });
 const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
   const [formData, setFormData] = useState("");
+  const [loading,setLoading]=useState(false);
   const [faculties, setFaculties] = useState([])
   const user = useRecoilValue(profile)
 
@@ -90,6 +92,7 @@ const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
     };
 
     const user = JSON.parse(localStorage.getItem("user"));
+    setLoading(true);
     try {
       const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${myRowId}/${entryData._id}/updateDemo`;
       const response = await axios.put(apiEndpoint, finalObject);
@@ -98,6 +101,7 @@ const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
         fetchDemo();
         setEditOpen(false);
         openNotificationWithIcon("success", "Demo Update Successfully!");
+        setLoading(false);
       }
     } catch (error) {
       console.error("API Error:", error);
@@ -243,7 +247,7 @@ const EditDemo = ({ entryData, myRowId, setEditOpen, fetchDemo }) => {
                 }}
                 onClick={formik.handleSubmit}
               >
-                Save
+                {loading ? <CircularProgress size={24} /> : "Save"}
               </Button>
             </Grid>
           </Grid>

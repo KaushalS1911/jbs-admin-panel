@@ -70,7 +70,7 @@ export default function StudentMain() {
     return (
         <MainCard className="student-main">
             <Box sx={{ width: '100%' }}>
-                <Stepper activeStep={activeStep}>
+                <Stepper activeStep={activeStep} >
                     {steps.map((label, index) => {
                         const stepProps = {};
                         const labelProps = {};

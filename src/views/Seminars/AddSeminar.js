@@ -70,6 +70,7 @@ const AddSeminar = ({
 }) => {
   const user = useRecoilValue(profile);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   //notification
   const openNotificationWithIcon = (type, message) => {
@@ -122,6 +123,7 @@ const AddSeminar = ({
         attended_role: values.role,
         attended_by: values.user.map((attended_id) => ({ attended_id })),
       };
+      setLoading(true);
       try {
         if (isEdit) {
           const response = await axios.put(
@@ -130,6 +132,7 @@ const AddSeminar = ({
           );
           openNotificationWithIcon("success", response.data.message);
           formik.resetForm();
+          setLoading(false);
         } else {
           const response = await axios.post(
             `${process.env.REACT_APP_API_URL}${user.company_id}/seminar`,
@@ -139,6 +142,7 @@ const AddSeminar = ({
           formik.resetForm();
         }
         handleClose();
+        setLoading(false);
         refetch();
       } catch (error) {
         console.error("Error:", error);

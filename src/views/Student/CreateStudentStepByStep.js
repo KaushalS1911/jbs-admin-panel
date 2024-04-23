@@ -83,7 +83,7 @@ function CreateStudentStepByStep() {
       <Mainbreadcrumbs title={"Student"} />
       <MainCard>
         <div style={{ marginTop: "10px" }}>
-          <Stepper activeStep={activeStep}>
+          <Stepper activeStep={activeStep} sx={{overflowX:'scroll'}}>
             {steps.map((label, index) => (
               <Step key={index}>
                 <StepLabel>{label}</StepLabel>

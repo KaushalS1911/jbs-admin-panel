@@ -10,6 +10,7 @@ import {
   MenuItem,
   InputAdornment,
   Avatar,
+  CircularProgress,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -20,7 +21,7 @@ import PhoneInput from "react-phone-input-2";
 import countrystatecity from "Countrystatecity.json";
 import "react-phone-input-2/lib/style.css";
 import MainCard from "ui-component/cards/MainCard";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   EditEmployee,
   deleteEmployee,
@@ -37,8 +38,8 @@ import { gridSpacing } from "store/constant";
 import axios from "axios";
 
 const Editemployee = () => {
-  const {configs} = useSelector((state) => state.configs)
-  const {emp_type, developer_type} = configs
+  const { configs } = useSelector((state) => state.configs);
+  const { emp_type, developer_type } = configs;
   //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -50,6 +51,7 @@ const Editemployee = () => {
   const navigate = useNavigate();
   const { id } = useParams(); /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
+  const [loading, setLoading] = useState(false);
   const [profilePic, setProfilePic] = useState("");
 
   const [open, setOpen] = useState(false);
@@ -130,7 +132,7 @@ const Editemployee = () => {
         zipcode: values.zipcode,
       },
     };
-
+    setLoading(true);
     try {
       const response = await dispatch(
         updateEmployee({
@@ -141,10 +143,10 @@ const Editemployee = () => {
       );
       navigate("/employee");
       openNotificationWithIcon("success", response.payload.message);
+      setLoading(false);
     } catch (error) {
       console.error("Error updating data:", error);
       openNotificationWithIcon("error", error.response.data.message);
-
     }
   };
 
@@ -183,7 +185,6 @@ const Editemployee = () => {
       openNotificationWithIcon("success", response.payload.data.message);
     } catch (error) {
       openNotificationWithIcon("error", error.response.data.message);
-
     }
   };
 
@@ -295,9 +296,7 @@ const Editemployee = () => {
                         </Typography>
                       </Grid>
                     </Grid>
-                    <Grid>
-                      
-                    </Grid>
+                    <Grid></Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -480,9 +479,11 @@ const Editemployee = () => {
                         style: { color: "#5559CE" },
                       }}
                     >
-                      {emp_type && emp_type?.length !== 0 && emp_type.map((e) => {
-                        return(<MenuItem value={e}>{e}</MenuItem>)
-                      })}
+                      {emp_type &&
+                        emp_type?.length !== 0 &&
+                        emp_type.map((e) => {
+                          return <MenuItem value={e}>{e}</MenuItem>;
+                        })}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -551,9 +552,11 @@ const Editemployee = () => {
                         style: { color: "#5559CE" },
                       }}
                     >
-                      {developer_type && developer_type?.length !== 0 && developer_type.map((e) => {
-                        return(<MenuItem value={e}>{e}</MenuItem>)
-                      })}
+                      {developer_type &&
+                        developer_type?.length !== 0 &&
+                        developer_type.map((e) => {
+                          return <MenuItem value={e}>{e}</MenuItem>;
+                        })}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -853,7 +856,6 @@ const Editemployee = () => {
                   alignItems="flex-end"
                 >
                   <Grid>
-                    {" "}
                     <Button
                       variant="contained"
                       type="submit"
@@ -865,7 +867,7 @@ const Editemployee = () => {
                         color: "#fff",
                       }}
                     >
-                      Save
+                      {loading ? <CircularProgress size={24} /> : "Save"}
                     </Button>
                   </Grid>
                   <Grid>

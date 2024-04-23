@@ -13,7 +13,7 @@ import {
 import { gridSpacing } from "store/constant";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { removeAllStateData, settingFeesDetails } from '../StudentSlice';
+import { removeAllStateData, settingFeesDetails } from "../StudentSlice";
 import FormStepButtons from "../../../ui-component/FormStepButtons";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -21,7 +21,8 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { numberofinstallmentConstants } from "../../../contants/numberofinstallmentConstants";
 import { notification } from "antd";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
 
 const initialValues = {
   total_amount: "",
@@ -45,17 +46,15 @@ const MenuProps = {
 };
 
 const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
 
-
-    //notification
-    const openNotificationWithIcon = (type, message) => {
-      notification[type]({
-        message: message,
-      });
-    };
-
- 
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const { companyId, studentId } = useParams();
   const { personalDetails, addressDetails, guardianDetails } = useSelector(
     (state) => state.student
@@ -98,9 +97,9 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
       const amountPaid = parseFloat(values.amount_paid) || 0;
       const admissionAmount = parseFloat(values.admission_amount) || 0;
       const discountAmt = parseFloat(values.discount) || 0;
-      const noOfInstallments = parseInt(values.no_of_installments) || 0
-      const amountRemaining = totalAmount - amountPaid - admissionAmount - discountAmt;
-
+      const noOfInstallments = parseInt(values.no_of_installments) || 0;
+      const amountRemaining =
+        totalAmount - amountPaid - admissionAmount - discountAmt;
 
       const finalobj = {
         ...values,
@@ -166,6 +165,7 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         no_of_installments,
         discount,
       };
+      setLoading(true);
       await axios({
         method: "POST",
         baseURL: `${process.env.REACT_APP_API_URL}${companyId}/`,
@@ -175,14 +175,18 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
       })
         .then((res) => {
           if (res.status === 200) {
-            dispatch(removeAllStateData())
-            openNotificationWithIcon(res.data.data.message)
+            dispatch(removeAllStateData());
+            console.log(res);
+            openNotificationWithIcon(res.data.data.message);
             window.location = "/student";
           }
         })
         .catch((error) => {
-          dispatch(removeAllStateData())
-          openNotificationWithIcon(error.data.message)
+          dispatch(removeAllStateData());
+          openNotificationWithIcon(error.data.message);
+        })
+        .finally(() => {
+          setLoading(false);
         });
       resetForm();
     },
@@ -431,13 +435,17 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
                 sx={{ padding: "30px 20px " }}
               >
                 <Stack spacing={2} direction="row">
-                  <FormStepButtons
-                    activeStep={activeStep}
-                    steps={steps}
-                    handleBack={handleBack}
-                    handleNext={formik.handleSubmit}
-                    handleReset={handleReset}
-                  />
+                  {loading ? (
+                    <CircularProgress size={24} />
+                  ) : (
+                    <FormStepButtons
+                      activeStep={activeStep}
+                      steps={steps}
+                      handleBack={handleBack}
+                      handleNext={formik.handleSubmit}
+                      handleReset={handleReset}
+                    />
+                  )}
                 </Stack>
               </Grid>
             </Grid>

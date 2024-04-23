@@ -62,7 +62,7 @@ const Index = () => {
     setOpen(false)
   }
 
-  //
+
   const user = JSON.parse(localStorage.getItem('user'))
   const fetchDemo = async () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/demo`

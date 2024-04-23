@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import * as Yup from "yup";
 import {
   Button,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -14,33 +15,35 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import { useFormik } from "formik";
 import axios from "axios";
-import {notification } from "antd";
-import {useRecoilValue} from "recoil";
-import {profile} from "../../atoms/authAtoms";
-
+import { notification } from "antd";
+import { useRecoilValue } from "recoil";
+import { profile } from "../../atoms/authAtoms";
 
 function Follow({ id, setIsFollowOpen }) {
-  const [faculties, setFaculties] = useState([])
-  const user = useRecoilValue(profile)
+  const [faculties, setFaculties] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const user = useRecoilValue(profile);
 
   useEffect(() => {
-      fetchFaculties()
+    fetchFaculties();
   }, []);
 
-  function fetchFaculties(){
+  function fetchFaculties() {
     const apiUrl = `${process.env.REACT_APP_API_URL}${user.company_id}/faculty`;
     return axios
-        .get(apiUrl, {
-          withCredentials: false,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            setFaculties(res.data.data)
-          }
-        })
-        .catch((err) => {
-          return err.response
-        })  }
+      .get(apiUrl, {
+        withCredentials: false,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setFaculties(res.data.data);
+        }
+      })
+      .catch((err) => {
+        return err.response;
+      });
+  }
   //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -81,18 +84,20 @@ function Follow({ id, setIsFollowOpen }) {
           note: values.note,
           date: formattedDate,
           time: formattedTime,
-          status: "Pending"
+          status: "Pending",
         },
       ],
       inquiry_id: id,
     };
+    setLoading(true);
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/demo`;
       const response = await axios.post(apiEndpoint, finalObject);
       openNotificationWithIcon("success", response.data.message);
-      setIsFollowOpen(false)
+      setIsFollowOpen(false);
       resetForm();
+      setLoading(false);
     } catch (error) {
       openNotificationWithIcon("error", error.response.data.message);
     }
@@ -160,9 +165,15 @@ function Follow({ id, setIsFollowOpen }) {
                 onBlur={formik.handleBlur}
                 inputProps={{ style: { color: "#5559CE" } }}
               >
-                {faculties && faculties?.length !== 0 && faculties.map((e) => {
-                  return(<MenuItem value={`${e.firstName} ${e.lastName}`}>{e.firstName} {e.lastName}</MenuItem>)
-                })}
+                {faculties &&
+                  faculties?.length !== 0 &&
+                  faculties.map((e) => {
+                    return (
+                      <MenuItem value={`${e.firstName} ${e.lastName}`}>
+                        {e.firstName} {e.lastName}
+                      </MenuItem>
+                    );
+                  })}
               </Select>
               {formik.touched.faculty_name && formik.errors.faculty_name && (
                 <div style={{ color: "red" }}>{formik.errors.faculty_name}</div>
@@ -226,7 +237,7 @@ function Follow({ id, setIsFollowOpen }) {
               }}
               onClick={formik.handleSubmit}
             >
-              Add Demo
+              {loading ? <CircularProgress size={24} /> : "Add Demo"}
             </Button>
           </Grid>
         </Grid>

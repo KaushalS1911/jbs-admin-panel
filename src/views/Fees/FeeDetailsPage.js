@@ -3,12 +3,14 @@ import {
   Avatar,
   Button,
   Chip,
+  CircularProgress,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Paper,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useGetSingleStudent } from "../../hooks/useGetSingleStudent";
@@ -39,12 +41,23 @@ function FeeDetailsPage() {
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [studentData, setStudentData] = useState(null);
+  const [dueamount, setDueamount] = useState(0);
+  const [paymentAmount, setPaymentAmount] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (data) {
       setStudentData(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      const totalFees = data?.fees_info?.amount_remaining;
+      const due = totalFees - paymentAmount;
+      setDueamount(due);
+    }
+  }, [data, paymentAmount]);
 
   const handleEditClick = (row) => {
     setSelectedRow(row);
@@ -59,13 +72,17 @@ function FeeDetailsPage() {
   const handleSaveUpdate = async () => {
     const finalObject = {
       status: selectedValue,
+      payment_amount: paymentAmount,
     };
+    setLoading(true);
     try {
       const apiEndpoint = `${process.env.REACT_APP_API_URL}${profileData.company_id}/student/${studentId}/fee-detail/${selectedRow.id}`;
       const response = await axios.put(apiEndpoint, finalObject);
-      setOpenDialog(false);
       if (response.status === 200) {
+        console.log(response);
+        setOpenDialog(false);
         refetch();
+        setLoading(false);
       }
     } catch (error) {
       console.error("API Error:", error);
@@ -321,8 +338,22 @@ function FeeDetailsPage() {
               margin: "0 20px",
               cursor: "pointer",
               fontSize: "30px",
+              visibility: (() => {
+                if (
+                  profileData.role === "Admin" &&
+                  params.row.status === "Paid"
+                ) {
+                  return "visible";
+                } else {
+                  return params.row.status === "Paid" ? "hidden" : "visible";
+                }
+              })(),
             }}
             onClick={() => handleEditClick(params.row)}
+            disabled={
+              profileData.role === "Student" ||
+              profileData.role === "Receptionist"
+            }
           />
           <PrintIcon
             variant="outlined"
@@ -341,18 +372,17 @@ function FeeDetailsPage() {
     },
   ];
 
-  const rows = data?.fees_info?.installments
-    ? data.fees_info.installments.map((item, index) => ({
-        srNo: index + 1,
-        id: item._id,
-        installment_date: moment(item.installment_date).format("DD/MM/YYYY"),
-        payment_date: item.payment_date
-          ? moment(item.payment_date).format("DD/MM/YYYY")
-          : "--",
-        amount: item.amount,
-        status: item.status || "Pending",
-      }))
-    : [];
+  const rows =
+    data?.fees_info?.installments?.map((item, index) => ({
+      srNo: index + 1,
+      id: item._id,
+      installment_date: moment(item.installment_date).format("DD/MM/YYYY"),
+      payment_date: item.payment_date
+        ? moment(item.payment_date).format("DD/MM/YYYY")
+        : "--",
+      amount: item.amount,
+      status: item.status || "Pending",
+    })) || [];
 
   return (
     <>
@@ -361,9 +391,7 @@ function FeeDetailsPage() {
         <Typography
           variant="h4"
           style={{ textAlign: "right", padding: "10px" }}
-        >
-          {/* Total Amount: {data.fees_info.total_amount} INR */}
-        </Typography>
+        ></Typography>
         <Grid container sx={{ margin: "0.5rem" }} spacing={2}>
           <Grid item>
             <Avatar
@@ -411,15 +439,9 @@ function FeeDetailsPage() {
             <DataGrid
               rows={rows}
               columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 5 },
-                },
-              }}
               disableRowSelectionOnClick
               hideFooter={true}
-              pageSizeOptions={[5, 10]}
-              checkboxSelection
+              checkboxSelection={false}
               sx={{
                 "& .MuiDataGrid-columnHeaders": {
                   backgroundColor: "#ede7f6",
@@ -440,9 +462,10 @@ function FeeDetailsPage() {
           style={{ textAlign: "right", padding: "10px" }}
         >
           <span style={{ fontWeight: 300 }}>Amount Paid:</span>
-          {data?.fees_info?.amount_paid + data?.fees_info?.admission_amount } INR
+          {data?.fees_info?.amount_paid + data?.fees_info?.admission_amount} INR
         </Typography>
 
+        {/*Status CHanges Boxses */}
         <Dialog
           open={openDialog}
           onClose={handleCloseDialog}
@@ -526,6 +549,23 @@ function FeeDetailsPage() {
                   <MenuItem value="Unpaid">Unpaid</MenuItem>
                   <MenuItem value="Pending">Pending</MenuItem>
                 </Select>
+                <Grid sx={{ marginTop: "10px" }}>
+                  <TextField
+                    label="Amount"
+                    id="payment_amount"
+                    name="payment_amount"
+                    value={paymentAmount}
+                    onChange={(e) => setPaymentAmount(Number(e.target.value))}
+                    variant="outlined"
+                    fullWidth
+                    InputLabelProps={{
+                      style: { color: "#5559CE" },
+                    }}
+                  />
+                  <Typography sx={{ p: 1, fw: 700 }}>
+                    Due Amount: {dueamount}
+                  </Typography>
+                </Grid>
               </FormControl>
             </Grid>
           </DialogContent>
@@ -541,7 +581,7 @@ function FeeDetailsPage() {
                 color: "#ede7f6",
               }}
             >
-              Save
+              {loading ? <CircularProgress size={24} /> : "Save"}
             </Button>
             <Button
               onClick={handleCloseDialog}

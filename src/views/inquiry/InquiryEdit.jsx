@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -13,7 +14,6 @@ import {
   InputLabel,
   ListItemText,
   MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
@@ -53,8 +53,10 @@ function InquiryEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
+  const [loading, setLoading] = useState(false);
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -114,6 +116,7 @@ function InquiryEdit() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
       const updatedInquiry = {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -137,6 +140,7 @@ function InquiryEdit() {
           zip_code: values.zip_code,
         },
       };
+      setLoading(true);
       try {
         const response = await dispatch(
           updateInquiry({
@@ -147,9 +151,9 @@ function InquiryEdit() {
         );
         navigate("/Inquiry");
         openNotificationWithIcon("success", response.payload.data.message);
+        setLoading(false);
       } catch (error) {
         console.error("Error updating data:", error);
-        openNotificationWithIcon("error", response.payload.data.message);
       }
     },
   });
@@ -562,7 +566,7 @@ function InquiryEdit() {
                         id="demo-simple-select"
                         label="City"
                         name="city"
-                        value={formik.values.city || "Default City"} // Set a default value if formik.values.city is not in the available options
+                        value={formik.values.city || "Default City"}
                         onChange={formik.handleChange}
                         variant="outlined"
                         InputLabelProps={{
@@ -862,19 +866,17 @@ function InquiryEdit() {
                   alignItems="flex-end"
                 >
                   <Grid>
-                    {" "}
                     <Button
                       variant="contained"
                       type="submit"
                       style={{
-                        width: { xs: "150px" },
                         marginTop: "20px",
                         display: "block",
                         backgroundColor: "#5559CE",
                         color: "#fff",
                       }}
                     >
-                      Save
+                     {loading ? <CircularProgress size={24} /> : "Save"}
                     </Button>
                   </Grid>
                   <Grid>
@@ -882,7 +884,6 @@ function InquiryEdit() {
                       variant="contained"
                       onClick={handleOpenDialog}
                       style={{
-                        width: { xs: "150px" },
                         marginTop: "20px",
                         marginLeft: "10px",
                         display: "block",

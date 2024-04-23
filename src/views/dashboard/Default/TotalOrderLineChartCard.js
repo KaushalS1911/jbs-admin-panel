@@ -6,13 +6,6 @@ import { Avatar, Box, Grid, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import StudentIc from '../../../assets/images/icone deshbord/Vector (1).png';
 
-// material-ui
-import { styled } from '@mui/material/styles';
-import { Avatar, Box, Grid, Typography } from '@mui/material';
-
-// project imports
-import MainCard from 'ui-component/cards/MainCard';
-import StudentIc from '../../../assets/images/icone deshbord/Vector (1).png';
 
 
 const CardWrapper = styled(MainCard)(() => ({

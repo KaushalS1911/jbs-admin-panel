@@ -238,7 +238,7 @@ function Batch() {
               fontSize: "30px",
             }}
             onClick={() => {
-              handleOpenConfirmationDialog(params.row.id); // Assuming rowId should be id
+              handleOpenConfirmationDialog(params.row.id); 
             }}
           />
         </div>

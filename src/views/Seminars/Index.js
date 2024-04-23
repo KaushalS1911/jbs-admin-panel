@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -53,6 +54,7 @@ const Index = () => {
   const [seminarOverData, setSeminarOverData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const user = useRecoilValue(profile);
+  const [loading, setLoading] = useState(false);
 
   const handleTaskClick = () => {
     setOpenAddTaskDialog(true);
@@ -166,12 +168,12 @@ const Index = () => {
       }))
     : [];
 
-    const handleSelectionModelChange = (selectionModel) => {
-      const selectedRowIds = selectionModel
-        .map((selectedIndex) => rows[selectedIndex]?._id)
-        .filter((id) => id !== undefined);
-      setSelectedRows(selectedRowIds);
-    };
+  const handleSelectionModelChange = (selectionModel) => {
+    const selectedRowIds = selectionModel
+      .map((selectedIndex) => rows[selectedIndex]?._id)
+      .filter((id) => id !== undefined);
+    setSelectedRows(selectedRowIds);
+  };
 
   const handleRowIdlick = (params) => {
     setEditId(params.row._id);
@@ -184,11 +186,13 @@ const Index = () => {
       try {
         const response = await axios.delete(
           `${process.env.REACT_APP_API_URL}${user.company_id}/delete/multipleSeminar`,
-          {  data: { ids: selectedRows } }
+          { data: { ids: selectedRows } }
         );
         if (response.status === 200) {
           refetch();
-          const remainingRows = selectedRows.filter(id => !rows.find(row => row._id === id));
+          const remainingRows = selectedRows.filter(
+            (id) => !rows.find((row) => row._id === id)
+          );
           setSelectedRows(remainingRows);
           openNotificationWithIcon("success", response.data.message);
           refetch();
@@ -209,6 +213,7 @@ const Index = () => {
   };
 
   const handleSaveAttendance = async () => {
+    setLoading(true);
     try {
       const seminarToUpdate = {
         ...seminar.data,
@@ -223,6 +228,7 @@ const Index = () => {
         setOpenHowToRegDialog(false);
         refetch();
         openNotificationWithIcon("success", response.data.message);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error updating attendance:", error);
@@ -386,7 +392,8 @@ const Index = () => {
                         />
                       }
                     >
-                      Add Seminar
+                     Add Seminar
+                      
                     </Button>
                     <Button
                       sx={{
@@ -583,7 +590,7 @@ const Index = () => {
             Close
           </Button>
           <Button onClick={handleSaveAttendance} color="primary">
-            Save
+            {loading ? <CircularProgress size={24} /> : "Save"}
           </Button>
         </DialogActions>
       </Dialog>

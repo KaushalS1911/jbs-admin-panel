@@ -19,7 +19,7 @@ const Logo = () => {
 
     return (
         <>
-            <Avatar alt="Company Logo" src={companyLogo} sx={{ width: 56, height: 56, padding: "0" }}/>
+            <Avatar alt="Company Logo" src={companyLogo} sx={{ width: 60, height: 60, padding: "0" ,background:'none'}}/>
         </>
     );
 };

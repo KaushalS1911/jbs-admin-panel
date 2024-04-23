@@ -17,6 +17,7 @@ import { RestoreFromTrashTwoTone } from "@mui/icons-material";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetAllEmployees } from "../../hooks/useGetAllEmployees";
 import axios from "axios";
+
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import { notification } from "antd";
@@ -37,6 +38,7 @@ const Employee = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const user = useRecoilState(profile);
+  
   //Employee Data Fetch
   const { data: Employees, refetch } = useGetAllEmployees(
     page + 1,

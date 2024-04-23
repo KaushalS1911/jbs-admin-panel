@@ -35,17 +35,11 @@ const ProfileSection = () => {
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
   const { mutate } = useLogout();
-
-  const [sdm, setSdm] = useState(true);
-  const [notification, setNotification] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const user = useRecoilValue(profile)
 
   const anchorRef = useRef(null);
-  /**
-   * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-   * */
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {

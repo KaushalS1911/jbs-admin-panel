@@ -57,6 +57,7 @@ export const Expence = () => {
   const [editButton, setEditButton] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [currentDate, setCurrentDate] = useState(null);
+  const [loading,setLoading]=useState(false)
 
   useEffect(() => {
     refetch();
@@ -211,6 +212,7 @@ export const Expence = () => {
         amount: values.amount,
         company_id: profileData.company_id,
       };
+      setLoading(true)
       try {
         if (editButton == true) {
           await axios
@@ -223,6 +225,7 @@ export const Expence = () => {
               action.resetForm();
               setAddModal(false);
               refetch();
+      setLoading(false);
             })
             .catch((err) => console.log(err));
         } else {
@@ -233,6 +236,7 @@ export const Expence = () => {
               action.resetForm();
               setAddModal(false);
               refetch();
+      setLoading(false);
             })
             .catch((err) => console.log(err));
         }
@@ -555,7 +559,7 @@ export const Expence = () => {
                   "&:hover": { backgroundColor: "#5559CE" },
                 }}
               >
-                {editButton ? "Edit" : "Add Expense"}
+               {loading ? <CircularProgress size={24} /> : (editButton ? "Edit" : "Add Expense")}
               </Button>
             </Grid>
           </Grid>
