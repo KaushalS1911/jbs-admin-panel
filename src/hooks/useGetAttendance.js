@@ -1,9 +1,10 @@
 import {useQuery} from "react-query";
 import axios from "axios";
+import {useRecoilValue} from "recoil";
+import {profile} from "../atoms/authAtoms";
 
-const user = JSON.parse(localStorage.getItem("user"));
 export const useGetAllAttendance = (page, perPage, student, startDate, endDate) => {
-
+    const user = useRecoilValue(profile)
     return useQuery(["attendance"], async () => {
         if (startDate && endDate) {
 

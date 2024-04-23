@@ -1,9 +1,11 @@
 import { useQuery } from "react-query";
 import axios from "axios";
+import {useRecoilValue} from "recoil";
+import {profile} from "../atoms/authAtoms";
 
-const user = JSON.parse(localStorage.getItem("user"));
 
 export const useGetAllStudents = (page, perPage, searchText) => {
+    const user = useRecoilValue(profile)
     return useQuery(["students"], async () => {
         let apiUrl = `${process.env.REACT_APP_API_URL}`;
         if (user && user.company_id) {

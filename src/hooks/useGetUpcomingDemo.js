@@ -1,10 +1,12 @@
 import { useQuery } from "react-query";
 import axios from "axios";
+import {useRecoilValue} from "recoil";
+import {profile} from "../atoms/authAtoms";
 
-const user = JSON.parse(localStorage.getItem("user"));
 export const useGetUpcomingDemo= () => {
+    const user = useRecoilValue(profile)
     return useQuery(["upcoming-demo"], async () => {
-        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/demo`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/demo`;
         try {
             const response = await axios.get(apiEndpoint);
             const entries = response.data.data.data

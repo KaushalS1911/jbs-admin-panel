@@ -1,10 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
-
-const user = JSON.parse(localStorage.getItem('user'))
-export const getConfigs =  createAsyncThunk("Configs/getAllConfigs", async() => {
-    const url = `${process.env.REACT_APP_API_URL}${user.company_id}/configs`;
+export const getConfigs =  createAsyncThunk("Configs/getAllConfigs", async(companyId) => {
+    const url = `${process.env.REACT_APP_API_URL}${companyId}/configs`;
     const response = await axios.get(url)
     return response.data.data.data[0]
 })

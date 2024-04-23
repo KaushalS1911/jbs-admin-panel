@@ -13,28 +13,30 @@ import {EditNoteTwoTone, RestoreFromTrashTwoTone} from "@mui/icons-material";
 import axios from "axios";
 import {getConfigs} from "./SettingSlice";
 import PageTitle from "../../contants/PageTitle";
+import {useRecoilValue} from "recoil";
+import {profile} from "../../atoms/authAtoms";
 
 function DeveloperOptions() {
-
+    const user = useRecoilValue(profile)
     const {configs} = useSelector((state) => state.configs)
     const [inputVal, setInputVal] = useState('')
     const dispatch = useDispatch()
 
     function handleClick(){
-        const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs.company_id}/configs/${configs._id}`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/configs/${configs._id}`;
         const payload = {...configs, developer_type: [...configs.developer_type, inputVal]}
         axios.put(apiEndpoint, payload).then((res) => {
-            dispatch(getConfigs())
+            dispatch(getConfigs(user.company_id))
             setInputVal("")
         }).catch((err) => console.log(err))
     }
 
     function handleDelete(item){
         const filteredDeveloper = configs.developer_type.filter((e) => e !== item)
-        const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs.company_id}/configs/${configs._id}`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/configs/${configs._id}`;
         const payload = {...configs, developer_type: filteredDeveloper}
         axios.put(apiEndpoint, payload).then((res) => {
-            dispatch(getConfigs())
+            dispatch(getConfigs(user.company_id))
         }).catch((err) => console.log(err))
     }
 

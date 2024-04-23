@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Alert,
   Box,
   Button,
   Checkbox,
@@ -21,6 +20,8 @@ import { profile } from "../../../../atoms/authAtoms";
 import { useRecoilState } from "recoil";
 import PhoneInput from "react-phone-input-2";
 import { notification } from "antd";
+import {getConfigs} from "../../../Setting/SettingSlice";
+import {useDispatch} from "react-redux";
 
 // ============================|| ADMIN PANEL LOGIN ||============================ //
 const FirebaseLogin = ({ setIsLoading }) => {
@@ -30,7 +31,7 @@ const FirebaseLogin = ({ setIsLoading }) => {
       message: message,
     });
   };
-
+  const dispatch = useDispatch()
   const [checked, setChecked] = useState(true);
   const [contact, setContact] = useState("+91");
   const [loading, setLoading] = useState(false);
@@ -76,12 +77,12 @@ const FirebaseLogin = ({ setIsLoading }) => {
       withCredentials: false,
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           const data = res.data.data.tokens;
           localStorage.setItem("jwt", data.jwt);
           localStorage.setItem("jwtRefresh", data.jwtRefresh);
           openNotificationWithIcon("success", res.data.data.message);
+          dispatch(getConfigs())
           window.location = "/";
           setLoading(false);
         }
@@ -108,7 +109,6 @@ const FirebaseLogin = ({ setIsLoading }) => {
         console.log(response);
         if (response.status === 200) {
           setProfileData(response.data.data);
-          console.log(response.data.role);
           window.location = "/";
         }
         setIsLoading(false);
