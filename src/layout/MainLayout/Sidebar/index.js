@@ -32,12 +32,11 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           style={{
             height: !matchUpMd ? "calc(100vh - 56px)" : "calc(100vh - 88px)",
             paddingLeft: "16px",
-            paddingTop: "8px",
+            paddingTop: "16px",
             paddingRight: "16px",
           }}
         >
           <MenuList />
-          {/* <MenuCard /> */}
         </PerfectScrollbar>
       </BrowserView>
       <MobileView>

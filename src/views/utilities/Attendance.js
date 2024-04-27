@@ -43,13 +43,7 @@ const Attendance = () => {
     setOption(selectedOption);
   };
 
-  const rows = option.batch_members
-    ? option.batch_members.map((item, index) => ({
-        id: index + 1,
-        fullName: `${item.firstName} ${item.lastName}`,
-        studentId: item.student_id,
-      }))
-    : [];
+
 
   return (
       <>

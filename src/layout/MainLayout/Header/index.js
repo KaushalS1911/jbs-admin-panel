@@ -22,7 +22,6 @@ const Header = ({ handleLeftDrawerToggle }) => {
 
   return (
     <>
-      {/* logo & toggler button */}
       <Box
         sx={{
           width: 228,

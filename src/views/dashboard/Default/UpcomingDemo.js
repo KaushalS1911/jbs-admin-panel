@@ -19,7 +19,6 @@ import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { useGetUpcomingDemo } from "../../../hooks/useGetUpcomingDemo";
 import { useNavigate } from "react-router-dom";
 
-<<<<<<< HEAD
 const UpcomingDemo = ({ isLoading }) => {
   const navigate = useNavigate();
   const { data, refetch } = useGetUpcomingDemo();
@@ -30,14 +29,6 @@ const UpcomingDemo = ({ isLoading }) => {
   useEffect(() => {
     refetch();
   }, [data]);
-=======
-const UpcomingDemo = ({isLoading}) => {
-    const { data, refetch } = useGetUpcomingDemo();
-
-    useEffect(() => {
-        refetch();
-    }, [data, refetch]);
->>>>>>> ea18914e1cbcce0ea64cf6abfa8533b7c0df5986
 
   return (
     <>
@@ -95,7 +86,6 @@ const UpcomingDemo = ({isLoading}) => {
                                   alignItems: "center",
                                   gap: 1.5,
                                 }}
-<<<<<<< HEAD
                               >
                                 <Box sx={{ minWidth: 0 }}>
                                   <Typography
@@ -146,7 +136,7 @@ const UpcomingDemo = ({isLoading}) => {
                                       fontWeight: "400",
                                     }}
                                   >
-                                    {new Date(entry.date).toLocaleDateString()}{" "}
+                                    {new Date(entry.date).toLocaleDateString()}
                                     - {entry.time}
                                   </Typography>
                                   <Typography
@@ -193,123 +183,6 @@ const UpcomingDemo = ({isLoading}) => {
       )}
     </>
   );
-=======
-                            >
-                                <Table aria-label="table with ellipsis texts" noWrap>
-                                    <TableBody style={{cursor: "pointer"}}>
-                                        {data && data.length !== 0 && data.map((entry, index) => {
-                                            const faculty_name = entry.faculty_name;
-                                            const avatarPhotoUrl = `https://api.adorable.io/avatars/100/${faculty_name}.png`;
-                                            return (
-                                                <tr
-                                                    key={index}
-                                                    style={{
-                                                        display: "flex",
-                                                        justifyContent: "space-between",
-                                                        alignItems: "center",
-                                                        padding: "10px 0",
-                                                        borderBottom: "1px solid #E5EBF0",
-                                                    }}
-                                                >
-                                                    <td>
-                                                        <Box
-                                                            sx={{
-                                                                display: "flex",
-                                                                alignItems: "center",
-                                                                gap: 1.5,
-                                                            }}
-                                                        >
-                                                            <Box sx={{minWidth: 0}}>
-                                                                <Typography
-                                                                    noWrap
-                                                                    fontWeight="lg"
-                                                                    sx={{
-                                                                        fontSize: "14px",
-                                                                        color: "#1B1D28",
-                                                                        fontWeight: "500",
-                                                                    }}
-                                                                >
-                                                                    <Avatar
-                                                                        alt={entry.faculty_name}
-                                                                        src={avatarPhotoUrl}
-                                                                    />
-
-                                                                </Typography>
-                                                            </Box>
-                                                        </Box>
-                                                    </td>
-                                                    <td>
-                                                        <Box
-                                                            sx={{
-                                                                display: "flex",
-                                                                alignItems: "center",
-                                                                gap: 1.5,
-                                                            }}
-                                                        >
-                                                            <Box sx={{minWidth: 0}}>
-                                                                <Typography
-                                                                    noWrap
-                                                                    fontWeight="lg"
-                                                                    sx={{
-                                                                        textAlign: "end",
-                                                                        fontSize: "14px",
-                                                                        color: "#5559CE",
-                                                                        fontWeight: "600",
-                                                                    }}
-                                                                >
-                                                                    {entry.faculty_name}
-                                                                </Typography>
-
-                                                                <Typography
-                                                                    noWrap
-                                                                    level="body-sm"
-                                                                    sx={{
-                                                                        fontSize: "10px",
-                                                                        color: "#96A0B5",
-                                                                        fontWeight: "400",
-                                                                    }}
-                                                                >
-                                                                    {new Date(entry.date).toLocaleDateString()} - {entry.time}
-                                                                </Typography>
-                                                                <Typography
-                                                                    noWrap
-                                                                    fontWeight="lg"
-                                                                    sx={{
-                                                                        textAlign: "end",
-                                                                        fontSize: "12px",
-                                                                        color: "#1B1D28",
-                                                                        fontWeight: "400",
-                                                                        lineHeight: '10px 0'
-                                                                    }}
-                                                                >
-                                                                    Note: {entry.note}
-                                                                </Typography>
-                                                            </Box>
-                                                        </Box>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </TableBody>
-                                </Table>
-                            </Grid>
-                        </Grid>
-                    </CardContent>
-                    <CardActions sx={{padding: "10px 0", justifyContent: "center"}}>
-                        <Button
-                            size="small"
-                            disableElevation
-                            sx={{fontSize: "14px", color: "#5559CE", fontWeight: "500", marginTop: 6}}
-                        >
-                            View All
-                            <ChevronRightOutlinedIcon/>
-                        </Button>
-                    </CardActions>
-                </MainCard>
-            )}
-        </>
-    );
->>>>>>> ea18914e1cbcce0ea64cf6abfa8533b7c0df5986
 };
 
 UpcomingDemo.propTypes = {

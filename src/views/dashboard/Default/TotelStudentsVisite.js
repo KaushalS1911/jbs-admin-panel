@@ -22,14 +22,13 @@ const optionsList = [
   },
 ];
 
-// Define common chart options
 const commonOptions = {
   chart: {
     type: "bar",
   },
   plotOptions: {
     bar: {
-      columnWidth: "10%", // Default column width
+      columnWidth: "10%",
       borderRadius: 7,
       colors: {
         ranges: [
@@ -62,6 +61,7 @@ const TotelStudentsVisite = ({ isLoading }) => {
         .get(url)
         .then((response) => {
           setTotalVisit(response.data.data.totalStudents);
+          console.log(response.data.data.inquiry);
           setInquiryData(response.data.data.inquiry);
         })
         .catch((error) => {
@@ -69,7 +69,6 @@ const TotelStudentsVisite = ({ isLoading }) => {
         });
   }, []);
 
-  // Filter data based on selected option
   const today = new Date();
   const filteredData = inquiryData.filter((item) => {
     const date = new Date(item.created_at);
@@ -89,7 +88,6 @@ const TotelStudentsVisite = ({ isLoading }) => {
     }
   });
 
-  // Map filtered data to appropriate date format based on selected option
   const filterDate = filteredData.map((row) => {
     switch (selectedOption) {
       case 'today':
@@ -116,19 +114,15 @@ const TotelStudentsVisite = ({ isLoading }) => {
     return acc;
   }, {});
 
-  // Extract values from chartData
   const TotalStudent = Object.values(chartData);
 
-  // Define chart options based on selected option
   let options = {
-    ...commonOptions, // Include common options
+    ...commonOptions,
     series: [{ name: "Student", data: TotalStudent }],
     xaxis: { categories: filterDate },
   };
-
-  // Customize options based on selected option
   if (selectedOption === "year") {
-    options.xaxis.columnWidth = "20%"; // Adjust column width for yearly view
+    options.xaxis.columnWidth = "20%";
   }
 
   return (
@@ -202,3 +196,4 @@ TotelStudentsVisite.propTypes = {
 };
 
 export default TotelStudentsVisite;
+

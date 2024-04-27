@@ -7,21 +7,12 @@ import { notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfigs } from "./SettingSlice";
 import PageTitle from "../../contants/PageTitle";
-import {useRecoilValue} from "recoil";
-import {profile} from "../../atoms/authAtoms";
 
 function EditCompanyProfile() {
-<<<<<<< HEAD
   /* eslint-disable */
   const [profilePic, setProfilePic] = useState(null);
   const { configs } = useSelector((state) => state.configs);
   const dispatch = useDispatch();
-=======
-    const user = useRecoilValue(profile)
-    const [profilePic, setProfilePic] = useState(null);
-    const {configs} = useSelector((state) => state.configs)
-    const dispatch = useDispatch()
->>>>>>> ea18914e1cbcce0ea64cf6abfa8533b7c0df5986
 
   const { company_details } = configs;
 
@@ -32,22 +23,14 @@ function EditCompanyProfile() {
     });
   };
 
-<<<<<<< HEAD
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     setProfilePic(file);
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs?.company_id}/company-logo`;
-=======
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        setProfilePic(file)
-        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/company-logo`;
->>>>>>> ea18914e1cbcce0ea64cf6abfa8533b7c0df5986
 
     const formData = new FormData();
     formData.append("logo_url", file, file.name);
 
-<<<<<<< HEAD
     try {
       const response = await axios.put(apiEndpoint, formData, {
         headers: {
@@ -58,19 +41,6 @@ function EditCompanyProfile() {
       dispatch(getConfigs());
     } catch (error) {
       console.error("Upload error:", error);
-=======
-        try {
-            const response = await axios.put(apiEndpoint, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            openNotificationWithIcon("success", response.data.data.message);
-            dispatch(getConfigs(user.company_id))
-        } catch (error) {
-            console.error("Upload error:", error);
-        }
->>>>>>> ea18914e1cbcce0ea64cf6abfa8533b7c0df5986
     }
   };
 
@@ -99,6 +69,7 @@ function EditCompanyProfile() {
                     height: 100,
                     margin: "auto",
                     fontSize:'10px',
+                   
                   }}
                 >
                         Upload Logo 

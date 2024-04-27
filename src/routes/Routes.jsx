@@ -23,7 +23,6 @@ import Editemployee from "../views/Employee/Editemployee";
 import BatchView from "views/Batches/BatchView ";
 import EditTaskView from "../views/tasks/EditTaskView";
 import Task from "../views/utilities/Task";
-import { Expence } from "views/utilities/Expence";
 import FullStackStepper from "../views/Student/utils/StudentDetail";
 import Setting from "views/Setting/Setting";
 import EditAdminProfile from "views/Setting/EditAdminProfile";
@@ -38,6 +37,8 @@ import DeveloperOptions from "../views/Setting/DeveloperOptions";
 import EmpRoles from "../views/Setting/EmpRoles";
 import AttendanceLogs from "../views/utilities/AttendanceLogs";
 import Invite from "views/pages/authentication/authentication3/Invite3";
+import AdminLock from "views/Setting/AdminLock";
+import { Expence } from "views/utilities/Expence";
 
 const Routes = () => {
 
@@ -128,6 +129,7 @@ const Routes = () => {
           />
           <Route path="/settings/role-config" element={<Roles />} exact />
           <Route path="/settings/course-config" element={<Course />} exact />
+          <Route path="settings-Admin-lock" element={<AdminLock />} exact />
           <Route
             path="/settings/classroom-config"
             element={<Classrooms />}

@@ -20,8 +20,8 @@ import { profile } from "../../../../atoms/authAtoms";
 import { useRecoilState } from "recoil";
 import PhoneInput from "react-phone-input-2";
 import { notification } from "antd";
-import {getConfigs} from "../../../Setting/SettingSlice";
-import {useDispatch} from "react-redux";
+import { getConfigs } from "../../../Setting/SettingSlice";
+import { useDispatch } from "react-redux";
 
 // ============================|| ADMIN PANEL LOGIN ||============================ //
 const FirebaseLogin = ({ setIsLoading }) => {
@@ -31,7 +31,7 @@ const FirebaseLogin = ({ setIsLoading }) => {
       message: message,
     });
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(true);
   const [contact, setContact] = useState("+91");
   const [loading, setLoading] = useState(false);
@@ -82,7 +82,7 @@ const FirebaseLogin = ({ setIsLoading }) => {
           localStorage.setItem("jwt", data.jwt);
           localStorage.setItem("jwtRefresh", data.jwtRefresh);
           openNotificationWithIcon("success", res.data.data.message);
-          dispatch(getConfigs())
+          dispatch(getConfigs());
           window.location = "/";
           setLoading(false);
         }
@@ -154,8 +154,10 @@ const FirebaseLogin = ({ setIsLoading }) => {
           sx={{
             width: "100%",
             "& .MuiOutlinedInput-root": {
+              willChange: "transform, opacity", 
               "& fieldset": {
                 borderColor: "#5559CE",
+                transition: "border-color 0.3s ease", 
               },
               "&:hover fieldset": {
                 borderColor: "#5559CE",
@@ -169,7 +171,7 @@ const FirebaseLogin = ({ setIsLoading }) => {
         >
           <InputLabel
             htmlFor="outlined-adornment-password-login"
-            style={{ color: "#5559CE" }}
+            style={{ color: "#5559CE", transition: "color 0.3s ease" }} // Smooth transition
           >
             Password
           </InputLabel>
@@ -197,9 +199,10 @@ const FirebaseLogin = ({ setIsLoading }) => {
             }
             label="Password"
             inputProps={{}}
+            sx={{ willChange: "transform, opacity" }}
           />
-          {/* <small style={{ color: "#EF5350", marginLeft: "12px", marginTop: '5px' }}>{error || ""}</small> */}
         </FormControl>
+
         <Stack
           direction="row"
           alignItems="center"

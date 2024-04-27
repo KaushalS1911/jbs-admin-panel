@@ -72,22 +72,22 @@ const MainLayout = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box 
+    sx={{ display: "flex", padding:0}}>
       <CssBaseline />
-      {/* header */}
       <AppBar
         enableColorOnDark
         position="fixed"
         color="inherit"
         elevation={0}
         sx={{
-          bgcolor: theme.palette.background.default,
+          bgcolor:'',
           transition: leftDrawerOpened
             ? theme.transitions.create("width")
             : "none",
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{p:0}}>
           <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
         </Toolbar>
       </AppBar>

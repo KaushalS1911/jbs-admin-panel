@@ -198,7 +198,7 @@ const Index = () => {
     } else {
       refetch();
     }
-  }, [searchText, page, rowsPerPage]);
+  }, [searchText, page, rowsPerPage,refetch]);
 
   const rows = task
     ? task.tasks.map((item, index) => ({

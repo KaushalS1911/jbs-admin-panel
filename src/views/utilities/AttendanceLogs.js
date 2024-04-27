@@ -20,7 +20,7 @@ function AttendanceLogs(props) {
 
     useEffect(() => {
         refetch()
-    },[selectedDate, selectedType])
+    },[selectedDate, selectedType,refetch])
 
     return (
         <div>

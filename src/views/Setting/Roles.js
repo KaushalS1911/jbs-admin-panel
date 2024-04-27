@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import MainCard from "ui-component/cards/MainCard";
 import {useDispatch, useSelector} from "react-redux";
-import {EditNoteTwoTone, RestoreFromTrashTwoTone} from "@mui/icons-material";
+import { RestoreFromTrashTwoTone} from "@mui/icons-material";
 import axios from "axios";
 import {getConfigs} from "./SettingSlice";
 import PageTitle from "../../contants/PageTitle";
@@ -88,19 +88,6 @@ function Roles() {
                                     <div style={{width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                                         <Typography sx={{fontSize: "1.1rem"}}>{e}</Typography>
                                         <div>
-                                            {/*<EditNoteTwoTone*/}
-                                            {/*    sx={{*/}
-                                            {/*      color: "#b0b2e8",*/}
-                                            {/*      height: "35px",*/}
-                                            {/*      lineHeight: "35px",*/}
-                                            {/*      margin: "0 20px",*/}
-                                            {/*      cursor: "pointer",*/}
-                                            {/*      fontSize: "30px",*/}
-                                            {/*    }}*/}
-                                            {/*    onClick={() => {*/}
-                                            {/*      handleEdit(e);*/}
-                                            {/*    }}*/}
-                                            {/*/>*/}
                                             <RestoreFromTrashTwoTone
                                                 sx={{
                                                     color: "#5559CE",

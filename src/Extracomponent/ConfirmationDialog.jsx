@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 
 function ConfirmationDialog({ handleClose, open, handleDelete, title }) {
-
   return (
     <div>
       <Dialog open={open} onClose={handleClose} sx={{ width: '300px' }}>
@@ -31,8 +30,7 @@ function ConfirmationDialog({ handleClose, open, handleDelete, title }) {
               backgroundColor: '#ede7f6',
               color: '#5559CE',
             }}
-            onClick={handleDelete}
-          >
+            onClick={handleDelete}>
             Delete
           </Button>
         </DialogActions>

@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
 import { CardContent, Divider, Grid, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
-import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 const PopularCard = ({ isLoading }) => {
   return (
     <>
-      {isLoading ? (
-        <SkeletonPopularCard />
-      ) : (
-        <MainCard content={false}>
+      <MainCard content={false}>
           <CardContent style={{ height: '470px' }}>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
@@ -27,7 +23,6 @@ const PopularCard = ({ isLoading }) => {
           </CardContent>
 
         </MainCard>
-      )}
     </>
   );
 };

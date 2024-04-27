@@ -15,14 +15,13 @@ import {
 import AnimateButton from "ui-component/extended/AnimateButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import axios from "axios";
 import { profile } from "../../../../atoms/authAtoms";
 import { useRecoilState } from "recoil";
 import PhoneInput from "react-phone-input-2";
 import { notification } from "antd";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Select, MenuItem } from "@mui/material";
-import {getConfigs} from "../../../Setting/SettingSlice";
+import { getConfigs } from "../../../Setting/SettingSlice";
 import instance from "../../../../helpers/axios";
 
 const AuthInvite = ({ setIsLoading }) => {
@@ -32,8 +31,8 @@ const AuthInvite = ({ setIsLoading }) => {
     });
   };
 
-  const dispatch = useDispatch()
-  const { configs} = useSelector((state) => state.configs);
+  const dispatch = useDispatch();
+  const { configs } = useSelector((state) => state.configs);
   const [contact, setContact] = useState("+91");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -49,7 +48,6 @@ const AuthInvite = ({ setIsLoading }) => {
   const [showPassword, setShowPassword] = useState(false);
   // eslint-disable-next-line
   const [profileData, setProfileData] = useRecoilState(profile);
-
 
   useEffect(() => {
     dispatch(getConfigs(profileData.company_id));
@@ -108,26 +106,26 @@ const AuthInvite = ({ setIsLoading }) => {
     }
   };
 
-  function registerUser() {
-    axios({
-      method: "GET",
-      baseURL: `${process.env.REACT_APP_LOGIN_URL}`,
-      url: "users/me",
-      withCredentials: false,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setProfileData(response.data.data);
-          openNotificationWithIcon("success", response.data.data.message);
-          window.location = "/";
-        }
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsLoading(false);
-        openNotificationWithIcon("error", error.response?.data?.message);
-      });
-  }
+  // function registerUser() {
+  //   axios({
+  //     method: "GET",
+  //     baseURL: `${process.env.REACT_APP_LOGIN_URL}`,
+  //     url: "users/me",
+  //     withCredentials: false,
+  //   })
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         setProfileData(response.data.data);
+  //         openNotificationWithIcon("success", response.data.data.message);
+  //         window.location = "/";
+  //       }
+  //       setIsLoading(false);
+  //     })
+  //     .catch(() => {
+  //       setIsLoading(false);
+  //       openNotificationWithIcon("error", error.response?.data?.message);
+  //     });
+  // }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -152,36 +150,32 @@ const AuthInvite = ({ setIsLoading }) => {
       >
         <Grid container spacing={3}>
           <Grid item lg={12} sm={12} xs={12}>
-            <FormControl item={true} fullWidth variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <InputLabel id="role-label" style={{ color: "#5559ce" }}>
                 Role
               </InputLabel>
-              <Grid item lg={12} sm={12} xs={12}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel id="role-label">Role</InputLabel>
-                  <Select
-                    labelId="role-label"
-                    id="role"
-                    label="Role"
-                    name="role"
-                    value={userData.role || "Default Role"}
-                    variant="outlined"
-                    onChange={handleChange}
-                    InputLabelProps={{
-                      style: { color: "#5559CE" },
-                    }}
-                  >
-                    <MenuItem value={"Default Role"} disabled>
-                      Default Role
-                    </MenuItem>
-                    {configs?.roles?.map((item, index) => (
-                      <MenuItem key={index} value={item}>
-                        {item}
+              <Select
+                labelId="role-label"
+                id="role"
+                label="Role"
+                name="role"
+                value={userData.role}
+                variant="outlined"
+                onChange={handleChange}
+                InputLabelProps={{
+                  style: { color: "#5559CE" },
+                }}
+              >
+                {configs?.roles &&
+                  configs.roles.length !== 0 &&
+                  configs.roles.map((e) => {
+                    return (
+                      <MenuItem key={e} value={e}>
+                        {e}
                       </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+                    );
+                  })}
+              </Select>
             </FormControl>
           </Grid>
 

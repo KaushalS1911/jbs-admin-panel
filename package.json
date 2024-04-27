@@ -29,7 +29,6 @@
     "apexcharts": "^3.35.3",
     "axios": "^1.6.7",
     "axios-auth-refresh": "^3.3.6",
-    "crypto-js": "^4.2.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
     "file-saver": "^2.0.5",
@@ -45,10 +44,8 @@
     "react-apexcharts": "^1.4.0",
     "react-bootstrap": "^2.10.0",
     "react-datepicker": "^5.1.0",
-    "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-flatpickr": "^3.10.13",
-    "react-infinite-scroll-component": "^6.1.0",
     "react-multi-date-picker": "^4.4.1",
     "react-perfect-scrollbar": "^1.5.8",
     "react-phone-input-2": "^2.15.1",
@@ -63,6 +60,8 @@
     "sweetalert2": "^11.10.4",
     "theme-ui": "^0.16.1",
     "xlsx": "^0.18.5",
+    "react-device-detect": "^2.2.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "yup": "^0.32.11"
   },
   "scripts": {

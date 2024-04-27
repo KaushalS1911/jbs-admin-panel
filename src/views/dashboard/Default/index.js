@@ -17,13 +17,13 @@ import { useGetAccountData } from "../../../hooks/useGetAccountData";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfigs } from "../../Setting/SettingSlice";
 import Loading from "../../../ui-component/Loading";
-import {useRecoilValue} from "recoil";
-import {profile} from "../../../atoms/authAtoms";
+import { useRecoilValue } from "recoil";
+import { profile } from "../../../atoms/authAtoms";
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
-  const user = useRecoilValue(profile)
+  const user = useRecoilValue(profile);
   const { data: account } = useGetAccountData();
   const { data } = useGetDashboardData();
   const { configs } = useSelector((state) => state.configs);
@@ -36,9 +36,9 @@ const Dashboard = () => {
     }
   }, [data, account]);
 
-  let dataObj
+  let dataObj;
 
-  if(user?.role === "Admin"){
+  if (user?.role === "Admin") {
     dataObj = [
       {
         icon: StudentIc,
@@ -71,14 +71,13 @@ const Dashboard = () => {
         icon: AccountIc,
         roles: "Account",
         roleValue:
-            account?.otherInfo?.feesReceived?.totalAmount -
-            account?.otherInfo?.totalExpense ||
-            0,
+          account?.otherInfo?.feesReceived?.totalAmount -
+            account?.otherInfo?.totalExpense || 0,
         roleColor: "#F35A79",
         linkTo: "/account",
       },
     ];
-  }else{
+  } else {
     dataObj = [
       {
         icon: StudentIc,
@@ -111,47 +110,58 @@ const Dashboard = () => {
   }
 
   return (
-      <>
-        <Mainbreadcrumbs title={"Dashboard"} />
-        {isLoading ? (
-            <Loading />
-        ) : (
-            <Grid container spacing={3}>
-              {dataObj.map((item, index) => (
-                  <Grid key={index} item lg={2} md={4} sm={4} xs={6}>
-                    <Link to={item.linkTo}>
-                      <Allofcounter
-                          icone={item.icon}
-                          role={item.roles}
-                          roleValue={String(item.roleValue)}
-                          roleColor={item.roleColor}
-                      />
-                    </Link>
-                  </Grid>
-              ))}
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={8}>
-                    <TotelStudentsVisite isLoading={isLoading} />
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <UpcomingDemo isLoading={isLoading} />
-                  </Grid>
-                </Grid>
+    <>
+      <Mainbreadcrumbs title={"Dashboard"} />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Grid container spacing={3}>
+          {dataObj.map((item, index) => (
+            <Grid
+              key={index}
+              item
+              xl={2}
+              lg={3}
+              md={4}
+              sm={4}
+              xs={6}
+              style={{
+                height: "@media (max-width: 479px!important) ? 100px : auto",
+              }}
+            >
+              <Link to={item.linkTo}>
+                <Allofcounter
+                  icone={item.icon}
+                  role={item.roles}
+                  roleValue={String(item.roleValue)}
+                  roleColor={item.roleColor}
+                />
+              </Link>
+            </Grid>
+          ))}
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={8}>
+                <TotelStudentsVisite isLoading={isLoading} />
               </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={4}>
-                    <PopularCard isLoading={isLoading} />
-                  </Grid>
-                  <Grid item xs={12} md={8}>
-                    <TotalGrowthBarChart isLoading={isLoading} />
-                  </Grid>
-                </Grid>
+              <Grid item xs={12} md={4}>
+                <UpcomingDemo isLoading={isLoading} />
               </Grid>
             </Grid>
-        )}
-      </>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={4}>
+                <PopularCard isLoading={isLoading} />
+              </Grid>
+              <Grid item xs={12} md={8}>
+                <TotalGrowthBarChart isLoading={isLoading} />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 };
 export default Dashboard;

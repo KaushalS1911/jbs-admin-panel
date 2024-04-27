@@ -45,6 +45,10 @@ function Setting() {
         navigate("/settings/developer-options-config");
     };
 
+    const ShowDeveloperLogs =()=>{
+        navigate("/settings-Admin-lock")
+    }
+
     useEffect(() => {
         dispatch(getConfigs(user.company_id))
     }, []);
@@ -293,6 +297,40 @@ function Setting() {
                             }}
                         >
                             Please Edit or Add more options for the role of developer accordingly to institute.
+                        </Typography>
+                    </Grid>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={6} lg={4}
+                      onClick={ShowDeveloperLogs} sx={{cursor: 'pointer'}}>
+                    <Grid
+                        style={gridItemStyle}
+                        boxShadow={1}
+                        sx={{
+                            padding: "20px",
+                            backgroundColor: "#fff",
+                            borderRadius: "10px",
+                            aspectRatio: '0.9/0.3'
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                fontSize: "25px",
+                                fontWeight: "500",
+                                color: "#ffea4c",
+                                marginBottom: "16px",
+                            }}
+                        >
+                            Admin Logs
+                        </Typography>
+                        <Typography
+                            sx={{
+                                fontSize: "16px",
+                                color: "#fff",
+                                marginBottom: "16px"
+                            }}
+                        >
+                            Please Edit or Add more options for the role of Admin accordingly to institute.
                         </Typography>
                     </Grid>
                 </Grid>
