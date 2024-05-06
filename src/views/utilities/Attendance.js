@@ -28,7 +28,7 @@ const Attendance = () => {
     }
   };
 
-  const handleChange = (_, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
 
@@ -43,16 +43,18 @@ const Attendance = () => {
     setOption(selectedOption);
   };
 
-
-
   return (
-      <>
-          <Mainbreadcrumbs title={"Attendance"}/>
-    <Box sx={{ width: "100%", typography: "body1" }}>
-      <TabContext value={value}>
-        <MainCard>
-            <Grid item style={{padding:'10px'}}>
-              <Grid container justifyContent="space-between" alignItems="center">
+    <>
+      <Mainbreadcrumbs title={"Attendance"} />
+      <Box sx={{ width: "100%", typography: "body1" }}>
+        <TabContext value={value}>
+          <MainCard>
+            <Grid item style={{ padding: "10px" }}>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <FormControl
                     sx={{
@@ -76,17 +78,17 @@ const Attendance = () => {
                     }}
                   >
                     <InputLabel
-                      id="interested-in-label"
+                      id="selected-batch"
                       style={{ color: "#5559ce", fontWeight: 500 }}
                     >
                       Select Batch
                     </InputLabel>
                     <Select
-                      labelId="interested-in-label"
-                      id="interested-in"
+                      labelId="interested-label"
+                      id="selected-batch"
                       value={select}
                       onChange={handleSelectChange}
-                      label=""
+                      label="Select batch"
                     >
                       {batches.map((option) => (
                         <MenuItem key={option._id} value={option.technology}>
@@ -122,11 +124,15 @@ const Attendance = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <AttendanceView option={option} startDate={startDate} setSelect={setSelect} />
-        </MainCard>
-      </TabContext>
-    </Box>
-      </>
+            <AttendanceView
+              option={option}
+              startDate={startDate}
+              setSelect={setSelect}
+            />
+          </MainCard>
+        </TabContext>
+      </Box>
+    </>
   );
 };
 

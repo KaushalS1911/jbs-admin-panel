@@ -1,7 +1,6 @@
 import { Avatar, Grid, Typography } from "@mui/material";
 import React from "react";
 import { gridSpacing } from "store/constant";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -9,7 +8,6 @@ import { useGetSingleStudent } from "hooks/useGetSingleStudent";
 
 const StudentAvater = () => {
   // const [selectedFile, setSelectedFile] = useState(null);
-  const navigate=useNavigate();
   const { studentId } = useParams();
 
   const { data: student, refetch } = useGetSingleStudent(studentId);

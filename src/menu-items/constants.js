@@ -13,6 +13,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import GradingIcon from '@mui/icons-material/Grading';
 import AddTaskIcon from '@mui/icons-material/AddTask';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+
 
 const icons = {
     DashboardIcon,
@@ -29,7 +31,8 @@ const icons = {
     CalendarMonthIcon,
     AddTaskIcon,
     CurrencyRupeeIcon,
-    GradingIcon
+    GradingIcon,
+    PostAddIcon
 };
 
 const userMenu = [
@@ -66,6 +69,15 @@ const userMenu = [
         type: "item",
         url: "student",
         icon: icons.Person4Icon,
+        breadcrumbs: false,
+        role: ["Admin", "Reception", "Employee","Student"]
+    },
+    {
+        id: "Examination",
+        title: "Examination",
+        type: "item",
+        url: "Examination",
+        icon: icons.PostAddIcon,
         breadcrumbs: false,
         role: ["Admin", "Reception", "Employee","Student"]
     },

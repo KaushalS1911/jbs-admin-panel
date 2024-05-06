@@ -61,7 +61,6 @@ const TotelStudentsVisite = ({ isLoading }) => {
         .get(url)
         .then((response) => {
           setTotalVisit(response.data.data.totalStudents);
-          console.log(response.data.data.inquiry);
           setInquiryData(response.data.data.inquiry);
         })
         .catch((error) => {

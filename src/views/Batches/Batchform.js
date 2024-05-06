@@ -33,6 +33,7 @@ const MenuProps = {
 
 function Batchform({ setIsBatchOpen, fetchData }) {
   const { configs } = useSelector((state) => state.configs);
+  console.log(configs);
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -127,7 +128,6 @@ function Batchform({ setIsBatchOpen, fetchData }) {
           container
           spacing={2}
           justifyContent={"flex-end"}
-          sx={{ padding: "20px 30px " }}
         >
           <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
             <TextField
@@ -231,7 +231,6 @@ function Batchform({ setIsBatchOpen, fetchData }) {
                         placeholder="Student Name"
                         label="Student Name"
                         variant="outlined"
-                        className="mt-8 mx-4"
                         InputLabelProps={{
                           shrink: true,
                         }}

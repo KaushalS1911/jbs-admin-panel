@@ -25,11 +25,13 @@ import { useGetAllStudents } from "hooks/useGetAllStudents";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { notification } from "antd";
+import { Modal, notification } from "antd";
+import ExamForm from "./ExamForm";
 
 const StudentList = ({ searchText, onSelectRow }) => {
   // eslint-disable-next-line
   const [profileData, setProfileData] = useRecoilState(profile);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
@@ -38,8 +40,22 @@ const StudentList = ({ searchText, onSelectRow }) => {
   const [selectedStudentId, setSelectedStudentId] = useState(null);
   const [singleStudent, setSingleStudent] = useState({});
   const [additionalState, setAdditionalState] = useState();
+  /* eslint-disable */
   const [selectedRows, setSelectedRows] = useState([]);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  //Examination-modal
+  const [examinationOpen, setExaminationOpen] = useState(false);
+  const examModalOpen = () => {
+    setExaminationOpen(true);
+  };
+  const examModalClose = () => {
+    setExaminationOpen(false);
+  };
+  //Exam Modal
+  function handleAddExam(value) {
+    setSelectedRow(value);
+    examModalOpen();
+  }
 
   const { data, refetch } = useGetAllStudents(
     page + 1,
@@ -124,6 +140,11 @@ const StudentList = ({ searchText, onSelectRow }) => {
       : navigate(`/company/${profileData.company_id}/edit-student/${id}`);
   };
 
+  //Vire-more-student
+  function handleViewmoreStudent(id) {
+    navigate(`/company/${profileData.company_id}/viewmore-student/${id}`);
+  }
+
   useEffect(() => {
     if (searchText !== "") {
       const delayDebounceFn = setTimeout(() => {
@@ -149,7 +170,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
       field: "profile",
       headerName: "Profile",
       sortable: false,
-      width: 70,
+      width: 60,
       renderCell: (params) => {
         const avatarSrc = params?.row?.profile
           ? `${params?.row?.profile}`
@@ -197,7 +218,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
     {
       field: "joiningDate",
       headerName: "Joining Date",
-      width: 225,
+      width: 170,
       sortable: false,
       headerAlign: "center",
       align: "center",
@@ -205,29 +226,41 @@ const StudentList = ({ searchText, onSelectRow }) => {
     {
       field: "contact",
       headerName: "Contact",
-      width: 225,
+      width: 170,
       sortable: false,
       headerAlign: "center",
       align: "center",
     },
-    // {
-    //   field: "email",
-    //   headerName: "Email",
-    //   width: 225,
-    //   sortable: false,
-    //   headerAlign: "center",
-    //   align: "center",
-    // },
     {
       field: "moreDetails",
       headerName: "More Details",
-      width: 225,
+      width: 120,
       sortable: false,
       headerAlign: "center",
       align: "center",
-      renderCell: () => (
+      renderCell: (params) => (
         <Chip
           label="View More"
+          STYLE={{ backgroundColor: "#262626" }}
+          size="small"
+          onClick={() => handleViewmoreStudent(params.row.id)}
+        />
+      ),
+    },
+    {
+      field: "Exams",
+      headerName: "Exams",
+      width: 100,
+      sortable: false,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (item) => (
+        <Chip
+          label="Exams"
+          onClick={() => {
+            handleAddExam(item.row.id);
+            examModalOpen();
+          }}
           STYLE={{ backgroundColor: "#262626" }}
           size="small"
         />
@@ -282,8 +315,8 @@ const StudentList = ({ searchText, onSelectRow }) => {
           "YYYY-MM-DD"
         ),
         contact: item.personal_info?.contact,
-        // email: item.personal_info?.email,
         moreDetails: "view more",
+        Exams: "Exam",
       }))
     : [];
 
@@ -395,6 +428,18 @@ const StudentList = ({ searchText, onSelectRow }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* ExaminationModal */}
+      <Modal
+        title="Exams Information"
+        open={examinationOpen}
+        onCancel={examModalClose}
+        maskClosable={false}
+        footer={false}
+        width={400}
+      >
+        <ExamForm id={selectedRow} setExaminationOpen={setExaminationOpen} />
+      </Modal>
     </>
   );
 };

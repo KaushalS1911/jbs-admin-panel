@@ -3,6 +3,8 @@ import { CardContent, Divider, Grid, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 const PopularCard = ({ isLoading }) => {
+
+  
   return (
     <>
       <MainCard content={false}>

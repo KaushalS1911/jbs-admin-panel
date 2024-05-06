@@ -34,6 +34,7 @@ const Login = () => {
             sx={{ minHeight: "calc(100vh - 68px)" }}
           >
             <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+           
               <AuthCardWrapper className="backdrop-content">
                 <Grid
                   container

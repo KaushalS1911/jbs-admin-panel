@@ -112,15 +112,15 @@ const StudentDetail = ({ course }) => {
 
   return (
     <MainCard>
-      <div className="progress">
+      <Box>
         <List>
           <Box
             sx={{
               width: "100%",
               display: "flex",
               marginLeft: "5%",
-              // justifyContent: "center",
-              // alignItems: "center",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <Stepper activeStep={index} disabled={index} orientation="vertical">
@@ -180,7 +180,7 @@ const StudentDetail = ({ course }) => {
             </Stepper>
           </Box>
         </List>
-        <div
+        <Box
           style={{
             display: "flex",
             margin: "20px 0",
@@ -221,8 +221,8 @@ const StudentDetail = ({ course }) => {
               Completed
             </Button>
           </Typography>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </MainCard>
   );
 };

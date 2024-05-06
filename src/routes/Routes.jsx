@@ -39,11 +39,9 @@ import AttendanceLogs from "../views/utilities/AttendanceLogs";
 import Invite from "views/pages/authentication/authentication3/Invite3";
 import AdminLock from "views/Setting/AdminLock";
 import { Expence } from "views/utilities/Expence";
+import ViewMoreStudent from "views/Student/utils/ViewMoreStudent";
 
 const Routes = () => {
-
-
-
   return (
     <Routers>
       <Route element={<PrivateRoutes />}>
@@ -65,6 +63,11 @@ const Routes = () => {
           <Route
             path="/company/:companyId/edit-student/:studentId"
             element={<EditStudent />}
+            exact
+          />
+          <Route
+            path="/company/:companyId/viewmore-student/:studentId"
+            element={<ViewMoreStudent />}
             exact
           />
           <Route
