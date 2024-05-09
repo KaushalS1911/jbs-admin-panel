@@ -1,7 +1,12 @@
-import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import { Box, Grid, Typography } from "@mui/material";
 import MainCard from "ui-component/cards/MainCard";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useGetAttendanceLogs } from "hooks/useGetAttendanceLogs";
+import PASStudent from "../../../assets/images/icone deshbord/vector6.png";
+
+
 const CardWrapper = styled(MainCard)(() => ({
   backgroundColor: "#fff",
   color: "#fff",
@@ -9,7 +14,23 @@ const CardWrapper = styled(MainCard)(() => ({
     "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;",
 }));
 
-const Allofcounter = ({ icone, role, roleValue, roleColor }) => {
+const PresentStudent = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedType, setSelectedType] = useState("Present");
+
+  const { data, refetch } = useGetAttendanceLogs(selectedDate, selectedType);
+
+  useEffect(() => {
+    refetch();
+  }, [selectedDate, selectedType, refetch]);
+
+  const totalPresent = data
+    ? data.filter((entry) => entry.status === "Present").length
+    : 0;
+  const totalAbsent = data
+    ? data.filter((entry) => entry.status === "Absent").length
+    : 0;
+
   return (
     <>
       <CardWrapper border={true} content={false}>
@@ -23,8 +44,8 @@ const Allofcounter = ({ icone, role, roleValue, roleColor }) => {
               <Grid container alignItems="center">
                 <Grid item>
                   <img
-                    src={icone}
-                    alt={role}
+                    src={PASStudent}
+                    alt={PASStudent}
                     style={{
                       marginTop: "8px",
                       width: "40px",
@@ -45,7 +66,7 @@ const Allofcounter = ({ icone, role, roleValue, roleColor }) => {
                       color: "#1B1D28",
                     }}
                   >
-                    {role}
+                    P/A Student
                   </Typography>
                 </Grid>
                 <Grid>
@@ -53,11 +74,11 @@ const Allofcounter = ({ icone, role, roleValue, roleColor }) => {
                     sx={{
                       fontSize: "26px",
                       fontWeight: 500,
-                      color: "#1B1D28",
                       textAlign: "center",
+                      color: "#1B1D28",
                     }}
                   >
-                    {roleValue}
+                    {totalPresent} / {totalAbsent}
                   </Typography>
                 </Grid>
               </Grid>
@@ -68,11 +89,5 @@ const Allofcounter = ({ icone, role, roleValue, roleColor }) => {
     </>
   );
 };
-Allofcounter.propTypes = {
-  isLoading: PropTypes.bool,
-  icon: PropTypes.string,
-  role: PropTypes.string,
-  roleValue: PropTypes.string,
-  roleColor: PropTypes.string,
-};
-export default Allofcounter;
+
+export default PresentStudent;

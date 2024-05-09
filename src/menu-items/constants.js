@@ -76,10 +76,10 @@ const userMenu = [
         id: "Examination",
         title: "Examination",
         type: "item",
-        url: "Examination",
+        url: "examination",
         icon: icons.PostAddIcon,
         breadcrumbs: false,
-        role: ["Admin", "Reception", "Employee","Student"]
+        role: ["Admin", "Reception", "Employee", "Student"]
     },
     {
         id: "Batches",

@@ -113,9 +113,8 @@ function Follow({ id, setIsFollowOpen }) {
     onSubmit: HandleSubmit,
   });
   return (
-    <form action="" method="POST" onSubmit={HandleSubmit}>
+    <form action=""  onSubmit={HandleSubmit}>
       <FormControl
-        defaultValue=""
         required
         sx={{
           width: "100%",

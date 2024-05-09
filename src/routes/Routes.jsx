@@ -40,6 +40,7 @@ import Invite from "views/pages/authentication/authentication3/Invite3";
 import AdminLock from "views/Setting/AdminLock";
 import { Expence } from "views/utilities/Expence";
 import ViewMoreStudent from "views/Student/utils/ViewMoreStudent";
+import Examination from "views/utilities/Examination";
 
 const Routes = () => {
   return (
@@ -52,6 +53,9 @@ const Routes = () => {
           <Route path="/inquiry" element={<Inquiry />} exact />
           <Route path="/add-inquiry" element={<Inquiryform />} exact />
           <Route path="/edit-inquiry/:id" element={<InquiryEdit />} exact />
+
+          {/* Examination */}
+          <Route path="/examination" element={<Examination />} exact />
 
           {/*Student routes*/}
           <Route path="/student" element={<Student />} exact />
@@ -147,6 +151,7 @@ const Routes = () => {
             path="/settings/developer-options-config"
             element={<DeveloperOptions />}
             exact
+            
           />
         </Route>
       </Route>
