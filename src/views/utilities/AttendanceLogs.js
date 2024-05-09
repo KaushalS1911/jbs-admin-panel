@@ -24,17 +24,11 @@ function AttendanceLogs() {
     refetch();
   }, [selectedDate, selectedType, refetch]);
 
-  const totalPresent = data
-    ? data.filter((entry) => entry.status === "Present").length
-    : 0;
-  const totalAbsent = data
-    ? data.filter((entry) => entry.status === "Absent").length
-    : 0;
+
 
   return (
     <div>
       <Mainbreadcrumbs title={"Logs"} />
-      <Typography>{totalPresent}</Typography>
       <Grid item lg={6} md={6} sm={12} xs={12}>
         <Box
           className="flatpicker"

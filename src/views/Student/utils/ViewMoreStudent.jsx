@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Avatar, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useGetSingleStudent } from "hooks/useGetSingleStudent";
@@ -6,14 +7,18 @@ import { useParams } from "react-router-dom";
 import MainCard from "ui-component/cards/MainCard";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import { useEffect } from "react";
-
+import { useGetAttendanceLogs } from "hooks/useGetAttendanceLogs";
+import { useGetSeminar } from "hooks/useGetSeminar";
 
 function ViewMoreStudent() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedType, setSelectedType] = useState("Present");
   const { studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
-  console.log(data);
+  const { data: attandance } = useGetAttendanceLogs(selectedDate, selectedType);
+  const { data: seminar } = useGetSeminar();
 
+  console.log(seminar);
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -27,7 +32,6 @@ function ViewMoreStudent() {
   const handleAvatarClick = () => {
     document.getElementById("file-input").click();
   };
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
@@ -177,7 +181,7 @@ function ViewMoreStudent() {
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -192,7 +196,7 @@ function ViewMoreStudent() {
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -207,7 +211,7 @@ function ViewMoreStudent() {
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -222,7 +226,7 @@ function ViewMoreStudent() {
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -237,12 +241,12 @@ function ViewMoreStudent() {
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={6}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
                   >
-                    Birth Day:{" "}
+                    DOB:{" "}
                     <Typography
                       variant="h4"
                       component="span"
@@ -252,7 +256,7 @@ function ViewMoreStudent() {
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid item xs={12} sm={12} md={12} lg={6}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -280,26 +284,24 @@ function ViewMoreStudent() {
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             GUARDIAN DETAILS:-
           </Typography>
-          <Grid py={2}>
-            <Table className="table" striped bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th>Relation</th>
-                  <th>Name</th>
-                  <th>Phone</th>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Relation</th>
+                <th>Name</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.guardian_info.map((guardian, index) => (
+                <tr key={index}>
+                  <td>{guardian.relation_type}</td>
+                  <td>{`${guardian.firstName} ${guardian.lastName}`}</td>
+                  <td>{guardian.contact}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {data?.guardian_info.map((guardian, index) => (
-                  <tr key={index}>
-                    <td>{guardian.relation_type}</td>
-                    <td>{`${guardian.firstName} ${guardian.lastName}`}</td>
-                    <td>{guardian.contact}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Grid>
+              ))}
+            </tbody>
+          </Table>
         </Box>
 
         <Box py={2}>
@@ -309,7 +311,7 @@ function ViewMoreStudent() {
           <Grid container spacing={1} py={1}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography variant="h4" sx={{ fontWeight: 600, marginRight: 2 }}>
-                Total Amount:{" "}
+                Total Amount:
                 <Typography
                   variant="h4"
                   component="span"
@@ -356,45 +358,74 @@ function ViewMoreStudent() {
               </Typography>
             </Grid>
           </Grid>
-          <Grid py={2}>
-            <Table className="table" striped bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Payment Mode</th>
-                  <th>Payment Date</th>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Payment Mode</th>
+                <th>Payment Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.fees_info.installments.map((item, index) => (
+                <tr key={index}>
+                  <td>{formatDate(item.installment_date)}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.status}</td>
+                  <td>{item.payment_mode}</td>
+                  <td>
+                    {item.payment_date ? formatDate(item.payment_date) : "-"}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {data?.fees_info.installments.map((item, index) => (
-                  <tr key={index}>
-                    <td>{formatDate(item.installment_date)}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.status}</td>
-                    <td>{item.payment_mode}</td>
-                    <td>
-                      {item.payment_date ? formatDate(item.payment_date) : "-"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Grid>
+              ))}
+            </tbody>
+          </Table>
         </Box>
 
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             EXAMINATION DETAILS:-
           </Typography>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Title</th>
+                <th>ConductBy</th>
+                <th>Total Marks</th>
+                <th>Obtain Marks</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.exam_info.length > 0 ? (
+                data.exam_info.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.title}</td>
+                    <td>{item.conducted_by}</td>
+                    <td>{item.total_marks}</td>
+                    <td>{item.obtained_marks}</td>
+                    <td>{item.desc}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" Align="center">
+                    No exam records available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
         </Box>
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             ATTANDENCE DETAILS:-
           </Typography>
-
-          
+          {/* {totalAttendance.length} */}
         </Box>
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
@@ -407,6 +438,9 @@ function ViewMoreStudent() {
           </Typography>
         </Box>
       </MainCard>
+      {seminar.seminars.map((e) => (
+        <>{e.attended_role === "Student"}</>
+      ))}
     </>
   );
 }

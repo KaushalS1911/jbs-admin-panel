@@ -26,6 +26,7 @@ const Examination = () => {
   const [examData, setexamData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalRows, setTotalRows] = useState(0);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchDemo = async () => {
@@ -33,6 +34,7 @@ const Examination = () => {
     try {
       const response = await axios.get(apiEndpoint);
       setexamData(response.data.data.students);
+      setTotalRows(response.data.data.total);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -69,8 +71,7 @@ const Examination = () => {
             </IconButton>
           </TableCell>
           <TableCell align="center" component="th" scope="row">
-          {row?.personal_info.firstName} {row.personal_info.lastName}
-
+            {row?.personal_info.firstName} {row.personal_info.lastName}
           </TableCell>
           <TableCell align="center">{row?.personal_info.contact}</TableCell>
           <TableCell align="center">{row?.personal_info.email}</TableCell>
@@ -289,11 +290,17 @@ const Examination = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={examData?.length || 0}
+            count={totalRows}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            nextIconButtonProps={{
+              onClick: () => handleChangePage(page + 1),
+            }}
+            backIconButtonProps={{
+              onClick: () => handleChangePage(page - 1),
+            }}
           />
         </Box>
       </MainCard>

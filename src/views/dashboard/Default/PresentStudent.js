@@ -1,15 +1,13 @@
 import { styled } from "@mui/material/styles";
 import { Box, Grid, Typography } from "@mui/material";
 import MainCard from "ui-component/cards/MainCard";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetAttendanceLogs } from "hooks/useGetAttendanceLogs";
 import PASStudent from "../../../assets/images/icone deshbord/vector6.png";
 
-
 const CardWrapper = styled(MainCard)(() => ({
   backgroundColor: "#fff",
-  color: "#fff",
+  color: "#1B1D28", // Changed text color to contrast with background
   boxShadow:
     "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;",
 }));
@@ -17,76 +15,80 @@ const CardWrapper = styled(MainCard)(() => ({
 const PresentStudent = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedType, setSelectedType] = useState("Present");
-
+  const [totalPresent, setTotalPresent] = useState(0);
+  const [totalAbsent, setTotalAbsent] = useState(0);
   const { data, refetch } = useGetAttendanceLogs(selectedDate, selectedType);
 
   useEffect(() => {
     refetch();
   }, [selectedDate, selectedType, refetch]);
 
-  const totalPresent = data
-    ? data.filter((entry) => entry.status === "Present").length
-    : 0;
-  const totalAbsent = data
-    ? data.filter((entry) => entry.status === "Absent").length
-    : 0;
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      const filterStudents = data.filter(
+        (entry, index, arr) =>
+          arr.findIndex((e) => e.studentId === entry.studentId) === index
+      );
+      const presentCount = filterStudents.filter(
+        (entry) => entry.status === "Present"
+      ).length;
+      const absentCount = filterStudents.filter(
+        (entry) => entry.status === "Absent"
+      ).length;
+      setTotalPresent(presentCount);
+      setTotalAbsent(absentCount);
+    } else {
+      console.log("No data found or error occurred while filtering.");
+    }
+  }, [data]);
 
   return (
-    <>
-      <CardWrapper border={true} content={false}>
-        <Box sx={{ p: 2.25 }}>
-          <Grid
-            container
-            direction="row"
-            sx={{ justifyContent: "space-around" }}
-          >
-            <Grid item>
-              <Grid container alignItems="center">
-                <Grid item>
-                  <img
-                    src={PASStudent}
-                    alt={PASStudent}
-                    style={{
-                      marginTop: "8px",
-                      width: "40px",
-                      height: "40px",
-                      lineHeight: "40px",
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Grid container direction="column">
-                <Grid>
-                  <Typography
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      color: "#1B1D28",
-                    }}
-                  >
-                    P/A Student
-                  </Typography>
-                </Grid>
-                <Grid>
-                  <Typography
-                    sx={{
-                      fontSize: "26px",
-                      fontWeight: 500,
-                      textAlign: "center",
-                      color: "#1B1D28",
-                    }}
-                  >
-                    {totalPresent} / {totalAbsent}
-                  </Typography>
-                </Grid>
-              </Grid>
+    <CardWrapper border={true} content={false}>
+      <Box sx={{ p: 2.25 }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-around"
+          alignItems="center"
+        >
+          <Grid item>
+            <img
+              src={PASStudent}
+              alt="P/A Student"
+              style={{
+                marginTop: "8px",
+                width: "40px",
+                height: "40px",
+                lineHeight: "40px",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Grid container direction="column">
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "#1B1D28",
+                }}
+              >
+                P/A Student
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "26px",
+                  fontWeight: 500,
+                  textAlign: "center",
+                  color: "#1B1D28",
+                }}
+              >
+                {totalPresent} / {totalAbsent}
+              </Typography>
             </Grid>
           </Grid>
-        </Box>
-      </CardWrapper>
-    </>
+        </Grid>
+      </Box>
+    </CardWrapper>
   );
 };
 

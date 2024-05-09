@@ -17,13 +17,13 @@ import { gridSpacing } from "store/constant";
 import { courses } from "../../../contants/courseConstants";
 import { gender } from "../../../contants/genderConstants";
 import instance from "../../../helpers/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Stack } from "@mui/system";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { notification } from "antd";
-import { useDispatch } from 'react-redux';
-import { settingPersonalDetails } from '../StudentSlice';
+import { useDispatch } from "react-redux";
+import { settingPersonalDetails } from "../StudentSlice";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -50,9 +50,9 @@ const validationSchema = yup.object({
 });
 
 function PersonalInfo({ formData, studentData, refetch }) {
-    const dispatch = useDispatch()
-
-   const openNotificationWithIcon = (type, message) => {
+  const dispatch = useDispatch();
+  const navigate=useNavigate();
+  const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
     });
@@ -101,13 +101,15 @@ function PersonalInfo({ formData, studentData, refetch }) {
       data: payload,
     })
       .then((response) => {
-        dispatch(settingPersonalDetails(response.data.data.student.personal_info))
+        dispatch(
+          settingPersonalDetails(response.data.data.student.personal_info)
+        );
         openNotificationWithIcon("success", response.data.data.message);
-        refetch()
+        refetch();
+        navigate("/student");
       })
       .catch((error) => {
         openNotificationWithIcon("error", error.response.data.message);
-
       });
   }
 
