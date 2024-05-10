@@ -13,6 +13,12 @@ import instance from "../../../helpers/axios";
 import { notification } from "antd";
 
 const StudentDetail = ({ course }) => {
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
+
   const { companyId, studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
   const theme = useTheme();
@@ -43,12 +49,7 @@ const StudentDetail = ({ course }) => {
       setCompletedCourses(data?.assignmentCompleted);
     }
   }, []);
-
-  const openNotificationWithIcon = (type, message) => {
-    notification[type]({
-      message: message,
-    });
-  };
+  
 
   const handleCourseCompletion = async (index) => {
     if (!completedCourses.includes(index)) {

@@ -7,7 +7,7 @@ import PASStudent from "../../../assets/images/icone deshbord/vector6.png";
 
 const CardWrapper = styled(MainCard)(() => ({
   backgroundColor: "#fff",
-  color: "#1B1D28", // Changed text color to contrast with background
+  color: "#1B1D28", 
   boxShadow:
     "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;",
 }));

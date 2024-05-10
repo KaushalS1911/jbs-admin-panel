@@ -292,7 +292,7 @@ const BatchView = () => {
               disableRowSelectionOnClick
               disableColumnMenu
               hideFooterSelectedRowCount={true}
-              hideFooterPagination={true}
+              hideFooterPagination={false}
               onRowSelectionModelChange={handleSelectionModelChange}
               sx={{
                 ".MuiDataGrid-cell:focus": {

@@ -7,24 +7,52 @@ import { useParams } from "react-router-dom";
 import MainCard from "ui-component/cards/MainCard";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import { useGetAttendanceLogs } from "hooks/useGetAttendanceLogs";
 import { useGetSeminar } from "hooks/useGetSeminar";
+import { courseProgress } from "contants/courseConstants";
 
-function ViewMoreStudent() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedType, setSelectedType] = useState("Present");
+function ViewMoreStudent({ course }) {
   const { studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
-  const { data: attandance } = useGetAttendanceLogs(selectedDate, selectedType);
   const { data: seminar } = useGetSeminar();
+  const [completedCourses, setCompletedCourses] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [dates, setDates] = useState([]);
 
-  console.log(seminar);
+  const fetchCourseData = () => {
+    const selectedCourse = courseProgress(data?.personal_info?.course);
+    if (!selectedCourse) {
+      return;
+    }
+    setCourses(selectedCourse);
+    const initialDates = selectedCourse.map((course, index) =>
+      data?.assignmentCompleted.some((item) => item.index === index)
+        ? data?.assignmentCompleted.find((item) => item.index === index).date
+        : "--"
+    );
+    setDates(initialDates);
+  };
+
+  useEffect(() => {
+    fetchCourseData();
+    refetch();
+
+    if (data?.assignmentCompleted && data?.assignmentCompleted.length !== 0) {
+      setCompletedCourses(data?.assignmentCompleted);
+    }
+  }, [data, refetch]);
+
+  const sameCourses = courses.map((course, index) => ({
+    name: course,
+    date: dates[index] || "--",
+  }));
+
+  console.log("Courses with completion dates:", sameCourses);
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("en-US", options);
   }
-
   useEffect(() => {
     refetch();
   }, []);
@@ -431,16 +459,76 @@ function ViewMoreStudent() {
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             SEMINAR DETAILS:-
           </Typography>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Scheduled By</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Attendance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {seminar?.seminars?.map((e) => {
+                return (
+                  <>
+                    {e.attended_role === "Student" && (
+                      <tr key={e.id}>
+                        {e.attended_by.map((s, index) => {
+                          return (
+                            <>
+                              {s.firstName ===
+                                data?.personal_info?.firstName && (
+                                <>
+                                  <td>{e.schedule_by}</td>
+                                  <td>{e.title}</td>
+                                  <td>{formatDate(s.created_at)}</td>
+                                  <td>{s.attended_status}</td>
+                                </>
+                              )}
+                            </>
+                          );
+                        })}
+                      </tr>
+                    )}
+                  </>
+                );
+              })}
+            </tbody>
+          </Table>
         </Box>
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             COURSE DETAILS:-
           </Typography>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Date</th>
+                <th>Course Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sameCourses.length === 0 ? (
+                <tr>
+                  <td colSpan="3" align="center">
+                    No records found
+                  </td>
+                </tr>
+              ) : (
+                sameCourses.map((e, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{e.date}</td>
+                    <td>{e.name}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </Table>
         </Box>
       </MainCard>
-      {seminar.seminars.map((e) => (
-        <>{e.attended_role === "Student"}</>
-      ))}
     </>
   );
 }

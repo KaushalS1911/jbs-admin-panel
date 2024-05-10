@@ -20,12 +20,10 @@ import { getConfigs } from "../../Setting/SettingSlice";
 import Loading from "../../../ui-component/Loading";
 import { useRecoilValue } from "recoil";
 import { profile } from "../../../atoms/authAtoms";
-import { useGetAttendanceLogs } from "hooks/useGetAttendanceLogs";
 import PresentStudent from "./PresentStudent";
-// import { Attandance } from "views/utilities/AttendanceLogs";
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
-const Dashboard = (selectedDate, selectedType) => {
+const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
   const user = useRecoilValue(profile);
   const { data: account, refetch } = useGetAccountData();

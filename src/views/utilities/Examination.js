@@ -21,7 +21,7 @@ import { useState } from "react";
 import TablePagination from "@mui/material/TablePagination";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 
-const Examination = () => {
+const Examination = (studentId) => {
   const theme = useTheme();
   const [examData, setexamData] = useState([]);
   const [page, setPage] = useState(0);
@@ -29,6 +29,7 @@ const Examination = () => {
   const [totalRows, setTotalRows] = useState(0);
 
   const user = JSON.parse(localStorage.getItem("user"));
+
   const fetchDemo = async () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/student?limit=${rowsPerPage}&page=${page + 1}`;
     try {
@@ -39,6 +40,7 @@ const Examination = () => {
       console.error("Error fetching data:", error);
     }
   };
+
   useEffect(() => {
     fetchDemo();
   }, [page, rowsPerPage]);
@@ -247,9 +249,12 @@ const Examination = () => {
       </>
     );
   }
+
   Row.propTypes = {
     row: PropTypes.object.isRequired,
   };
+
+  console.log(examData);
 
   return (
     <>
@@ -288,9 +293,9 @@ const Examination = () => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 20, 30]}
             component="div"
-            count={totalRows}
+            count={examData.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

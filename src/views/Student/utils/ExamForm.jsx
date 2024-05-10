@@ -3,9 +3,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { FormControl, Grid } from "@mui/material";
+import { FormControl, Grid, InputAdornment } from "@mui/material";
 import axios from "axios";
 import { notification } from "antd";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 
 const validationSchema = Yup.object({
   total_marks: Yup.number().required("Total Marks is required"),
@@ -30,6 +32,7 @@ function ExamForm({ setExaminationOpen, id }) {
       obtained_marks: "",
       conducted_by: "",
       desc: "",
+      date: null,
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -44,6 +47,7 @@ function ExamForm({ setExaminationOpen, id }) {
           total_marks: exam.total_marks,
           obtained_marks: exam.obtained_marks,
           conducted_by: exam.conducted_by,
+          date: exam.date,
         }));
 
         await axios.put(apiEndpoint, {
@@ -55,6 +59,7 @@ function ExamForm({ setExaminationOpen, id }) {
               total_marks: parseInt(values.total_marks),
               obtained_marks: parseInt(values.obtained_marks),
               conducted_by: values.conducted_by,
+              date: values.date,
             },
           ],
         });
@@ -92,6 +97,29 @@ function ExamForm({ setExaminationOpen, id }) {
         m={2}
       >
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
+              <MobileDatePicker
+                fullWidth
+                label="Date Of Birth"
+                clearable
+                value={formik.values.date}
+                onChange={(date) => formik.setFieldValue("date", date)}
+                renderInput={(props) => (
+                  <TextField
+                    {...props}
+                    fullWidth
+                    label="Select Date"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start"></InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth

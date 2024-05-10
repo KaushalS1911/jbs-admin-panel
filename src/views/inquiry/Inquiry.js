@@ -344,8 +344,8 @@ const Inquiry = () => {
               columns={columns}
               pagination
               pageSize={rowsPerPage}
-              disableRowSelectionOnClick
               onPageChange={handleChangePage}
+              disableRowSelectionOnClick
               rowCount={rows.length}
               checkboxSelection
               hideFooter={true}

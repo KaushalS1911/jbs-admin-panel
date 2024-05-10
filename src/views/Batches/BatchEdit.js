@@ -256,9 +256,9 @@ function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
                   {...params}
                   label="Student Name"
                   variant="outlined"
-                  className="mt-8 mx-4"
                   InputLabelProps={{
                     shrink: true,
+                    color: "#5559CE",
                   }}
                 />
               )}

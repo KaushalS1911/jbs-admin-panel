@@ -400,8 +400,8 @@ function Batch() {
               onPageChange={handleChangePage}
               rowCount={rows.length}
               checkboxSelection
-              disableRowSelectionOnClick
               disableColumnMenu
+              disableRowSelectionOnClick
               hideFooterSelectedRowCount={true}
               hideFooterPagination={true}
               onRowSelectionModelChange={handleSelectionModelChange}
