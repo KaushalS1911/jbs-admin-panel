@@ -16,12 +16,16 @@ import AddressInfo from './Tabs/AddressInfo';
 import Mainbreadcrumbs from 'contants/Mainbreadcrumbs';
 import AttendanceInfo from './Studentmodel/AttendanceInfo';
 import StudentDetail from './utils/StudentDetail';
+import Leave from './Tabs/Leave';
+import Examination from './Tabs/Examination';
 
 function EditStudent() {
   const { studentId } = useParams();
+  const data1 = localStorage.getItem("user");
+  const { role } = JSON.parse(data1);
   const [value, setValue] = React.useState('1');
   const { data, refetch } = useGetSingleStudent(studentId);
-
+  
   useEffect(() => {
     refetch();
   }, []);
@@ -30,14 +34,15 @@ function EditStudent() {
     setValue(newValue);
   };
 
+
   return (
     <>
-      <Mainbreadcrumbs title={'Student'} subtitle={'Edit Student'} />
+      <Mainbreadcrumbs title={"Student"} subtitle={"Edit Student"} />
       <StudentAvater />
-      <Box sx={{ width: '100%', typography: 'body1' }}>
+      <Box sx={{ width: "100%", typography: "body1" }}>
         <TabContext value={value}>
           <MainCard>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList
                 onChange={handleChange}
                 aria-label="lab API tabs example"
@@ -48,26 +53,49 @@ function EditStudent() {
                 <Tab label="Fee Details" value="4" />
                 <Tab label="Attendance" value="5" />
                 <Tab label="Progress" value="6" />
+                {role === "Student" ? <Tab label="Leave" value="8" /> : null}
+                <Tab label="Examination" value="9" />
               </TabList>
             </Box>
 
             <TabPanel value="1">
-              <PersonalInfo formData={data?.personal_info} studentData={data} refetch={refetch} />
+              <PersonalInfo
+                formData={data?.personal_info}
+                studentData={data}
+                refetch={refetch}
+              />
             </TabPanel>
             <TabPanel value="2">
-              <AddressInfo formData={data?.address_info} studentData={data} refetch={refetch} />
+              <AddressInfo
+                formData={data?.address_info}
+                studentData={data}
+                refetch={refetch}
+              />
             </TabPanel>
             <TabPanel value="3">
               <GuardianInfo formData={data?.guardian_info} studentData={data} />
             </TabPanel>
             <TabPanel value="4">
-              <FeesInfo formData={data?.fees_info} studentData={data} refetch={refetch} />
+              <FeesInfo
+                formData={data?.fees_info}
+                studentData={data}
+                refetch={refetch}
+              />
             </TabPanel>
             <TabPanel value="5">
               <AttendanceInfo formData={data} refetch={refetch} />
             </TabPanel>
             <TabPanel value="6">
-              <StudentDetail course={data?.personal_info?.course} refetch={refetch} />
+              <StudentDetail
+                course={data?.personal_info?.course}
+                refetch={refetch}
+              />
+            </TabPanel>
+            <TabPanel value="8">
+              <Leave />
+            </TabPanel>
+            <TabPanel value="9">
+              <Examination examination={data?.exam_info} />
             </TabPanel>
           </MainCard>
         </TabContext>
