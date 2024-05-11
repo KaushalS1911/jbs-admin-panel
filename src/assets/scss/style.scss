@@ -1,8 +1,8 @@
 // color variants
-@import 'themes-vars.module.scss';
+@import "themes-vars.module.scss";
 
 // third-party
-@import '~react-perfect-scrollbar/dist/css/styles.css';
+@import "~react-perfect-scrollbar/dist/css/styles.css";
 
 // ==============================|| LIGHT BOX ||============================== //
 .fullscreen .react-images__blanket {
@@ -15,6 +15,10 @@
   margin-right: 8px;
 }
 
+// ==============p change=============
+p {
+  margin-bottom: 0px !important;
+}
 
 .css-283xy-MuiAvatar-root {
   background: none !important;
@@ -25,9 +29,8 @@
 
 .scrollbar-container {
   .ps__rail-y {
-
-    &:hover>.ps__thumb-y,
-    &:focus>.ps__thumb-y,
+    &:hover > .ps__thumb-y,
+    &:focus > .ps__thumb-y,
     &.ps--clicking .ps__thumb-y {
       background-color: $grey500;
       width: 5px;
@@ -41,13 +44,13 @@
     right: 0;
   }
 }
-.MuiDataGrid-columnHeaderTitleContainer:focus-visible{
+.MuiDataGrid-columnHeaderTitleContainer:focus-visible {
   border: none;
 }
 
 .scrollbar-container.ps,
-.scrollbar-container>.ps {
-  &.ps--active-y>.ps__rail-y {
+.scrollbar-container > .ps {
+  &.ps--active-y > .ps__rail-y {
     width: 5px;
     background-color: transparent !important;
     z-index: 999;
@@ -59,8 +62,8 @@
     }
   }
 
-  &.ps--scrolling-y>.ps__rail-y,
-  &.ps--scrolling-x>.ps__rail-x {
+  &.ps--scrolling-y > .ps__rail-y,
+  &.ps--scrolling-x > .ps__rail-x {
     opacity: 0.4;
     background-color: transparent;
   }
@@ -89,7 +92,6 @@
 }
 
 @keyframes bounce {
-
   0%,
   20%,
   53%,
@@ -120,7 +122,6 @@
 }
 
 @keyframes slideY {
-
   0%,
   50%,
   100% {
@@ -137,7 +138,6 @@
 }
 
 @keyframes slideX {
-
   0%,
   50%,
   100% {
@@ -154,7 +154,7 @@
 }
 
 .backdropimg {
-  background-image: url('../images/BackGround\ 1.webp');
+  background-image: url("../images/BackGround\ 1.webp");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -197,21 +197,25 @@
   position: relative;
 }
 
-.css-pq9v5b-MuiDataGrid-root .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)>.MuiDataGrid-cell,
-.css-1rckm12-MuiDataGrid-root .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)>.MuiDataGrid-cel{
+.css-pq9v5b-MuiDataGrid-root
+  .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)
+  > .MuiDataGrid-cell,
+.css-1rckm12-MuiDataGrid-root
+  .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)
+  > .MuiDataGrid-cel {
   overflow: hidden;
   white-space: nowrap;
-  outline: none!important;
+  outline: none !important;
 }
 
 .custom-header-class {
-  background-color: #ede7f6!important;
+  background-color: #ede7f6 !important;
   overflow: auto;
 }
 
 a {
   text-decoration: none !important;
-  color:#000;
+  color: #000;
 }
 
 @media (max-width: 1024) {
@@ -242,7 +246,7 @@ a {
   padding: 20px;
   width: 100%;
 }
-@media(max-width:479px){
+@media (max-width: 479px) {
   .form-outer {
     padding: 0;
   }
@@ -261,7 +265,6 @@ a {
   width: 80px;
   height: 35px;
   padding: 10px;
-
 }
 
 .css-1hmckkz-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
@@ -269,7 +272,9 @@ a {
   outline: none;
 }
 
-.css-1hmckkz-MuiDataGrid-root .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)>.MuiDataGrid-cell {
+.css-1hmckkz-MuiDataGrid-root
+  .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)
+  > .MuiDataGrid-cell {
   cursor: pointer;
 }
 
@@ -294,7 +299,6 @@ a {
 }
 
 @media (max-width: 479px) {
-
   .add-icon,
   .refresh-icon {
     margin-top: 10px;
@@ -307,7 +311,7 @@ a {
 }
 
 @media (max-width: 640px) {
-  .css-mhc70k-MuiGrid-root>.MuiGrid-item {
+  .css-mhc70k-MuiGrid-root > .MuiGrid-item {
     padding-left: 0;
   }
 }
@@ -322,7 +326,8 @@ a {
   color: #5559ce !important;
 }
 
-:where(.css-dev-only-do-not-override-17sses9).ant-upload-wrapper .ant-upload-drag {
+:where(.css-dev-only-do-not-override-17sses9).ant-upload-wrapper
+  .ant-upload-drag {
   position: relative;
   width: 100%;
   /* height: 59%; */
@@ -377,7 +382,7 @@ a {
   padding: 0 30px;
 }
 
-.css-gcc2o7-MuiButton-startIcon>*:nth-of-type(1) {
+.css-gcc2o7-MuiButton-startIcon > *:nth-of-type(1) {
   font-size: 30px;
 }
 
@@ -390,7 +395,8 @@ a {
   border: none;
 }
 
-.css-1kzro0e-MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within, .css-1kzro0e-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+.css-1kzro0e-MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within,
+.css-1kzro0e-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
   outline: none;
 }
 
@@ -404,9 +410,6 @@ a {
   position: fixed;
   z-index: 1000;
 }
-
-
-
 
 :where(.css-dev-only-do-not-override-17sses9).ant-modal {
   width: 50% !important;
@@ -424,7 +427,7 @@ a {
   color: #5559ce;
 }
 
-.inquiry-form .css-mhc70k-MuiGrid-root>.MuiGrid-item {
+.inquiry-form .css-mhc70k-MuiGrid-root > .MuiGrid-item {
   padding: 6px;
 }
 
@@ -432,12 +435,10 @@ a {
   color: #5559ce;
 }
 
-
 .loader-container {
   position: relative;
   width: 120px;
   height: 120px;
-
 }
 
 .rotating-image {
@@ -461,40 +462,40 @@ a {
   outline-offset: none;
 }
 
-.css-1hmckkz-MuiDataGrid-root .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)>.MuiDataGrid-cell {
+.css-1hmckkz-MuiDataGrid-root
+  .MuiDataGrid-row:not(.MuiDataGrid-row--dynamicHeight)
+  > .MuiDataGrid-cell {
   cursor: context-menu;
 }
 /// student label
 
-.flatpicker-input input{
-  border: 1px solid #5559CE;
+.flatpicker-input input {
+  border: 1px solid #5559ce;
   border-radius: 12px;
- width: 100% !important;
- height: auto;
+  width: 100% !important;
+  height: auto;
   line-height: 35px;
   padding: 7px;
 }
 
 .flatpicker-input input::placeholder {
-  color: #5559CE;
+  color: #5559ce;
 }
 
 .flatpicker-input input:focus-visible {
   outline: none !important;
 }
 
-
-
 /////
 .flatpicker input {
-  border: 1px solid #5559CE;
+  border: 1px solid #5559ce;
   border-radius: 10px;
   height: 40px;
   padding: 0 13px;
 }
 
 .flatpicker input::placeholder {
-  color: #5559CE;
+  color: #5559ce;
 }
 
 .flatpicker input:focus-visible {
@@ -502,26 +503,20 @@ a {
 }
 
 .flatpickr-weekdays {
-  background: #D9DAF9 !important;
-
+  background: #d9daf9 !important;
 }
 
 span.flatpickr-weekday {
-
-  background: #D9DAF9 !important;
-
+  background: #d9daf9 !important;
 }
 
-
 .flatpickr-months .flatpickr-month {
-  background: #D9DAF9 !important;
-
+  background: #d9daf9 !important;
 }
 
 .flatpickr-current-month .flatpickr-monthDropdown-months {
-  background: #D9DAF9 !important;
+  background: #d9daf9 !important;
   color: #000 !important;
-
 }
 
 .flatpickr-current-month input.cur-year {
@@ -530,7 +525,6 @@ span.flatpickr-weekday {
 
 .flatpickr-months .flatpickr-prev-month,
 .flatpickr-months .flatpickr-next-month {
-
   color: #000 !important;
   fill: #000 !important;
 }
@@ -553,14 +547,15 @@ span.flatpickr-weekday {
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #5559CE !important;
+  background: #5559ce !important;
 
-  border-color: #5559CE !important;
+  border-color: #5559ce !important;
 }
 
 .flatpickr-day.inRange {
-
-  box-shadow: -5px 0 0 #D9DAF9, 5px 0 0 #D9DAF9 !important;
+  box-shadow:
+    -5px 0 0 #d9daf9,
+    5px 0 0 #d9daf9 !important;
 }
 
 .flatpickr-day.inRange,
@@ -577,38 +572,31 @@ span.flatpickr-weekday {
 .flatpickr-day.nextMonthDay:focus {
   cursor: pointer;
 
-  background: #D9DAF9 !important;
-  border-color: #D9DAF9 !important;
+  background: #d9daf9 !important;
+  border-color: #d9daf9 !important;
 }
 
 .Follow_modal {
   width: 25% !important;
-
 }
-@media(max-width:1200px){
+@media (max-width: 1200px) {
   .Follow_modal {
     width: 40% !important;
-  
   }
-  
 }
-@media(max-width:767px){
+@media (max-width: 767px) {
   .Follow_modal {
     width: 70% !important;
-  
   }
-  
 }
-@media(max-width:479px){
+@media (max-width: 479px) {
   .Follow_modal {
     width: 100% !important;
-  
   }
-  
 }
 
 .text-Note {
-  border-Color: #5559CE;
+  border-color: #5559ce;
   border-radius: 10px;
   resize: none;
   width: 100%;
@@ -617,7 +605,7 @@ span.flatpickr-weekday {
 }
 
 .text-Note::placeholder {
-  color: #5559CE;
+  color: #5559ce;
 }
 
 .text-Note:focus-visible {
@@ -638,8 +626,8 @@ span.flatpickr-weekday {
   width: 100%;
   padding: 20px;
 }
-.InquiryDemoset{
-  width:25%!important;
+.InquiryDemoset {
+  width: 25% !important;
 }
 //--------------Table---------------------//
 .custom-header-class {
@@ -652,13 +640,13 @@ span.flatpickr-weekday {
 .react-tel-input .form-control {
   position: relative;
   font-size: 14px;
-  letter-spacing: .01rem;
+  letter-spacing: 0.01rem;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   padding-left: 48px;
   margin-left: 0;
-  background: #FFFFFF;
-  border: 1px solid #5559CE !important;
+  background: #ffffff;
+  border: 1px solid #5559ce !important;
   border-radius: 12px !important;
   line-height: 25px;
   height: 3.6375em !important;
@@ -672,10 +660,10 @@ span.flatpickr-weekday {
   bottom: 0;
   padding: 0;
   background-color: transparent !important;
-  border-top: 1px solid #5559CE !important;
-  border-right: 0px solid #5559CE !important;
-  border-bottom: 1px solid #5559CE !important;
-  border-left: 1px solid #5559CE !important;
+  border-top: 1px solid #5559ce !important;
+  border-right: 0px solid #5559ce !important;
+  border-bottom: 1px solid #5559ce !important;
+  border-left: 1px solid #5559ce !important;
   border-radius: 12px 0 0 12px !important;
 }
 
@@ -689,10 +677,8 @@ span.flatpickr-weekday {
 }
 
 .react-tel-input .country-list {
-
   max-width: 275px !important;
   max-height: 200px;
-
 }
 
 .css-1p5pb03-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
@@ -711,15 +697,15 @@ span.flatpickr-weekday {
 //   padding-left: 5px;
 // }
 .fc-h-event {
-  background: #EDE7F6;
+  background: #ede7f6;
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-  background: #EDE7F6;
+  background: #ede7f6;
 }
 
 .fc-toolbar-title {
-  color: #5559CE;
+  color: #5559ce;
 }
 
 .Approve_btn {
@@ -760,7 +746,7 @@ span.flatpickr-weekday {
 }
 
 .cn_btn:hover {
-  background-color: #5559CE;
+  background-color: #5559ce;
   height: 25px;
   line-height: 25px;
   color: white;
@@ -795,45 +781,45 @@ Button:disabled {
     transform: translateY(-50%);
   }
 
-  &__text-field:focus+&__icon {
+  &__text-field:focus + &__icon {
     color: #5e35b1;
   }
 }
 
-.save_content{
+.save_content {
   color: #ffffff;
   background-color: #5559ce;
 }
-.save_content:hover{
+.save_content:hover {
   color: #ffffff;
   background-color: #5559ced8;
 }
-.delete_content{
-  color: #5559CE;
-background: #D9DAF9;
+.delete_content {
+  color: #5559ce;
+  background: #d9daf9;
 }
-.delete_content:hover{
+.delete_content:hover {
   color: #ffffff;
-  background-color:#5559CE;
+  background-color: #5559ce;
 }
-.send_btn{
+.send_btn {
   color: #ffffff;
   background-color: #5559ce;
   height: 30px;
   width: 10px !important;
 }
-.send_btn:hover{
+.send_btn:hover {
   color: #ffffff;
   background-color: #5559cecc;
   height: 30px;
 }
-.more_btn{
+.more_btn {
   background-color: transparent;
   border: none;
   outline: none;
 }
 
-// Seminer 
+// Seminer
 // .main-seminar{
 //   width: 70%;
 // }

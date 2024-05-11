@@ -87,7 +87,11 @@ const UpcomingDemo = ({ isLoading }) => {
                                   gap: 1.5,
                                 }}
                               >
-                                <Box sx={{ minWidth: 0 }}>
+                                <Box
+                                  sx={{ minWidth: 0 }}
+                                  display={"flex"}
+                                  alignItems={"center"}
+                                >
                                   <Typography
                                     noWrap
                                     fontWeight="lg"
@@ -101,6 +105,18 @@ const UpcomingDemo = ({ isLoading }) => {
                                       alt={entry.faculty_name}
                                       src={avatarPhotoUrl}
                                     />
+                                  </Typography>
+                                  <Typography
+                                    noWrap
+                                    fontWeight="lg"
+                                    sx={{
+                                      padding: "0px 0px 0px 10px",
+                                      fontSize: "14px",
+                                      color: "#5559CE",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    {entry.firstName}
                                   </Typography>
                                 </Box>
                               </Box>
@@ -126,7 +142,6 @@ const UpcomingDemo = ({ isLoading }) => {
                                   >
                                     {entry.faculty_name}
                                   </Typography>
-
                                   <Typography
                                     noWrap
                                     level="body-sm"
@@ -136,8 +151,8 @@ const UpcomingDemo = ({ isLoading }) => {
                                       fontWeight: "400",
                                     }}
                                   >
-                                    {new Date(entry.date).toLocaleDateString()}
-                                    - {entry.time}
+                                    {new Date(entry.date).toLocaleDateString()}-{" "}
+                                    {entry.time}
                                   </Typography>
                                   <Typography
                                     noWrap

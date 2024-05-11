@@ -59,7 +59,6 @@ const BatchView = () => {
     } catch (error) {
       console.error("Error deleting data:", error);
       openNotificationWithIcon("error", error.response.data.message);
-
     }
   };
 
@@ -86,7 +85,6 @@ const BatchView = () => {
       } catch (error) {
         console.log("Error deleting employees:", error);
         openNotificationWithIcon("error", error.response.data.message);
-
       }
     }
   };
@@ -292,7 +290,7 @@ const BatchView = () => {
               disableRowSelectionOnClick
               disableColumnMenu
               hideFooterSelectedRowCount={true}
-              hideFooterPagination={true}
+              hideFooterPagination={false}
               onRowSelectionModelChange={handleSelectionModelChange}
               sx={{
                 ".MuiDataGrid-cell:focus": {

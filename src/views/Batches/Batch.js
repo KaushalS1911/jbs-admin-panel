@@ -25,7 +25,6 @@ import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { EditNoteTwoTone, RestoreFromTrashTwoTone } from "@mui/icons-material";
 import noDataImg from "../../assets/images/no data found.png";
 
-
 function Batch() {
   const navigate = useNavigate();
   /* eslint-disable */
@@ -94,7 +93,6 @@ function Batch() {
       setTotalBatches(response.data.data.total);
     } catch (error) {
       console.error("Error fetching data:", error);
-      
     }
   };
 
@@ -123,7 +121,6 @@ function Batch() {
     } catch (error) {
       console.error("Error deleting data:", error);
       openNotificationWithIcon("error", error.response.data.message);
-
     } finally {
       handleCloseConfirmationDialog();
     }
@@ -238,7 +235,7 @@ function Batch() {
               fontSize: "30px",
             }}
             onClick={() => {
-              handleOpenConfirmationDialog(params.row.id); 
+              handleOpenConfirmationDialog(params.row.id);
             }}
           />
         </div>

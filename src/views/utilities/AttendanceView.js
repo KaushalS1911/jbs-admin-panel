@@ -6,7 +6,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import noDataImg from "../../assets/images/no data found.png";
-import {notification} from "antd";
+import { notification } from "antd";
 
 const AttendanceView = ({ option, startDate, setSelect }) => {
   const [batchview, setBatchviewData] = useState([]);
@@ -18,7 +18,7 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
     notification[type]({
       message: message,
     });
-  }
+  };
 
   const handleData = (e, params) => {
     const updatedRow = {
@@ -40,8 +40,8 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
   const handleActionSubmit = () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}attendance`;
     axios.post(apiEndpoint, { attendance: batchview }).then((res) => {
-      openNotificationWithIcon("success", res.data.data.message)
-      setSelect("")
+      openNotificationWithIcon("success", res.data.data.message);
+      setSelect("");
     });
 
     setChecked({});
@@ -103,58 +103,59 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
 
   return (
     <Box>
-        <form>
-          {rows.length > 0 ? (
-            <div
-              style={{
-                width: "100%",
-                height: "570px",
-                maxHeight: "100%",
+      <form>
+        {rows.length > 0 ? (
+          <div
+            style={{
+              width: "100%",
+              height: "570px",
+              maxHeight: "100%",
+            }}
+          >
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              disableRowSelectionOnClick
+              pagination={false}
+              disableColumnMenu
+              hideFooterSelectedRowCount={true}
+              hideFooterPagination={true}
+              sx={{
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#ede7f6",
+                  fontSize: 14,
+                  color: "#262626",
+                },
               }}
-            >
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                disableRowSelectionOnClick
-                disableColumnMenu
-                hideFooterSelectedRowCount={true}
-                hideFooterPagination={true}
-                sx={{
-                  "& .MuiDataGrid-columnHeaders": {
-                    backgroundColor: "#ede7f6",
-                    fontSize: 14,
-                    color: "#262626",
-                  },
-                }}
-              />
-            </div>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <img
-                src={noDataImg}
-                alt="no data"
-                loading="lazy"
-                style={{ maxWidth: "600px", width: "100%" }}
-              />
-            </div>
-          )}
+            />
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={noDataImg}
+              alt="no data"
+              loading="lazy"
+              style={{ maxWidth: "600px", width: "100%" }}
+            />
+          </div>
+        )}
 
-          <Box sx={{ textAlign: "right", marginTop: "10px", padding: "10px " }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleActionSubmit}
-            >
-              Submit
-            </Button>
-          </Box>
-        </form>
+        <Box sx={{ textAlign: "right", marginTop: "10px", padding: "10px " }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleActionSubmit}
+          >
+            Submit
+          </Button>
+        </Box>
+      </form>
     </Box>
   );
 };
