@@ -5,7 +5,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useGetSingleStudent } from "../../hooks/useGetSingleStudent";
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // Import useState
 import { useParams } from "react-router-dom";
 import PersonalInfo from "./Tabs/PersonalInfo";
 import MainCard from "ui-component/cards/MainCard";
@@ -16,15 +16,15 @@ import AddressInfo from "./Tabs/AddressInfo";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import AttendanceInfo from "./Studentmodel/AttendanceInfo";
 import StudentDetail from "./utils/StudentDetail";
-
 import Examination from "./Tabs/Examination";
 import Leave from "./Tabs/Leave";
+import ComplainAndRemark from "./Studentmodel/ComplainAndRemark";
 
 function EditStudent() {
   const { studentId } = useParams();
   const data1 = localStorage.getItem("user");
   const { role } = JSON.parse(data1);
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = useState("1"); // Initialize state for value
   const { data, refetch } = useGetSingleStudent(studentId);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function EditStudent() {
   }, []);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(newValue); // Update value state when tab is changed
   };
 
   return (
@@ -55,6 +55,7 @@ function EditStudent() {
                 <Tab label="Progress" value="6" />
                 {role === "Student" ? <Tab label="Leave" value="8" /> : null}
                 <Tab label="Examination" value="9" />
+                <Tab label="Complains & remarks" value="10" />
               </TabList>
             </Box>
 
@@ -96,6 +97,9 @@ function EditStudent() {
             </TabPanel>
             <TabPanel value="9">
               <Examination examination={data?.exam_info} />
+            </TabPanel>
+            <TabPanel value="10">
+              <ComplainAndRemark studentData={data} />
             </TabPanel>
           </MainCard>
         </TabContext>

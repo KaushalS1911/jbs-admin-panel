@@ -36,7 +36,7 @@ const UpcomingDemo = ({ isLoading }) => {
         <SkeletonPopularCard />
       ) : (
         <MainCard content={false}>
-          <CardContent style={{ height: "400px", overflowY: "scroll" }}>
+          <CardContent style={{ height: "410px", overflowY: "scroll",p:'10' }}>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
                 <Grid
@@ -45,7 +45,7 @@ const UpcomingDemo = ({ isLoading }) => {
                   justifyContent="space-between"
                 >
                   <Grid item>
-                    <Typography variant="h4" style={{ fontSize: "18px" }}>
+                    <Typography variant="h4" style={{ fontSize: "18px" ,color:"#5559CE"}}>
                       Upcoming Demo
                     </Typography>
                   </Grid>
@@ -58,7 +58,7 @@ const UpcomingDemo = ({ isLoading }) => {
                 sx={{
                   overflow: "hidden",
                   overflowY: "scroll",
-                  maxHeight: "380px",
+                  maxHeight: "350px",
                 }}
               >
                 <Table aria-label="table with ellipsis texts" noWrap>
@@ -116,7 +116,7 @@ const UpcomingDemo = ({ isLoading }) => {
                                       fontWeight: "600",
                                     }}
                                   >
-                                    {entry.firstName}
+                                    {entry.faculty_name}
                                   </Typography>
                                 </Box>
                               </Box>
@@ -140,13 +140,14 @@ const UpcomingDemo = ({ isLoading }) => {
                                       fontWeight: "600",
                                     }}
                                   >
-                                    {entry.faculty_name}
+                                    {entry.firstName}
                                   </Typography>
                                   <Typography
                                     noWrap
                                     level="body-sm"
                                     sx={{
                                       fontSize: "10px",
+                                      textAlign: "right",
                                       color: "#96A0B5",
                                       fontWeight: "400",
                                     }}
@@ -185,6 +186,7 @@ const UpcomingDemo = ({ isLoading }) => {
               sx={{
                 fontSize: "14px",
                 color: "#5559CE",
+                padding:"0",
                 fontWeight: "500",
                 cursor: "pointer",
               }}

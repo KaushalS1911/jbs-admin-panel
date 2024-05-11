@@ -4,6 +4,8 @@ import MainCard from "ui-component/cards/MainCard";
 import { useEffect, useState } from "react";
 import { useGetAttendanceLogs } from "hooks/useGetAttendanceLogs";
 import PASStudent from "../../../assets/images/icone deshbord/vector6.png";
+import { useGetSingleStudent } from "hooks/useGetSingleStudent";
+import { useGetAllStudents } from "hooks/useGetAllStudents";
 
 const CardWrapper = styled(MainCard)(() => ({
   backgroundColor: "#fff",
@@ -14,10 +16,12 @@ const CardWrapper = styled(MainCard)(() => ({
 
 const PresentStudent = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedType, setSelectedType] = useState("Present");
+  const [selectedType, setSelectedType] = useState(["Present"]);
   const [totalPresent, setTotalPresent] = useState(0);
   const [totalAbsent, setTotalAbsent] = useState(0);
   const { data, refetch } = useGetAttendanceLogs(selectedDate, selectedType);
+  const { data:student } = useGetAllStudents();
+  const TotalStudent=student?.totalStudents;
 
   useEffect(() => {
     refetch();
@@ -33,10 +37,8 @@ const PresentStudent = () => {
         (entry) => entry.status === "Present"
       ).length;
   
-      const absentCount = filterStudents.filter(
-        (entry) => entry.status === "Absent" 
-      ).length;
-  
+      const absentCount = TotalStudent-presentCount
+
       setTotalPresent(presentCount);
       setTotalAbsent(absentCount);
     }

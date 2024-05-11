@@ -161,29 +161,27 @@ const Complain = () => {
     }
   ];
 
-  console.log(data?.students,"tsdjhgfsfdsf")
+  console.log(data?.students, "tsdjhgfsfdsf");
   const rows = data?.students
-    ? data?.students.map(
-        (item, index) => (
-          {
-            id: item._id,
-            srNo: index + 1,
-            complain: item.complaints,
-            complainDate:moment(item.updated_at).format(
-              "YYYY-MM-DD"
-            ),
-            studentName: (
-              <Grid
-                style={{ cursor: "pointer", textDecoration: "none" }}
-                onClick={() => handleClick(item._id)}
-              >
-                {item.personal_info?.firstName} {item.personal_info?.lastName}
-              </Grid>
-            ),
-          }
-        )
-      )
+    ? data?.students
+        .filter((item) => item.complaints) 
+        .map((item, index) => ({
+          id: item._id,
+          srNo: index + 1,
+          complain: item.complaints,
+          complainDate: moment(item.updated_at).format("YYYY-MM-DD"),
+          studentName: (
+            <Grid
+              style={{ cursor: "pointer", textDecoration: "none" }}
+              onClick={() => handleClick(item._id)}
+            >
+              {item.personal_info?.firstName} {item.personal_info?.lastName}
+            </Grid>
+          ),
+        }))
     : [];
+    console.log(rows);
+  
 
   function handleSelectionModelChange(selectionModel) {
     setSelectedRows(selectionModel);

@@ -164,20 +164,20 @@ const Dashboard = () => {
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={8}>
+              <Grid item xs={12} md={12} lg={8} xl={8}>
                 <TotelStudentsVisite isLoading={isLoading} />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={12} lg={4} xl={4}>
                 <UpcomingDemo isLoading={isLoading} />
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={12} lg={8} xl={8}>
                 <PopularCard isLoading={isLoading} />
               </Grid>
-              <Grid item xs={12} md={8}>
+              <Grid item xs={12} md={12} lg={4} xl={4}>
                 <TotalGrowthBarChart isLoading={isLoading} />
               </Grid>
             </Grid>

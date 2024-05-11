@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .logo{
+    background-image: url('../images//logo.png');
+    width: 100px;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .main {
+    background-position: center;
+    background-blend-mode: overlay;
+    background-image: url('../images/rotate-logo.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 842px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.994);
+    margin: auto;
+  }
+  .header {
+    padding: 2rem;
+  }
+  .top {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .desc table {
+    padding: 12px 0;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .desc table td {
+    padding: 10px 10px 6px;
+    border-bottom: 1px solid rgb(206, 205, 205);
+  }
+  .payment-section {
+    margin-top: 3rem;
+  }
+  .payment-section table {
+    width: 100%;
+    /* border: 1px solid rgb(206, 205, 205); */
+  }
+  .payment-section table td {
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid rgb(206, 205, 205);
+  }
+  .payment-section table th {
+    font-weight: 500;
+    padding: 8px;
+    font-size: 15px;
+    border-bottom: 1px solid rgb(206, 205, 205);
+  }
+  .signature {
+    padding-right: 7rem;
+    margin-top: 14rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .signature p {
+    font-size: 17px;
+    font-weight: 500;
+    color: rgb(111, 62, 146);
+  }
+  .footer {
+    border-top: 1px solid black;
+    padding-top: 12px;
+    display: flex;
+    margin-top: 2rem;
+    font-size: 13px;
+    justify-content: space-between;
+  }

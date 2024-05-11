@@ -35,7 +35,9 @@ function AddEventDialog({ open, handleClose, handleAddEvent }) {
 
   const adminMenuItems = [
     <MenuItem key="holiday" value="festival holiday">festival holiday</MenuItem>,
-    <MenuItem key="other" value="other">other</MenuItem>,
+    <MenuItem key="Without Leave" value="Without Leave">Without Leave</MenuItem>,
+    <MenuItem key="Leave" value="Leave">Leave</MenuItem>,
+    <MenuItem key="other" value="other">other</MenuItem>
   ];
 
   const regularUserMenuItems = [

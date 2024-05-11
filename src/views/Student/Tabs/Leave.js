@@ -99,9 +99,8 @@ const Leave = () => {
           }}
           size="small"
         >
-          <Grid container spacing={3} sx={{}}>
-            <Grid item xs={6}>
-              {" "}
+          <Grid container spacing={3}>
+            <Grid item  xl={6} lg={12} xs={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DateRangePicker"]}>
                   <DateRangePicker
@@ -112,7 +111,7 @@ const Leave = () => {
                 </DemoContainer>
               </LocalizationProvider>
             </Grid>
-            <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
+            <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
               <FormControl fullWidth sx={{ mt: "8px" }}>
                 <InputLabel id="type">Type</InputLabel>
                 <Select
@@ -141,7 +140,7 @@ const Leave = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
+            <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
               <TextField
                 label="Title"
                 variant="outlined"
@@ -157,7 +156,7 @@ const Leave = () => {
                 helperText={formik.touched.event && formik.errors.event}
               />
             </Grid>
-            <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
+            <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
               <TextField
                 label="Description"
                 variant="outlined"

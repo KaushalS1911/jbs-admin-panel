@@ -236,34 +236,37 @@ function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-            <Autocomplete
-              multiple
-              options={options}
-              getOptionLabel={(option) =>
-                `${option.firstName} ${option.lastName}`
-              }
-              value={selectedStudents}
-              onChange={(event, newValue) => {
-                setSelectedStudents(newValue);
-              }}
-              getOptionSelected={(option, value) =>
-                option.student_id === value.student_id
-              }
-              fullWidth
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Student Name"
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                    color: "#5559CE",
-                  }}
-                />
-              )}
-            />
-          </Grid>
+          {options && (
+            <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+              <Autocomplete
+                multiple
+                options={options}
+                getOptionLabel={(option) =>
+                  `${option.firstName} ${option.lastName}`
+                }
+                value={selectedStudents}
+                onChange={(event, newValue) => {
+                  setSelectedStudents(newValue);
+                }}
+                getOptionSelected={(option, value) =>
+                  option.student_id === value.student_id
+                }
+                fullWidth
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Student Name"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { color: "#5559CE" }, // Changed from color to style
+                    }}
+                  />
+                )}
+              />
+            </Grid>
+          )}
+
           <Grid>
             <Button
               type="submit"

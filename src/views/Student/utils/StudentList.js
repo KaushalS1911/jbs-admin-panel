@@ -190,7 +190,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
     {
       field: "studentName",
       headerName: "Student Name",
-      width: 225,
+      width: 300,
       sortable: false,
       headerAlign: "center",
       align: "center",

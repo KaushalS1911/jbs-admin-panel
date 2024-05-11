@@ -214,7 +214,6 @@ const TotelStudentsVisite = ({ isLoading }) => {
     ),
     [TotalStudent, filterDate]
   );
-console.log("hari", Object.values(TotalStudent));
   return (
     <>
       {isLoading ? (
@@ -275,7 +274,7 @@ console.log("hari", Object.values(TotalStudent));
                 options={options}
                 series={options.series}
                 type="bar"
-                height={350}
+                height={335}
               />
             </Grid>
           </Grid>
