@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Avatar, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useGetSingleStudent } from "hooks/useGetSingleStudent";
@@ -6,12 +7,46 @@ import { useParams } from "react-router-dom";
 import MainCard from "ui-component/cards/MainCard";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import { useEffect } from "react";
+import { useGetSeminar } from "hooks/useGetSeminar";
+import { courseProgress } from "contants/courseConstants";
 
-
-function ViewMoreStudent() {
+function ViewMoreStudent({ course }) {
   const { studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
+  const { data: seminar } = useGetSeminar();
+  const [completedCourses, setCompletedCourses] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [dates, setDates] = useState([]);
+
+  const fetchCourseData = () => {
+    const selectedCourse = courseProgress(data?.personal_info?.course);
+    if (!selectedCourse) {
+      return;
+    }
+    setCourses(selectedCourse);
+    const initialDates = selectedCourse.map((course, index) =>
+      data?.assignmentCompleted.some((item) => item.index === index)
+        ? data?.assignmentCompleted.find((item) => item.index === index).date
+        : "--"
+    );
+    setDates(initialDates);
+  };
+
+  useEffect(() => {
+    fetchCourseData();
+    refetch();
+
+    if (data?.assignmentCompleted && data?.assignmentCompleted.length !== 0) {
+      setCompletedCourses(data?.assignmentCompleted);
+    }
+  }, [data, refetch]);
+
+  const sameCourses = courses.map((course, index) => ({
+    name: course,
+    date: dates[index] || "--",
+  }));
+
+  console.log("Courses with completion dates:", sameCourses);
 
 const loginUser = localStorage.getItem("user");
 const { role } = JSON.parse(loginUser);
@@ -20,7 +55,6 @@ const { role } = JSON.parse(loginUser);
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("en-US", options);
   }
-
   useEffect(() => {
     refetch();
   }, []);
@@ -28,7 +62,6 @@ const { role } = JSON.parse(loginUser);
   const handleAvatarClick = () => {
     document.getElementById("file-input").click();
   };
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
@@ -178,7 +211,7 @@ const { role } = JSON.parse(loginUser);
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -193,7 +226,7 @@ const { role } = JSON.parse(loginUser);
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -208,7 +241,7 @@ const { role } = JSON.parse(loginUser);
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -223,7 +256,7 @@ const { role } = JSON.parse(loginUser);
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -238,12 +271,12 @@ const { role } = JSON.parse(loginUser);
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Grid item xs={12} sm={6} md={4} lg={6}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
                   >
-                    Birth Day:{" "}
+                    DOB:{" "}
                     <Typography
                       variant="h4"
                       component="span"
@@ -253,7 +286,7 @@ const { role } = JSON.parse(loginUser);
                     </Typography>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid item xs={12} sm={12} md={12} lg={6}>
                   <Typography
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
@@ -281,26 +314,24 @@ const { role } = JSON.parse(loginUser);
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             GUARDIAN DETAILS:-
           </Typography>
-          <Grid py={2}>
-            <Table className="table" striped bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th>Relation</th>
-                  <th>Name</th>
-                  <th>Phone</th>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Relation</th>
+                <th>Name</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.guardian_info.map((guardian, index) => (
+                <tr key={index}>
+                  <td>{guardian.relation_type}</td>
+                  <td>{`${guardian.firstName} ${guardian.lastName}`}</td>
+                  <td>{guardian.contact}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {data?.guardian_info.map((guardian, index) => (
-                  <tr key={index}>
-                    <td>{guardian.relation_type}</td>
-                    <td>{`${guardian.firstName} ${guardian.lastName}`}</td>
-                    <td>{guardian.contact}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Grid>
+              ))}
+            </tbody>
+          </Table>
         </Box>
 
         <Box py={2}>
@@ -310,7 +341,7 @@ const { role } = JSON.parse(loginUser);
           <Grid container spacing={1} py={1}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography variant="h4" sx={{ fontWeight: 600, marginRight: 2 }}>
-                Total Amount:{" "}
+                Total Amount:
                 <Typography
                   variant="h4"
                   component="span"
@@ -357,53 +388,147 @@ const { role } = JSON.parse(loginUser);
               </Typography>
             </Grid>
           </Grid>
-          <Grid py={2}>
-            <Table className="table" striped bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Payment Mode</th>
-                  <th>Payment Date</th>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Payment Mode</th>
+                <th>Payment Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.fees_info.installments.map((item, index) => (
+                <tr key={index}>
+                  <td>{formatDate(item.installment_date)}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.status}</td>
+                  <td>{item.payment_mode}</td>
+                  <td>
+                    {item.payment_date ? formatDate(item.payment_date) : "-"}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {data?.fees_info.installments.map((item, index) => (
-                  <tr key={index}>
-                    <td>{formatDate(item.installment_date)}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.status}</td>
-                    <td>{item.payment_mode}</td>
-                    <td>
-                      {item.payment_date ? formatDate(item.payment_date) : "-"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Grid>
+              ))}
+            </tbody>
+          </Table>
         </Box>
 
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             EXAMINATION DETAILS:-
           </Typography>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Title</th>
+                <th>ConductBy</th>
+                <th>Total Marks</th>
+                <th>Obtain Marks</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.exam_info.length > 0 ? (
+                data.exam_info.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.title}</td>
+                    <td>{item.conducted_by}</td>
+                    <td>{item.total_marks}</td>
+                    <td>{item.obtained_marks}</td>
+                    <td>{item.desc}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" Align="center">
+                    No exam records available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
         </Box>
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             ATTANDENCE DETAILS:-
           </Typography>
+          {/* {totalAttendance.length} */}
         </Box>
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             SEMINAR DETAILS:-
           </Typography>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Scheduled By</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Attendance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {seminar?.seminars?.map((e) => {
+                return (
+                  <>
+                    {e.attended_role === "Student" && (
+                      <tr key={e.id}>
+                        {e.attended_by.map((s, index) => {
+                          return (
+                            <>
+                              {s.firstName ===
+                                data?.personal_info?.firstName && (
+                                <>
+                                  <td>{e.schedule_by}</td>
+                                  <td>{e.title}</td>
+                                  <td>{formatDate(s.created_at)}</td>
+                                  <td>{s.attended_status}</td>
+                                </>
+                              )}
+                            </>
+                          );
+                        })}
+                      </tr>
+                    )}
+                  </>
+                );
+              })}
+            </tbody>
+          </Table>
         </Box>
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             COURSE DETAILS:-
           </Typography>
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Date</th>
+                <th>Course Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sameCourses.length === 0 ? (
+                <tr>
+                  <td colSpan="3" align="center">
+                    No records found
+                  </td>
+                </tr>
+              ) : (
+                sameCourses.map((e, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{e.date}</td>
+                    <td>{e.name}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </Table>
         </Box>
         
           <Box py={2}>

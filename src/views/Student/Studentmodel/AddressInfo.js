@@ -167,7 +167,7 @@ const AddressInfo = ({ activeStep, steps, handleNext, handleBack, handleReset, f
                     onChange={formik.handleChange}
                   >
                     <MenuItem disabled value={'Default City'}>
-                      Selected State
+                      Selected City
                     </MenuItem>
 
                     {formik.values.state &&

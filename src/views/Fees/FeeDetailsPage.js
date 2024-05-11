@@ -104,7 +104,7 @@ function FeeDetailsPage() {
   const handlePrintClick = (row) => {
     const printReceipt = {
       ReceiptNo: "0011",
-      PaymentMode: "Cash",
+      PaymentMode: row.status === "Paid" ? "Cash" : "-",
       Name:
         studentData.personal_info.firstName +
         " " +

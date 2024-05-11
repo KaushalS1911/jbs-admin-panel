@@ -827,3 +827,9 @@ Button:disabled {
 // .Seminar_modal {
 //   width: 30% !important;
 // }
+
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}

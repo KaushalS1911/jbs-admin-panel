@@ -33,7 +33,6 @@ import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { notification } from "antd";
 import axios from "axios";
 import { useState } from "react";
-
 function Inquiryform() {
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);

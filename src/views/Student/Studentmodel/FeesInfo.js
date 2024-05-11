@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeAllStateData, settingFeesDetails } from "../StudentSlice";
 import FormStepButtons from "../../../ui-component/FormStepButtons";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { numberofinstallmentConstants } from "../../../contants/numberofinstallmentConstants";
@@ -52,7 +52,7 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
       message: message,
     });
   };
-
+  const navigate=useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { companyId, studentId } = useParams();
@@ -178,7 +178,7 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
             dispatch(removeAllStateData());
             console.log(res);
             openNotificationWithIcon(res.data.data.message);
-            window.location = "/student";
+            navigate("/student")
           }
         })
         .catch((error) => {

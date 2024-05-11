@@ -254,7 +254,6 @@ const Index = () => {
         }));
         setSeminarOverData(formattedData);
         setOpenDialog(true);
-        openNotificationWithIcon("success", response.message);
       } else {
         console.error(
           "Error fetching seminar overview. Status:",

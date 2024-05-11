@@ -1,64 +1,80 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Autocomplete, FormControl, Grid, InputAdornment } from "@mui/material";
-import { useGetAllStudents } from "hooks/useGetAllStudents";
+import { FormControl, Grid, InputAdornment } from "@mui/material";
+import axios from "axios";
+import { notification } from "antd";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 
 const validationSchema = Yup.object({
   total_marks: Yup.number().required("Total Marks is required"),
-  obtain_marks: Yup.number().required("Obtain Marks is required"),
-  conduct_by: Yup.string().required("Conduct By is required"),
-  description: Yup.string().required("Description is required"),
+  obtained_marks: Yup.number().required("Obtain Marks is required"),
+  conducted_by: Yup.string().required("Conduct By is required"),
+  desc: Yup.string().required("desc is required"),
 });
 
-function ExamForm({ setIsFollowOpen, id }) {
-  const [options, setOptions] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]);
-  const { data: students, refetch } = useGetAllStudents();
+function ExamForm({ setExaminationOpen, id }) {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
-
-  useEffect(() => {
-    if (students && students.length !== 0) {
-      const refactoredStudentList = students.students.map((item) => {
-        return {
-          student_id: item._id,
-          firstName: item.personal_info.firstName,
-          lastName: item.personal_info.lastName,
-        };
-      });
-
-      setOptions(refactoredStudentList);
-    }
-  }, [students]);
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
 
   const formik = useFormik({
     initialValues: {
-      date: null,
+      title: "",
       total_marks: "",
-      obtain_marks: "",
-      conduct_by: "",
-      description: "",
+      obtained_marks: "",
+      conducted_by: "",
+      desc: "",
+      date: null,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      const payload = {
-        id,
-        ...values,
-        selectedStudents,
-      };
-      console.log(payload);
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const apiEndpoint1 = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/student`;
+        const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/updateStudent`;
+
+        const existingDataResponse = await axios.get(apiEndpoint1);
+        const existingData = existingDataResponse.data.data.student.exam_info;
+        const extractedInfo = existingData.map((exam) => ({
+          title: exam.title,
+          total_marks: exam.total_marks,
+          obtained_marks: exam.obtained_marks,
+          conducted_by: exam.conducted_by,
+          date: exam.date,
+        }));
+
+        await axios.put(apiEndpoint, {
+          exam_info: [
+            ...extractedInfo,
+            {
+              title: values.title,
+              desc: values.desc,
+              total_marks: parseInt(values.total_marks),
+              obtained_marks: parseInt(values.obtained_marks),
+              conducted_by: values.conducted_by,
+              date: values.date,
+            },
+          ],
+        });
+        setExaminationOpen(false);
+        resetForm();
+        openNotificationWithIcon("success", "Exam Add Succesfully");
+      } catch (error) {
+        console.error("API Error:", error);
+        openNotificationWithIcon("error", "Somthing went Wrong!");
+      }
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} method="POST">
       <FormControl
         required
         fullWidth
@@ -82,10 +98,10 @@ function ExamForm({ setIsFollowOpen, id }) {
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
               <MobileDatePicker
                 fullWidth
-                label="Date"
+                label="Date Of Birth"
                 clearable
                 value={formik.values.date}
                 onChange={(date) => formik.setFieldValue("date", date)}
@@ -95,12 +111,30 @@ function ExamForm({ setIsFollowOpen, id }) {
                     fullWidth
                     label="Select Date"
                     InputProps={{
-                      startAdornment: <InputAdornment position="start" />,
+                      startAdornment: (
+                        <InputAdornment position="start"></InputAdornment>
+                      ),
                     }}
                   />
                 )}
               />
             </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="title"
+              in
+              name="title"
+              label="Title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              error={formik.touched.title && Boolean(formik.errors.title)}
+              helperText={formik.touched.title && formik.errors.title}
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -117,80 +151,69 @@ function ExamForm({ setIsFollowOpen, id }) {
               helperText={
                 formik.touched.total_marks && formik.errors.total_marks
               }
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              id="obtain_marks"
-              name="obtain_marks"
+              id="obtained_marks"
+              name="obtained_marks"
               label="Obtain Marks"
               type="number"
-              value={formik.values.obtain_marks}
+              value={formik.values.obtained_marks}
               onChange={formik.handleChange}
               error={
-                formik.touched.obtain_marks &&
-                Boolean(formik.errors.obtain_marks)
+                formik.touched.obtained_marks &&
+                Boolean(formik.errors.obtained_marks)
               }
               helperText={
-                formik.touched.obtain_marks && formik.errors.obtain_marks
+                formik.touched.obtained_marks && formik.errors.obtained_marks
               }
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              id="conduct_by"
-              name="conduct_by"
+              id="conducted_by"
+              name="conducted_by"
               label="Conduct By"
-              value={formik.values.conduct_by}
+              value={formik.values.conducted_by}
               onChange={formik.handleChange}
               error={
-                formik.touched.conduct_by && Boolean(formik.errors.conduct_by)
+                formik.touched.conducted_by &&
+                Boolean(formik.errors.conducted_by)
               }
-              helperText={formik.touched.conduct_by && formik.errors.conduct_by}
+              helperText={
+                formik.touched.conducted_by && formik.errors.conducted_by
+              }
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
             />
           </Grid>
           <Grid item xs={12}>
             <textarea
               className="text-Note"
-              id="description"
-              name="description"
-              placeholder="Description"
+              id="desc"
+              name="desc"
+              placeholder="desc"
               rows="4"
               cols="50"
-              value={formik.values.description}
+              value={formik.values.desc}
               onChange={formik.handleChange}
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
             />
-            {formik.touched.description && formik.errors.description && (
-              <div style={{ color: "red" }}>{formik.errors.description}</div>
+            {formik.touched.desc && formik.errors.desc && (
+              <div style={{ color: "red" }}>{formik.errors.desc}</div>
             )}
-          </Grid>
-          <Grid item xs={12}>
-            <Autocomplete
-              multiple
-              options={options}
-              getOptionLabel={(option) =>
-                `${option.firstName} ${option.lastName}`
-              }
-              value={selectedStudents}
-              onChange={(event, newValue) => setSelectedStudents(newValue)}
-              getOptionSelected={(option, value) =>
-                option.student_id === value.student_id
-              }
-              fullWidth
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Student Name"
-                  label="Student Name"
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
           </Grid>
           <Grid item xs={12}>
             <Button
