@@ -7,7 +7,7 @@ import PASStudent from "../../../assets/images/icone deshbord/vector6.png";
 
 const CardWrapper = styled(MainCard)(() => ({
   backgroundColor: "#fff",
-  color: "#1B1D28", 
+  color: "#1B1D28",
   boxShadow:
     "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;",
 }));
@@ -22,7 +22,7 @@ const PresentStudent = () => {
   useEffect(() => {
     refetch();
   }, [selectedDate, selectedType, refetch]);
-
+  
   useEffect(() => {
     if (data && Array.isArray(data)) {
       const filterStudents = data.filter(
@@ -32,15 +32,16 @@ const PresentStudent = () => {
       const presentCount = filterStudents.filter(
         (entry) => entry.status === "Present"
       ).length;
+  
       const absentCount = filterStudents.filter(
-        (entry) => entry.status === "Absent"
+        (entry) => entry.status === "Absent" 
       ).length;
+  
       setTotalPresent(presentCount);
       setTotalAbsent(absentCount);
-    } else {
-      console.log("No data found or error occurred while filtering.");
     }
   }, [data]);
+  
 
   return (
     <CardWrapper border={true} content={false}>

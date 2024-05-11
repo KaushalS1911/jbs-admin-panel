@@ -12,19 +12,32 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import Mainbreadcrumbs from "../../contants/Mainbreadcrumbs";
 
-
-
 function AttendanceLogs() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedType, setSelectedType] = useState("Present");
-
   const { data, refetch } = useGetAttendanceLogs(selectedDate, selectedType);
+
+  const aggregateData = () => {
+    const aggregatedData = {};
+    if (data) {
+      data.forEach((row) => {
+        const name = `${row.firstName} ${row.lastName}`;
+        if (!aggregatedData[name]) {
+          aggregatedData[name] = {
+            name: name,
+            contact: row.contact,
+            date: moment(row.date).format("DD/MM/YYYY"),
+            status: row.status,
+          };
+        }
+      });
+    }
+    return Object.values(aggregatedData);
+  };
 
   useEffect(() => {
     refetch();
   }, [selectedDate, selectedType, refetch]);
-
-
 
   return (
     <div>
@@ -87,33 +100,30 @@ function AttendanceLogs() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data &&
-              data.map((row, index) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            {aggregateData().map((row, index) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.contact}</TableCell>
+                <TableCell>{row.date}</TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: 500,
+                    color:
+                      row.status === "Present"
+                        ? "green"
+                        : row.status === "Absent"
+                          ? "red"
+                          : "orange",
+                  }}
                 >
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    {row.firstName} {row.lastName}
-                  </TableCell>
-                  <TableCell>{row.contact}</TableCell>
-                  <TableCell>{moment(row.date).format("DD/MM/YYYY")}</TableCell>
-                  <TableCell
-                    style={{
-                      fontWeight: 500,
-                      color:
-                        row.status === "Present"
-                          ? "green"
-                          : row.status === "Absent"
-                            ? "red"
-                            : "orange",
-                    }}
-                  >
-                    {row.status}
-                  </TableCell>
-                </TableRow>
-              ))}
+                  {row.status}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -122,5 +132,3 @@ function AttendanceLogs() {
 }
 
 export default AttendanceLogs;
-
-
