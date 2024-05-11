@@ -40,6 +40,7 @@ import Invite from "views/pages/authentication/authentication3/Invite3";
 import AdminLock from "views/Setting/AdminLock";
 import { Expence } from "views/utilities/Expence";
 import ViewMoreStudent from "views/Student/utils/ViewMoreStudent";
+import Complain from "views/Complain/Complain";
 
 const Routes = () => {
   return (
@@ -130,6 +131,10 @@ const Routes = () => {
             element={<Expenses />}
             exact
           />
+          {/* ***********complain route************ */}
+          <Route path="/complains" element={<Complain />} exact />
+
+
           <Route path="/settings/role-config" element={<Roles />} exact />
           <Route path="/settings/course-config" element={<Course />} exact />
           <Route path="settings-Admin-lock" element={<AdminLock />} exact />

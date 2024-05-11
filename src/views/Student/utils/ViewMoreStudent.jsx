@@ -12,8 +12,9 @@ import { useEffect } from "react";
 function ViewMoreStudent() {
   const { studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
-  console.log(data);
 
+const loginUser = localStorage.getItem("user");
+const { role } = JSON.parse(loginUser);
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -393,8 +394,6 @@ function ViewMoreStudent() {
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             ATTANDENCE DETAILS:-
           </Typography>
-
-          
         </Box>
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
@@ -406,6 +405,16 @@ function ViewMoreStudent() {
             COURSE DETAILS:-
           </Typography>
         </Box>
+        
+          <Box py={2}>
+            <Typography variant="h4" sx={{ color: "#5559ce" }}>
+              REMARKS:-{" "}
+              <Typography sx={{ fontSize: "18px", color: "black" }} variant="p">
+                {" "}
+                {data?.remarks.join(" , ")}
+              </Typography>
+            </Typography>
+          </Box>
       </MainCard>
     </>
   );

@@ -11,7 +11,6 @@ import { useParams } from "react-router-dom";
 import { useGetSingleStudent } from "../../../hooks/useGetSingleStudent";
 import { EditNoteTwoTone, RestoreFromTrashTwoTone } from "@mui/icons-material";
 
-
 const GuardianInfo = ({ studentData }) => {
   //notification
   const openNotificationWithIcon = (type, message) => {
@@ -74,8 +73,6 @@ const GuardianInfo = ({ studentData }) => {
       }
     } catch (error) {
       openNotificationWithIcon("error", error.response.data.message);
-     
-
     }
   };
 
@@ -145,18 +142,18 @@ const GuardianInfo = ({ studentData }) => {
               }}
             />
             <RestoreFromTrashTwoTone
-            sx={{
-              color: "#5559CE",
-              height: "35px",
-              lineHeight: "35px",
-              margin: "0 20px",
-              cursor: "pointer",
-              fontSize: "30px",
-            }}
-            onClick={() => {
+              sx={{
+                color: "#5559CE",
+                height: "35px",
+                lineHeight: "35px",
+                margin: "0 20px",
+                cursor: "pointer",
+                fontSize: "30px",
+              }}
+              onClick={() => {
                 handleOpenDialog(params.row.rowId);
               }}
-          />
+            />
             <ConfirmationDialog
               open={open}
               handleClose={handleCloseDialog}
