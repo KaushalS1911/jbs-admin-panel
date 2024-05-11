@@ -26,11 +26,15 @@ import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import MainCard from "../../ui-component/cards/MainCard";
 import { Edit as EditIcon, Print as PrintIcon } from "@mui/icons-material";
-import "../../assets/scss/FeesReceipt.css";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "jspdf-autotable";
+import topImg from "../../assets/images/feesReciept/top.png";
+import content from "../../assets/images/feesReciept/jbs-text.png";
+import logo from "../../assets/images/feesReciept/logo.png";
+import bottom from "../../assets/images/feesReciept/bottom.png";
+import callIcon from "../../assets/images/feesReciept/call-icon.png";
 
 function FeeDetailsPage() {
   const { studentId } = useParams();
@@ -114,157 +118,154 @@ function FeeDetailsPage() {
       InstallmentDate: row.installment_date,
       PaymentDate: row.payment_date,
       Status: row.status,
-      Date: new Date().toDateString(),
+      Date: moment(new Date().toDateString()).format("DD/MM/YYYY"),
     };
 
     if (printReceipt.Status === "Paid") {
       const receiptDiv = document.createElement("div");
-      receiptDiv.style.width = "800px";
+      receiptDiv.style.width = "842px";
       receiptDiv.innerHTML = `
       <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <style>
-          .main {
-            max-width: 800px;
-            margin: auto;
-            background-position: center;
-            background-blend-mode: overlay;
-            background-repeat: no-repeat;
-            background-size: contain;
-            height: 842px;
-            background-color: #fff;
-          }
-          .header {
-            padding: 2rem;
-          }
-          .top {
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-          }
-          .desc table {
-            padding: 12px 0;
-            border-radius: 4px;
-            width: 100%;
-            font-size: 14px;
-            font-weight: 500;
-          }
-          .desc td {
-            padding: 10px;
-            border-bottom: 1px solid rgb(206, 205, 205);
-          }
-          .payment-section {
-            margin-top: 3rem;
-          }
-          .payment-section table {
-            width: 100%;
-          }
-          .payment-section th, .payment-section td {
-            padding: 8px;
-            font-size: 14px;
-            text-align: center;
-            border-bottom: 1px solid rgb(206, 205, 205);
-          }
-          .payment-section th {
-            font-weight: 500;
-          }
-          .signature {
-            padding-right: 7rem;
-            margin-top: 14rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-          .signature p {
-            font-size: 17px;
-            font-weight: 500;
-            color: rgb(111, 62, 146);
-          }
-          .footer {
-            border-top: 1px solid black;
-            padding-top: 12px;
-            display: flex;
-            margin-top: 2rem;
-            font-size: 13px;
-            justify-content: space-between;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="main">
-          <div class="header">
-            <div class="top">
-              <div class="logo">
-              </div>
-              <p><b>Date: ${printReceipt.Date}</b></p>
-            </div>
-            <hr />
-            <div class="desc">
-              <table>
-                <tr>
-                  <td>Receipt No: ${printReceipt.ReceiptNo}</td>
-                  <td>Student Id: ${printReceipt.StudentID}</td>
-                </tr>
-                <tr>
-                  <td colspan="2">Name: ${printReceipt.Name}</td>
-                </tr>
-                <tr>
-                  <td colspan="2">Course: ${printReceipt.Course}</td>
-                </tr>
-                <tr>
-                  <td>Contact: ${printReceipt.Contact}</td>
-                  <td>Email: ${printReceipt.Email}</td>
-                </tr>
-              </table>
-            </div>
-            <div class="payment-section">
-              <table cellspacing="4">
-                <tr>
-                  <th>Sr No.</th>
-                  <th>Invoice Date</th>
-                  <th>Payment Date</th>
-                  <th>Payment Mode</th>
-                  <th>Amount</th>
-                </tr>
-                <tbody>
-                  <tr>
-                    <td>${printReceipt.SrNo}</td>
-                    <td>${printReceipt.InstallmentDate}</td>
-                    <td>${printReceipt.PaymentDate}</td>
-                    <td>${printReceipt.PaymentMode}</td>
-                    <td>${printReceipt.paid}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="signature">
-              <p>Authority Sign:-</p>
-              <p>Student Sign:-</p>
-            </div>
-            <div class="footer">
-              <p>+91 9726806634</p>
-              <p>monilkakadiya0096@gmail.com</p>
-              <p>www.jbsitinstitute.com</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+      .main {
+        display: inline-block;
+        margin: auto;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 40px;
+      }
+      .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo {
+        height: 100px;
+        width: 100px;
+        margin-right: 20px;
+      }
+      .phNum {
+        color: #221d54;
+        font-weight: 800;
+        margin-left: 8px;
+      }
+      .innerMain {
+        padding-inline: 20px;
+      }
+      .fieldLine {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+      }
+      .field {
+        border: none;
+        margin-left: 15px;
+        font-size: 15px;
+      }
+      .inputLabel {
+        font-weight: 500;
+        font-size: 17px;
+        margin-left: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div><img src="${topImg}" alt="error" /></div>
+         <div class="innerMain">
+        <div class="top">
+          <div class="title">
+            <div class="logo"><img src="${logo}" alt="" /></div>
+            <div class="content">
+              <img src="${content}" alt="" width="400px" />
             </div>
           </div>
+          <div class="title">
+            <img src="${callIcon}" alt="" height="35px" />
+            <span class="phNum">+9179844 43901</span>
+          </div>
         </div>
-      </body>
-      </html>`;
+
+        <div class="fieldLine">
+          <label class="inputLabel">Date : </label>
+          <div class="field">${printReceipt.Date}</div>
+          <label class="inputLabel" style="margin-left: 210px;">Reciept No. : </label>
+          <div class="field">${printReceipt.ReceiptNo}</div>
+        </div>
+        <div class="fieldLine">
+          <label class="inputLabel">Student Id : </label>
+          <div class="field">${printReceipt.StudentID}</div>
+          <label class="inputLabel">Installment Date : </label>
+          <div class="field">${printReceipt.InstallmentDate}</div>
+        </div>
+        <div class="fieldLine">
+          <label class="inputLabel">Student Name : </label>
+          <div class="field">${printReceipt.Name}</div>
+        </div>
+        <div class="fieldLine">
+          <label class="inputLabel">Course :</label>
+          <div class="field">${printReceipt.Course}</div>
+          <label class="inputLabel" style="margin-left: 85px;">Payment Mode : </label>
+          <div class="field">${printReceipt.PaymentMode}</div>
+        </div>
+        <div class="fieldLine">
+          <label class="inputLabel">Payment Amount:</label>
+          <div class="field">${printReceipt.paid}</div>
+        </div>
+        <div class="fieldLine">
+          <label class="inputLabel">Email : </label>
+          <div class="field">${printReceipt.Email}</div>
+          <label class="inputLabel" style="margin-left: 158px;">Contact : </label>
+          <div class="field">${printReceipt.Contact}</div>
+        </div>
+        <div class="fieldLine" style="margin-top: 100px;margin-bottom: 7px;">
+            <label class="inputLabel">Recived By : </label>
+            <div class="field"></div>
+            <label class="inputLabel" style="margin-left: 242px;">Student Sign : </label>
+            <div class="field"></div>
+        </div>
+                 <div class="fieldLine" style="margin-bottom: 14px">
+          <label style="font-size:14px;margin-left: 60px;">*Fees will be not refundable</label>
+        </div>
+      </div>
+      <div style="margin-bottom:4px"><img src="${bottom}" alt="error" /></div>
+    </div>
+  </body>
+</html>
+`;
 
       document.body.appendChild(receiptDiv);
 
-      html2canvas(receiptDiv, { scale: 2 }).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdfWidth = 400;
-        const pdfHeight = (canvas.height / canvas.width) * pdfWidth;
-        const pdf = new jsPDF("p", "pt", [pdfWidth, pdfHeight]);
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save("receipt.pdf");
-        document.body.removeChild(receiptDiv);
-      });
+      html2canvas(receiptDiv, { scale: 1.6 })
+        .then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF({
+            orientation: "landscape",
+          });
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height / imgProps.width) * pdfWidth;
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save("download.pdf");
+          document.body.removeChild(receiptDiv);
+        })
+        .catch((error) => {
+          console.error("Error generating PDF:", error);
+        });
     } else if (printReceipt.Status === "Unpaid") {
       alert("Status is not Paid. Cannot print receipt.");
     } else if (printReceipt.Status === "Pending") {
@@ -456,7 +457,6 @@ function FeeDetailsPage() {
             />
           </div>
         </MainCard>
-
         <Typography
           variant="h4"
           style={{ textAlign: "right", padding: "10px" }}

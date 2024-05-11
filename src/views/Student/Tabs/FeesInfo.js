@@ -44,26 +44,23 @@ const MenuProps = {
 };
 
 const FeesInfo = ({ formData, studentData, refetch }) => {
+  //notification
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
 
-     //notification
-     const openNotificationWithIcon = (type, message) => {
-      notification[type]({
-        message: message,
-      });
-    };
-
-    
   const { studentId, companyId } = useParams();
 
   const onDateChange = (selectedDates) => {
     formik.setFieldValue("upcoming_installment_date", selectedDates[0]);
   };
 
-  const filteredInstallments = formData?.installments?.filter(installment => {
-    return installment.status !== "Paid"
+  const filteredInstallments = formData?.installments?.filter((installment) => {
+    return installment.status !== "Paid";
   });
-  
- 
+
   const formik = useFormik({
     initialValues: formData,
     validationSchema,
@@ -105,7 +102,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
     })
       .then((response) => {
         openNotificationWithIcon("success", response.data.data.message);
-        refetch()
+        refetch();
       })
       .catch((error) => {
         openNotificationWithIcon("error", error.response.data.message);
@@ -234,7 +231,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
                     shrink: true,
                   }}
                 />
-                              </Grid>
+              </Grid>
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <FormControl fullWidth variant="outlined">
                   <InputLabel id="demo-simple-select-label">

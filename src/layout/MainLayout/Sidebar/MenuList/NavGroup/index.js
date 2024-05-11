@@ -11,7 +11,7 @@ const NavGroup = ({ item }) => {
     const studentMenuItems = item.children.filter((e) => e.role.includes("Student"))
     const employeeMenuItems = item.children.filter((e) => e.role.includes("Employee"))
 
-  let listItems
+  let listItems;
 
   if(user.role === "Admin"){
     listItems = adminMenuItems
