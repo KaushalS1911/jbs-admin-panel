@@ -21,7 +21,7 @@ import { useState } from "react";
 import TablePagination from "@mui/material/TablePagination";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 
-const Examination = (studentId) => {
+const Examination = () => {
   const theme = useTheme();
   const [examData, setexamData] = useState([]);
   const [page, setPage] = useState(0);

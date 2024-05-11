@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import React from "react";
 import {
   Box,
@@ -14,17 +15,14 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
-import { useState } from "react";
 import { useFormik } from "formik";
 import { string, object } from "yup";
 import axios from "axios";
 import { useGetEvents } from "hooks/useGetEvents";
-import { useEffect } from "react";
-const Leave = () => {
 
+const Leave = () => {
   const { refetch } = useGetEvents();
   const regularUserMenuItems = ["Sick Leave", "Personal Leave"];
-  const adminMenuItems = ["Festivel Holiday", "Other"];
   const data = localStorage.getItem("user");
   const { _id, role, company_id } = JSON.parse(data);
   const handleDateChange = (newDateRange) => {
@@ -105,9 +103,7 @@ const Leave = () => {
             <Grid item xs={6}>
               {" "}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer
-                  components={["DateRangePicker"]}
-                >
+                <DemoContainer components={["DateRangePicker"]}>
                   <DateRangePicker
                     localeText={{ start: "To", end: "From" }}
                     value={[formik.values.startDate, formik.values.endDate]}

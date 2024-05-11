@@ -97,13 +97,9 @@ const Examination = ({ examination }) => {
             rows={rows}
             columns={columns}
             pagination
-            // pageSize={rowsPerPage}
-            // onPageChange={handleChangePage}
             rowCount={rows.length}
-            // checkboxSelection
             disableRowSelectionOnClick
             disableColumnMenu
-            // onRowSelectionModelChange={handleSelectionModelChange}
             hideFooter={true}
             sx={{
               "& .MuiDataGrid-columnHeaders": {
