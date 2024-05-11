@@ -16,13 +16,14 @@ import AddressInfo from './Tabs/AddressInfo';
 import Mainbreadcrumbs from 'contants/Mainbreadcrumbs';
 import AttendanceInfo from './Studentmodel/AttendanceInfo';
 import StudentDetail from './utils/StudentDetail';
-import ComplainAndRemark from './Studentmodel/ComplainAndRemark';
 
 function EditStudent() {
   const { studentId } = useParams();
+  const data1 = localStorage.getItem("user");
+  const { role } = JSON.parse(data1);
   const [value, setValue] = React.useState('1');
   const { data, refetch } = useGetSingleStudent(studentId);
-
+  
   useEffect(() => {
     refetch();
   }, []);
@@ -30,6 +31,7 @@ function EditStudent() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
 
   return (
     <>
@@ -49,7 +51,6 @@ function EditStudent() {
                 <Tab label="Fee Details" value="4" />
                 <Tab label="Attendance" value="5" />
                 <Tab label="Progress" value="6" />
-                <Tab label="Complain And Remark" value="7" />
               </TabList>
             </Box>
 
@@ -81,13 +82,7 @@ function EditStudent() {
               <AttendanceInfo formData={data} refetch={refetch} />
             </TabPanel>
             <TabPanel value="6">
-              <StudentDetail
-                course={data?.personal_info?.course}
-                refetch={refetch}
-              />
-            </TabPanel>
-            <TabPanel value="7">
-              <ComplainAndRemark studentData={data} />
+              <StudentDetail course={data?.personal_info?.course} refetch={refetch} />
             </TabPanel>
           </MainCard>
         </TabContext>
