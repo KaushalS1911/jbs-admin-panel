@@ -133,6 +133,7 @@ function CalendarApp() {
       leave_type: values.eventType,
       leave_description: values.eventDescription,
     };
+    console.log(payload);
     if (user.role !== "Admin") {
       payload.leave_status = "Pending";
     } else {

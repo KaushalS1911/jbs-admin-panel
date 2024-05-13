@@ -308,7 +308,6 @@ const BatchView = () => {
               pagination
               disableRowSelectionOnClick
               disableColumnMenu
-              hideFooterSelectedRowCount={true}
               hideFooter={true}
               onRowSelectionModelChange={handleSelectionModelChange}
               sx={{

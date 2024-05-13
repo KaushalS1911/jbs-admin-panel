@@ -10,19 +10,18 @@ import axios from "axios";
 import { useGetSeminar } from "hooks/useGetSeminar";
 import { courseProgress } from "contants/courseConstants";
 import { useGetEvents } from "hooks/useGetEvents";
+import { useSelector } from "react-redux";
 
-function ViewMoreStudent({ course }) {
+function ViewMoreStudent() {
   const { studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
   const { data: seminar } = useGetSeminar();
   const { data: events } = useGetEvents();
-
-  console.log(events);
-
   const [completedCourses, setCompletedCourses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [dates, setDates] = useState([]);
-
+  const { configs } = useSelector((state) => state.configs);
+  const [eventData, setEventData] = useState([]);
   const fetchCourseData = () => {
     const selectedCourse = courseProgress(data?.personal_info?.course);
     if (!selectedCourse) {
@@ -50,32 +49,23 @@ function ViewMoreStudent({ course }) {
     name: course,
     date: dates[index] || "--",
   }));
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return date.toLocaleDateString("en-US", options);
-  }
-
-  const formatDateTime = (dateTimeString) => {
+  const formatDate = (dateTimeString) => {
     const date = new Date(dateTimeString);
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-    });
+    return date.toLocaleDateString("en-US");
   };
+  
   useEffect(() => {
     refetch();
+    const studentEvents = events.filter(
+      (item) => data.student_user_id === item.event_user_id
+    );
+    setEventData(studentEvents);
   }, []);
 
   const handleAvatarClick = () => {
     document.getElementById("file-input").click();
   };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
@@ -100,23 +90,20 @@ function ViewMoreStudent({ course }) {
     }
   };
 
+  console.log(eventData);
+
   return (
     <>
       <MainCard>
+        {/* Company Name */}
         <Typography
           variant="h1"
           sx={{ color: "#5559CE", textAlign: "center" }}
           py={1}
         >
-          <span style={{ display: "inline", marginRight: "5px" }}>JBS</span>
-          <Typography
-            component="span"
-            variant="h1"
-            sx={{ color: "#c3835c", display: "inline", marginRight: "5px" }}
-          >
-            IT
-          </Typography>
-          <span style={{ display: "inline" }}>INSTITUTE</span>
+          <span style={{ display: "inline", textTransform: "uppercase" }}>
+            {configs?.company_details?.name}
+          </span>
         </Typography>
         <Box
           sx={{
@@ -134,6 +121,7 @@ function ViewMoreStudent({ course }) {
             -: Student Details :-
           </Typography>
         </Box>
+        {/* Personal Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             PERSONAL DETAILS:-
@@ -173,7 +161,7 @@ function ViewMoreStudent({ course }) {
                     <Typography
                       variant="h4"
                       component="span"
-                      sx={{ fontWeight: 300 }}
+                      sx={{ fontWeight: 300, textTransform: "capitalize" }}
                     >
                       {data?.personal_info.firstName}{" "}
                       {data?.personal_info.lastName}
@@ -185,11 +173,11 @@ function ViewMoreStudent({ course }) {
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
                   >
-                    Course:{" "}
+                    Course:
                     <Typography
-                      variant="h4"
+                      variant="h5"
                       component="span"
-                      sx={{ fontWeight: 300 }}
+                      sx={{ fontWeight: 300, textTransform: "capitalize" }}
                     >
                       {data?.personal_info.course}
                     </Typography>
@@ -309,7 +297,7 @@ function ViewMoreStudent({ course }) {
                     <Typography
                       variant="h4"
                       component="span"
-                      sx={{ fontWeight: 300 }}
+                      sx={{ fontWeight: 300, textTransform: "capitalize" }}
                     >
                       {data?.address_info.address_1}{" "}
                       {data?.address_info.address_2 &&
@@ -323,7 +311,7 @@ function ViewMoreStudent({ course }) {
             </Grid>
           </Grid>
         </Box>
-
+        {/* Gardian Detsils */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             GUARDIAN DETAILS:-
@@ -339,15 +327,19 @@ function ViewMoreStudent({ course }) {
             <tbody>
               {data?.guardian_info.map((guardian, index) => (
                 <tr key={index}>
-                  <td>{guardian.relation_type}</td>
-                  <td>{`${guardian.firstName} ${guardian.lastName}`}</td>
+                  <td style={{ textTransform: "capitalize" }}>
+                    {guardian.relation_type}
+                  </td>
+                  <td
+                    style={{ textTransform: "capitalize" }}
+                  >{`${guardian.firstName} ${guardian.lastName}`}</td>
                   <td>{guardian.contact}</td>
                 </tr>
               ))}
             </tbody>
           </Table>
         </Box>
-
+        {/* Fees Detaiils */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             FEES DETAILS:-
@@ -427,7 +419,7 @@ function ViewMoreStudent({ course }) {
             </tbody>
           </Table>
         </Box>
-
+        {/* Examination Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             EXAMINATION DETAILS:-
@@ -448,8 +440,12 @@ function ViewMoreStudent({ course }) {
                 data.exam_info.map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{item.title}</td>
-                    <td>{item.conducted_by}</td>
+                    <td style={{ textTransform: "capitalize" }}>
+                      {item.title}
+                    </td>
+                    <td style={{ textTransform: "capitalize" }}>
+                      {item.conducted_by}
+                    </td>
                     <td>{item.total_marks}</td>
                     <td>{item.obtained_marks}</td>
                     <td>{item.desc}</td>
@@ -465,23 +461,35 @@ function ViewMoreStudent({ course }) {
             </tbody>
           </Table>
         </Box>
-
+        {/* Attandance Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             ATTANDENCE DETAILS:-
           </Typography>
-
-          {events.map((event) => (
-            <li key={event._id}>
-              <div>Event: {event?.event}</div>
-              <div>Start Date: {formatDateTime(event?.startDate)}</div>
-              <div>End Date: {formatDateTime(event.endDate)}</div>
-              <div>Leave Type: {event.leave_type}</div>
-              <div>Leave Description: {event.leave_description}</div>
-            </li>
-          ))}
+          <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>StartDate</th>
+                <th>End Date</th>
+                <th>Title</th>
+                <th>Leave type</th>
+                <th>Ststus</th>
+              </tr>
+            </thead>
+            <tbody>
+              {eventData?.map((item, index) => (
+                <tr key={index}>
+                  <td>{formatDate(item.start)}</td>
+                  <td>{formatDate(item.end)}</td>
+                  <td>{item.title}</td>
+                  <td>{item.leave_type}</td>
+                  <td>{item.leave_status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </Box>
-
+        {/* Seminar Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             SEMINAR DETAILS:-
@@ -507,10 +515,16 @@ function ViewMoreStudent({ course }) {
                               {s.firstName ===
                                 data?.personal_info?.firstName && (
                                 <>
-                                  <td>{e.schedule_by}</td>
-                                  <td>{e.title}</td>
+                                  <td style={{ textTransform: "capitalize" }}>
+                                    {e.schedule_by}
+                                  </td>
+                                  <td style={{ textTransform: "capitalize" }}>
+                                    {e.title}
+                                  </td>
                                   <td>{formatDate(s.created_at)}</td>
-                                  <td>{s.attended_status}</td>
+                                  <td style={{ textTransform: "capitalize" }}>
+                                    {s.attended_status}
+                                  </td>
                                 </>
                               )}
                             </>
@@ -524,6 +538,7 @@ function ViewMoreStudent({ course }) {
             </tbody>
           </Table>
         </Box>
+        {/* Course Detsils */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             COURSE DETAILS:-
@@ -555,12 +570,18 @@ function ViewMoreStudent({ course }) {
             </tbody>
           </Table>
         </Box>
-
+        {/* Remsrks */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            REMARKS:-{" "}
-            <Typography sx={{ fontSize: "18px", color: "black" }} variant="p">
-              {" "}
+            REMARKS:-
+            <Typography
+              sx={{
+                fontSize: "18px",
+                color: "black",
+                textTransform: "capitalize",
+              }}
+              variant="p"
+            >
               {data?.remarks.join(" , ")}
             </Typography>
           </Typography>

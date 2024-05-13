@@ -402,7 +402,7 @@ function Batch() {
               checkboxSelection
               disableColumnMenu
               disableRowSelectionOnClick
-              hideFooterSelectedRowCount={true}
+              hideFooter={true}
               hideFooterPagination={true}
               onRowSelectionModelChange={handleSelectionModelChange}
               sx={{
