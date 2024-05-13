@@ -417,8 +417,8 @@ const Index = () => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
             component="div"
+            rowsPerPageOptions={[5, 10, 25]}
             count={demoData.length}
             rowsPerPage={rowsPerPage}
             page={page}

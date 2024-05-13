@@ -268,18 +268,24 @@ function InquiryEdit() {
               }}
             >
               {/* Personal Details */}
-              <Grid>
+              <Grid spacing={2}>
                 <Typography
                   sx={{
                     marginBottom: "20px",
                     color: "#5559CE",
                     fontWeight: "500",
                     fontSize: "18px",
+                    padding: "10px",
                   }}
                 >
                   Personal Details:
                 </Typography>
-                <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
+                <Grid
+                  about=""
+                  container
+                  spacing={3}
+                  sx={{ marginBottom: "20px" }}
+                >
                   <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
                     <TextField
                       id="outlined-basic"
@@ -432,6 +438,7 @@ function InquiryEdit() {
                     color: "#5559CE",
                     fontWeight: "500",
                     fontSize: "18px",
+                    padding: "10px",
                   }}
                 >
                   Address Details:
@@ -630,6 +637,7 @@ function InquiryEdit() {
                     color: "#5559CE",
                     fontWeight: "500",
                     fontSize: "18px",
+                    padding: "10px",
                   }}
                 >
                   Father Details:
@@ -717,6 +725,7 @@ function InquiryEdit() {
                       color: "#1B1D28",
                       fontSize: "12px",
                       fontWeight: "normal",
+                      padding: "10px",
                     }}
                   >
                     How did you come to know about JBS IT ?
@@ -779,6 +788,7 @@ function InquiryEdit() {
                       color: "#5559CE",
                       fontSize: "18px",
                       fontWeight: "bold",
+                      padding: "10px",
                     }}
                   >
                     Select Interested Options:
@@ -876,7 +886,7 @@ function InquiryEdit() {
                         color: "#fff",
                       }}
                     >
-                     {loading ? <CircularProgress size={24} /> : "Save"}
+                      {loading ? <CircularProgress size={24} /> : "Save"}
                     </Button>
                   </Grid>
                   <Grid>

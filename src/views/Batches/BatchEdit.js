@@ -259,7 +259,7 @@ function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
                     variant="outlined"
                     InputLabelProps={{
                       shrink: true,
-                      style: { color: "#5559CE" }, // Changed from color to style
+                      style: { color: "#5559CE" }, 
                     }}
                   />
                 )}

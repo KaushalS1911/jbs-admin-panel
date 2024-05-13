@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, FormControl, Grid, TablePagination, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  TablePagination,
+  TextField,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -25,14 +31,10 @@ const BatchView = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/batch?page=${page}&limit=${rowsPerPage}`;
+      const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/batch?page=${page + 1}&limit=${rowsPerPage}`;
       console.log(apiEndpoint);
       const response = await axios.get(apiEndpoint);
       setBatchdata(response.data.data.batch.batch_members);
@@ -41,6 +43,10 @@ const BatchView = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [batchData]);
 
   const handleOpenConfirmationDialog = (id) => {
     setentryId(id);
@@ -58,7 +64,7 @@ const BatchView = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   }
-
+  //Delete Batch
   const handleDelete = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -82,7 +88,7 @@ const BatchView = () => {
   const handleSelectionModelChange = (selectionModel) => {
     setSelectedRows(selectionModel);
   };
-
+  //Delete Multiple batch
   const deleteAllbatchstudent = async () => {
     if (selectedRows.length > 0) {
       try {
@@ -346,6 +352,8 @@ const BatchView = () => {
           rowsPerPageOptions={[10, 20, 50, 100]}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          nextIconButtonProps={{ style: { visibility: "hidden" } }}
+          backIconButtonProps={{ style: { visibility: "hidden" } }}
         />
       </MainCard>
 

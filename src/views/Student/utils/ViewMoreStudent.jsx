@@ -9,11 +9,16 @@ import Table from "react-bootstrap/Table";
 import axios from "axios";
 import { useGetSeminar } from "hooks/useGetSeminar";
 import { courseProgress } from "contants/courseConstants";
+import { useGetEvents } from "hooks/useGetEvents";
 
 function ViewMoreStudent({ course }) {
   const { studentId } = useParams();
   const { data, refetch } = useGetSingleStudent(studentId);
   const { data: seminar } = useGetSeminar();
+  const { data: events } = useGetEvents();
+
+  console.log(events);
+
   const [completedCourses, setCompletedCourses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [dates, setDates] = useState([]);
@@ -46,15 +51,24 @@ function ViewMoreStudent({ course }) {
     date: dates[index] || "--",
   }));
 
-  console.log("Courses with completion dates:", sameCourses);
-
-const loginUser = localStorage.getItem("user");
-const { role } = JSON.parse(loginUser);
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("en-US", options);
   }
+
+  const formatDateTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    });
+  };
   useEffect(() => {
     refetch();
   }, []);
@@ -451,12 +465,23 @@ const { role } = JSON.parse(loginUser);
             </tbody>
           </Table>
         </Box>
+
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             ATTANDENCE DETAILS:-
           </Typography>
-          {/* {totalAttendance.length} */}
+
+          {events.map((event) => (
+            <li key={event._id}>
+              <div>Event: {event?.event}</div>
+              <div>Start Date: {formatDateTime(event?.startDate)}</div>
+              <div>End Date: {formatDateTime(event.endDate)}</div>
+              <div>Leave Type: {event.leave_type}</div>
+              <div>Leave Description: {event.leave_description}</div>
+            </li>
+          ))}
         </Box>
+
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             SEMINAR DETAILS:-
@@ -530,16 +555,16 @@ const { role } = JSON.parse(loginUser);
             </tbody>
           </Table>
         </Box>
-        
-          <Box py={2}>
-            <Typography variant="h4" sx={{ color: "#5559ce" }}>
-              REMARKS:-{" "}
-              <Typography sx={{ fontSize: "18px", color: "black" }} variant="p">
-                {" "}
-                {data?.remarks.join(" , ")}
-              </Typography>
+
+        <Box py={2}>
+          <Typography variant="h4" sx={{ color: "#5559ce" }}>
+            REMARKS:-{" "}
+            <Typography sx={{ fontSize: "18px", color: "black" }} variant="p">
+              {" "}
+              {data?.remarks.join(" , ")}
             </Typography>
-          </Box>
+          </Typography>
+        </Box>
       </MainCard>
     </>
   );

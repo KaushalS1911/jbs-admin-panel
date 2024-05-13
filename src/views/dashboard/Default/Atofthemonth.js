@@ -8,7 +8,7 @@ const PopularCard = ({ isLoading }) => {
   // Static employee data
   const employeeData = [
     { name: 'Kaushal sir', experiance: 3 },
-    { name: 'Dixita Mem', experiance: 2 },
+    { name: 'Dixita Mam', experiance: 2 },
     { name: 'Jeel Kakadiya', experiance: 1 },
     { name: 'Yash Kakadiya', experiance: 1 },
   ];
