@@ -15,13 +15,16 @@ const Attendance = () => {
   const [select, setSelect] = useState("");
   const [option, setOption] = useState({});
   const [startDate, setStartDate] = useState(new Date());
-
   const user = JSON.parse(localStorage.getItem("user"));
-
   const fetchData = async () => {
-    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/batch`;
+    const page = 1;
+    const perPage = 10000;
+
+    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/batch?page=${page}&limit=${perPage}`;
+
     try {
       const response = await axios.get(apiEndpoint);
+      console.log("all batch", response);
       setBatches(response.data.data.batches);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -55,7 +58,7 @@ const Attendance = () => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Grid item lg={6} md={6} sm={12} xs={12}>
+                <Grid item lg={4} md={6} sm={12} xs={12}>
                   <FormControl
                     sx={{
                       m: 1,
@@ -86,9 +89,18 @@ const Attendance = () => {
                     <Select
                       labelId="interested-label"
                       id="selected-batch"
+                      style={{ width: 200 }}
                       value={select}
                       onChange={handleSelectChange}
                       label="Select batch"
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 200,
+                            width: 250,
+                          },
+                        },
+                      }}
                     >
                       {batches.map((option) => (
                         <MenuItem key={option._id} value={option.technology}>

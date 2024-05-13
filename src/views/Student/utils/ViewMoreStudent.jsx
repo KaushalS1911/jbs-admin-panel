@@ -56,7 +56,7 @@ function ViewMoreStudent() {
   
   useEffect(() => {
     refetch();
-    const studentEvents = events.filter(
+    const studentEvents = events?.filter(
       (item) => data.student_user_id === item.event_user_id
     );
     setEventData(studentEvents);

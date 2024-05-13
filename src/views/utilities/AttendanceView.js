@@ -14,6 +14,8 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const allStatus = ["Present", "Absent", "Late"];
+
+
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -101,6 +103,8 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
     },
   ];
 
+  console.log(rows);
+
   return (
     <Box>
       <form>
@@ -119,7 +123,7 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
               pagination={false}
               disableColumnMenu
               hideFooterSelectedRowCount={true}
-              hideFooterPagination={true}
+              hideFooter={true}
               sx={{
                 "& .MuiDataGrid-columnHeaders": {
                   backgroundColor: "#ede7f6",
