@@ -89,7 +89,7 @@ function AttendanceLogs() {
         </Box>
       </Grid>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650,maxHeight:800,overflowY:'scroll' }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Sr No</TableCell>

@@ -17,13 +17,10 @@ const Attendance = () => {
   const [startDate, setStartDate] = useState(new Date());
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchData = async () => {
-    const page = 1;
-    const perPage = 10000;
-
-    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/batch?page=${page}&limit=${perPage}`;
-
+    const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/batch`;
     try {
       const response = await axios.get(apiEndpoint);
+      console.log(response.data.data);
       setBatches(response.data.data.batches);
     } catch (error) {
       console.error("Error fetching data:", error);

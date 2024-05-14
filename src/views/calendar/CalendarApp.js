@@ -15,7 +15,7 @@ import { useRecoilValue } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetAllStudents } from "hooks/useGetAllStudents";
-import {log10} from "chart.js/helpers";
+import { log10 } from "chart.js/helpers";
 
 const Root = styled("div")(({ theme }) => ({
   "& a": {
@@ -74,7 +74,6 @@ function CalendarApp() {
   const [openDeleteEventDialog, setOpenDeleteEventDialog] = useState(false);
   const [edit, setEdit] = useState(false);
   const [action, setAction] = useState(null);
-  const [studentUserId, setStudentUserId] = useState();
   const selectAllow = (rangeInfo) => {
     const selectedDate = rangeInfo.startStr;
 
@@ -92,7 +91,7 @@ function CalendarApp() {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [events]);
 
   const [options, setOptions] = useState();
   const [selectedStudents, setSelectedStudents] = useState();
@@ -136,7 +135,10 @@ function CalendarApp() {
       leave_description: values.eventDescription,
     };
 
-    if (user.role !== "Admin" || (user.role === "Admin" && payload.leave_type === "Student Leave")) {
+    if (
+      user.role !== "Admin" ||
+      (user.role === "Admin" && payload.leave_type === "Student Leave")
+    ) {
       payload.leave_status = "Pending";
     } else {
       payload.leave_status = "office";
@@ -208,14 +210,15 @@ function CalendarApp() {
     }
   };
 
+  const filteredEvents =
+    user.role === "Student"
+      ? events?.filter((event) => event.event_user_id === user._id)
+      : events;
+
   return (
     <>
       <Mainbreadcrumbs title={"Calendar"} />
-      <MainCard
-        secondary={
-          <SecondaryAction link="https://next.material-ui.com/system/typography/" />
-        }
-      >
+      <MainCard>
         <Root className="flex flex-col flex-auto relative">
           <div className="flex flex-1 p-24 container">
             <motion.div
@@ -235,10 +238,17 @@ function CalendarApp() {
                 weekends
                 select={handleDateSelect}
                 events={
-                  events
-                    ? events.map((event) => ({
+                  filteredEvents && filteredEvents.length > 0
+                    ? filteredEvents.map((event) => ({
                         ...event,
-                        color: getEventStyle(event.leave_status),
+                        color:
+                          event.leave_status === "Pending"
+                            ? "rgb(221,221,222)"
+                            : event.leave_status === "Approved"
+                              ? "rgb(220,248,241)"
+                              : event.leave_status === "Denied"
+                                ? "rgb(254,237,232)"
+                                : "#EDE7F6",
                       }))
                     : []
                 }

@@ -81,7 +81,8 @@ function AddEventDialog({
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
+      resetForm();
       handleAddEvent(values);
     },
   });
@@ -243,14 +244,13 @@ function AddEventDialog({
                     }}
                   >
                     <Flatpickr
-                      placeholder="Select Date and Time"
+                      placeholder="Select Date"
                       style={{ minWidth: "100%" }}
                       onChange={onDateChange}
                       className="form-control"
                       name="date"
                       options={{
-                        dateFormat: "Y-m-d H:i",
-                        enableTime: true,
+                        dateFormat: "Y-m-d",
                         mode: "range",
                       }}
                     />
