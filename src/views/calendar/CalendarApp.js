@@ -15,6 +15,7 @@ import { useRecoilValue } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useGetAllStudents } from "hooks/useGetAllStudents";
+import {log10} from "chart.js/helpers";
 
 const Root = styled("div")(({ theme }) => ({
   "& a": {
@@ -73,6 +74,7 @@ function CalendarApp() {
   const [openDeleteEventDialog, setOpenDeleteEventDialog] = useState(false);
   const [edit, setEdit] = useState(false);
   const [action, setAction] = useState(null);
+  const [studentUserId, setStudentUserId] = useState();
   const selectAllow = (rangeInfo) => {
     const selectedDate = rangeInfo.startStr;
 
@@ -103,7 +105,7 @@ function CalendarApp() {
     if (students && students.length !== 0) {
       const refactoredStudentList = students.students.map((item) => {
         return {
-          student_user_id: item._id,
+          student_user_id: item.student_user_id,
           firstName: item.personal_info.firstName,
           lastName: item.personal_info.lastName,
         };
@@ -115,11 +117,11 @@ function CalendarApp() {
 
   let event_user_id;
   const user = useRecoilValue(profile);
+
   async function handleAddEvent(values) {
-    const studentIds = selectedStudents
-      .map((s) => String(s.student_user_id))
-      .toString();
-    if (user.role === "Admin") {
+    const studentIds = selectedStudents?.student_user_id;
+
+    if (user.role === "Admin" && values.eventType === "Student Leave") {
       event_user_id = studentIds;
     } else {
       event_user_id = user._id;
@@ -133,12 +135,13 @@ function CalendarApp() {
       leave_type: values.eventType,
       leave_description: values.eventDescription,
     };
-    if (user.role !== "Admin") {
+
+    if (user.role !== "Admin" || (user.role === "Admin" && payload.leave_type === "Student Leave")) {
       payload.leave_status = "Pending";
     } else {
       payload.leave_status = "office";
     }
-    
+
     try {
       await axios.post(
         `${process.env.REACT_APP_API_URL}${user.company_id}/event`,

@@ -53,13 +53,10 @@ function AddEventDialog({
   const user = useRecoilValue(profile);
   const adminMenuItems = [
     <MenuItem key="holiday" value="festival holiday">
-      festival holiday
+      Festival holiday
     </MenuItem>,
-    <MenuItem key="Without Leave" value="Without Leave">
-      Without Leave
-    </MenuItem>,
-    <MenuItem key="Leave" value="Leave">
-      Leave
+    <MenuItem key="Leave" value="Student Leave">
+      Student Leave
     </MenuItem>,
     <MenuItem key="other" value="other">
       other
@@ -108,7 +105,7 @@ function AddEventDialog({
     if (students && students.length !== 0) {
       const refactoredStudentList = students.students.map((item) => {
         return {
-          student_user_id: item._id,
+          student_user_id: item.student_user_id,
           firstName: item.personal_info.firstName,
           lastName: item.personal_info.lastName,
         };
@@ -171,7 +168,6 @@ function AddEventDialog({
               <Grid container>
                 <Grid item xs={12} sx={{ marginBottom: "10px" }}>
                   <Autocomplete
-                    multiple
                     size="small"
                     options={options}
                     getOptionLabel={(option) =>
@@ -182,7 +178,7 @@ function AddEventDialog({
                       setSelectedStudents(newValue);
                     }}
                     getOptionSelected={(option, value) =>
-                      option.student_id === value.student_id
+                      option.student_user_id === value.student_user_id
                     }
                     fullWidth
                     renderInput={(params) => (
@@ -201,14 +197,14 @@ function AddEventDialog({
                 <Grid item xs={12} sx={{ marginBottom: "10px" }}>
                   <FormControl fullWidth variant="outlined">
                     <InputLabel id="gender-label" style={{ color: "#5559ce" }}>
-                      Type
+                      Event Type
                     </InputLabel>
                     <Select
                       labelId="gender-label"
                       id="type"
                       name="eventType"
                       size="small"
-                      label="Type"
+                      label="Event Type"
                       InputLabelProps={{
                         style: { color: "#5559CE" },
                       }}
