@@ -22,10 +22,6 @@ const AttendanceInfo = ({ formData }) => {
     endDate
   );
 
-  console.log(data);
-
-  console.log("Attadance", data);
-
   useEffect(() => {
     refetch();
   }, [page, rowsPerPage]);

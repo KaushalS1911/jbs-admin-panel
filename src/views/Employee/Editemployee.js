@@ -110,11 +110,10 @@ const Editemployee = () => {
 
   const onSubmit = async (values) => {
     const experienceAsNumber = parseInt(values.experience, 10);
-    const numericContact = values.contact.replace(/\D/g, "");
     const updatedEmployee = {
       firstName: values.firstName,
       lastName: values.lastName,
-      contact: numericContact,
+      contact: values.contact,
       email: values.email,
       role: values.role,
       gender: values.gender,
@@ -386,7 +385,6 @@ const Editemployee = () => {
                     value={formik.values.contact}
                     onChange={(value, country, e, formattedValue) => {
                       formik.setFieldValue("contact", formattedValue);
-                      // formik.setFieldValue('contactCountry', country);
                     }}
                   />
                   {formik.touched.contact && formik.errors.contact && (

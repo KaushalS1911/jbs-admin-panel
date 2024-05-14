@@ -103,7 +103,6 @@ const AttendanceView = ({ option, startDate, setSelect }) => {
     },
   ];
 
-  console.log(rows);
 
   return (
     <Box>

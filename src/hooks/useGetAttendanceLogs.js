@@ -14,7 +14,6 @@ export const useGetAttendanceLogs = (date, type) => {
         })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data);
             return res.data;
           }
         })

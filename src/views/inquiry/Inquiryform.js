@@ -86,7 +86,6 @@ function Inquiryform() {
         `${process.env.REACT_APP_API_URL}${profileData?.company_id}/inquiry`,
         values
       );
-      console.log(response);
       openNotificationWithIcon("success", response.data.message);
       resetForm();
       navigate("/inquiry");

@@ -33,7 +33,6 @@ const MenuProps = {
 
 function Batchform({ setIsBatchOpen, fetchData }) {
   const { configs } = useSelector((state) => state.configs);
-  console.log(configs);
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,

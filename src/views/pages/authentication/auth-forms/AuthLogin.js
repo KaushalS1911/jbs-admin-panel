@@ -106,7 +106,6 @@ const FirebaseLogin = ({ setIsLoading }) => {
       withCredentials: false,
     })
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           setProfileData(response.data.data);
           window.location = "/";

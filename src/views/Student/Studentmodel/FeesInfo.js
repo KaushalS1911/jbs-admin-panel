@@ -176,7 +176,6 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         .then((res) => {
           if (res.status === 200) {
             dispatch(removeAllStateData());
-            console.log(res);
             openNotificationWithIcon(res.data.data.message);
             navigate("/student")
           }

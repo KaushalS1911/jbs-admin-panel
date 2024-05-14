@@ -90,7 +90,6 @@ function ViewMoreStudent() {
     }
   };
 
-  console.log(eventData);
 
   return (
     <>

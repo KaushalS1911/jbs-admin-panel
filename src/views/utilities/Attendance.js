@@ -24,7 +24,6 @@ const Attendance = () => {
 
     try {
       const response = await axios.get(apiEndpoint);
-      console.log("all batch", response);
       setBatches(response.data.data.batches);
     } catch (error) {
       console.error("Error fetching data:", error);

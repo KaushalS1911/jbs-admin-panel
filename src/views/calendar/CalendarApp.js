@@ -133,13 +133,12 @@ function CalendarApp() {
       leave_type: values.eventType,
       leave_description: values.eventDescription,
     };
-    console.log(payload);
     if (user.role !== "Admin") {
       payload.leave_status = "Pending";
     } else {
       payload.leave_status = "office";
     }
-
+    
     try {
       await axios.post(
         `${process.env.REACT_APP_API_URL}${user.company_id}/event`,

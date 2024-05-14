@@ -44,14 +44,12 @@ const ComplainAndRemark = ({ studentData }) => {
         remarks: remark,
         complaints: complain,
       };
-      console.log(payload);
       await instance({
         method: "PUT",
         url: `company/${companyId}/${studentId}/updateStudent`,
         data: payload,
       })
         .then((response) => {
-          console.log(response);
           openNotificationWithIcon("success", response.data.data.message);
           resetForm();
         })
