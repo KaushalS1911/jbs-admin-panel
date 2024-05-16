@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { FormControl, Grid, InputAdornment } from "@mui/material";
+import { FormControl, Grid, InputAdornment, Typography } from "@mui/material";
 import axios from "axios";
 import { notification } from "antd";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -97,11 +97,13 @@ function ExamForm({ setExaminationOpen, id }) {
         m={2}
       >
         <Grid container spacing={2}>
+   
+
           <Grid item xs={12}>
             <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
               <MobileDatePicker
                 fullWidth
-                label="Date Of Birth"
+                label="Date"
                 clearable
                 value={formik.values.date}
                 onChange={(date) => formik.setFieldValue("date", date)}

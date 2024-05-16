@@ -180,9 +180,6 @@ const Complain = () => {
           ),
         }))
     : [];
-    console.log(rows);
-  
-
   function handleSelectionModelChange(selectionModel) {
     setSelectedRows(selectionModel);
     onSelectRow(selectionModel);

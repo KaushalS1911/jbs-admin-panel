@@ -71,7 +71,6 @@ const Index = () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/demo?limit=${rowsPerPage}&page=${page + 1}`;
     try {
       const response = await axios.get(apiEndpoint);
-      console.log(response);
       setDemoData(response.data.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);

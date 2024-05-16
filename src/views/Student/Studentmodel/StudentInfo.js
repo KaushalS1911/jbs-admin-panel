@@ -49,6 +49,7 @@ const initialValues = {
   gender: "",
   course: "",
   joining_date: null,
+  enrollment_no: "",
 };
 
 const validationSchema = yup.object({
@@ -63,6 +64,7 @@ const validationSchema = yup.object({
   gender: yup.string().required("Gender is required"),
   course: yup.string().required("Course is required"),
   joining_date: yup.date().required("Joining Date is required"),
+  enrollment_no: yup.string().required("Enrollment Number is required"),
 });
 
 const StudentInfo = ({
@@ -99,7 +101,7 @@ const StudentInfo = ({
         ...values,
         dob: values.dob.toISOString(),
         joining_date: values.joining_date.toISOString(),
-        assignmentCompleted: []
+        assignmentCompleted: [],
       };
       dispatch(settingPersonalDetails(updatedValues));
       handleNext();
@@ -230,7 +232,6 @@ const StudentInfo = ({
                 </FormControl>
               </Grid>
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
-               
                 <Box
                   className="flatpicker-input"
                   style={{ outline: "none", whiteSpace: "nowrap" }}
@@ -314,7 +315,6 @@ const StudentInfo = ({
                   </Select>
                 </FormControl>
               </Grid>
-
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <Box
                   className="flatpicker-input"
@@ -324,7 +324,9 @@ const StudentInfo = ({
                     placeholder="Joining Date"
                     name="joining_date"
                     value={formik.values.joining_date}
-                    onChange={(selectedDates) => onJoiningDateChange(selectedDates)}
+                    onChange={(selectedDates) =>
+                      onJoiningDateChange(selectedDates)
+                    }
                     className="form-control"
                     options={{
                       dateFormat: "Y-m-d ",
@@ -354,7 +356,27 @@ const StudentInfo = ({
                   }}
                 />
               </Grid>
-
+              <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
+                <TextField
+                  fullWidth
+                  id="enrollment_no"
+                  name="enrollment_no"
+                  label="Enrollment No"
+                  type="number"
+                  value={formik.values.enrollment_no}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.enrollment_no &&
+                    Boolean(formik.errors.enrollment_no)
+                  }
+                  helperText={
+                    formik.touched.enrollment_no && formik.errors.enrollment_no
+                  }
+                  InputLabelProps={{
+                    style: { color: "#5559CE" },
+                  }}
+                />
+              </Grid>
               {!studentId ? (
                 <Grid
                   container

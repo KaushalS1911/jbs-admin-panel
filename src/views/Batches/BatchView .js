@@ -35,7 +35,6 @@ const BatchView = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/${id}/batch?page=${page + 1}&limit=${rowsPerPage}`;
-      console.log(apiEndpoint);
       const response = await axios.get(apiEndpoint);
       setBatchdata(response.data.data.batch.batch_members);
       setBatchviewData(response.data.data.batch.batch_members.batch_members);

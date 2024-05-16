@@ -47,9 +47,11 @@ const validationSchema = yup.object({
   gender: yup.string().required("Gender is required"),
   course: yup.string().required("Course is required"),
   joining_date: yup.date().required("Joining Date is required"),
+  enrollment_no: yup.string().required("Enrollment Number is required"),
 });
 
 function PersonalInfo({ formData, studentData, refetch }) {
+
   const dispatch = useDispatch();
   const navigate=useNavigate();
   const openNotificationWithIcon = (type, message) => {
@@ -94,6 +96,7 @@ function PersonalInfo({ formData, studentData, refetch }) {
         course: values.course || "",
         joining_date: values.joining_date || "",
       },
+      enrollment_no: values.enrollment_no || ""
     };
     await instance({
       method: "PUT",
@@ -363,6 +366,28 @@ function PersonalInfo({ formData, studentData, refetch }) {
                   InputLabelProps={{
                     style: { color: "#5559CE" },
                     shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
+                <TextField
+                  fullWidth
+                  id="enrollment_no"
+                  name="enrollment_no"
+                  label="Enrollment No"
+                  type="number"
+                  value={formik.values?.enrollment_no}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.enrollment_no &&
+                    Boolean(formik.errors.enrollment_no)
+                  }
+                  helperText={
+                    formik.touched.enrollment_no &&
+                    formik.errors.enrollment_no
+                  }
+                  InputLabelProps={{
+                    style: { color: "#5559CE" },
                   }}
                 />
               </Grid>

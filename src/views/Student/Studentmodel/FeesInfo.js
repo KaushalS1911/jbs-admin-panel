@@ -52,7 +52,7 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
       message: message,
     });
   };
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { companyId, studentId } = useParams();
@@ -111,32 +111,10 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         no_of_installments: noOfInstallments,
         upcoming_installment_date: formattedInstallDate,
       };
-
-      const {
-        firstName,
-        lastName,
-        contact,
-        email,
-        dob,
-        education,
-        college,
-        blood_group,
-        gender,
-        course,
-        joining_date,
-      } = personalDetails;
-      const { address_1, address_2, city, state, country, zipcode } =
-        addressDetails;
-      const {
-        total_amount,
-        amount_paid,
-        amount_remaining,
-        admission_amount,
-        upcoming_installment_date,
-        upcoming_installment_amount,
-        no_of_installments,
-        discount,
-      } = finalobj;
+      const {enrollment_no}=personalDetails;
+      const { firstName, lastName, contact,  email,  dob,  education,  college, blood_group, gender,  course, joining_date} = personalDetails;
+      const { address_1, address_2, city, state, country, zipcode } =addressDetails;
+      const { total_amount, amount_paid, amount_remaining, admission_amount, upcoming_installment_date, upcoming_installment_amount, no_of_installments, discount,} = finalobj;
       const payload = {
         firstName,
         lastName,
@@ -164,6 +142,7 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         upcoming_installment_amount,
         no_of_installments,
         discount,
+        enrollment_no,
       };
       setLoading(true);
       await axios({
@@ -177,7 +156,7 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
           if (res.status === 200) {
             dispatch(removeAllStateData());
             openNotificationWithIcon(res.data.data.message);
-            navigate("/student")
+            navigate("/student");
           }
         })
         .catch((error) => {

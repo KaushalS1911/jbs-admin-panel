@@ -188,6 +188,15 @@ const StudentList = ({ searchText, onSelectRow }) => {
       },
     },
     {
+      field: "EnrollNo",
+      headerName: "Enroll No",
+      width: 100,
+      disableColumnMenu: true,
+      sortable: false,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
       field: "studentName",
       headerName: "Student Name",
       width: 300,
@@ -300,6 +309,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
     ? data?.students.map((item, index) => ({
         id: item._id,
         srNo: index + 1,
+        EnrollNo: item?.enrollment_no,
         profile: item?.personal_info?.profile_pic,
         status: item.status,
         studentName: (
@@ -431,13 +441,23 @@ const StudentList = ({ searchText, onSelectRow }) => {
 
       {/* ExaminationModal */}
       <Modal
-        title="Exams Information"
         open={examinationOpen}
         onCancel={examModalClose}
         maskClosable={false}
         footer={false}
         width={400}
       >
+        <Typography
+          sx={{
+            fontSize: "1.5rem",
+            color: "#5559CE",
+            textAlign: "center",
+          paddingBottom:' 20px'
+          }}
+          variant="h4"
+        >
+          Exam Information
+        </Typography>
         <ExamForm id={selectedRow} setExaminationOpen={setExaminationOpen} />
       </Modal>
     </>
