@@ -21,6 +21,7 @@ import Loading from "../../../ui-component/Loading";
 import { useRecoilValue } from "recoil";
 import { profile } from "../../../atoms/authAtoms";
 import PresentStudent from "./PresentStudent";
+import { useGetAllStudents } from "hooks/useGetAllStudents";
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 const Dashboard = () => {
@@ -30,6 +31,8 @@ const Dashboard = () => {
   const { data } = useGetDashboardData();
   const { configs } = useSelector((state) => state.configs);
   const dispatch = useDispatch();
+  const { data:students } = useGetAllStudents();
+
 
   useEffect(() => {
     dispatch(getConfigs(user.company_id));
@@ -49,10 +52,11 @@ const Dashboard = () => {
       {
         icon: StudentIc,
         roles: "Students",
-        roleValue: data?.studentCount || 0,
+        roleValue: (students?.totalStudents || 0) - (students?.students?.filter((s) => s.status === "Completed").length || 0),
         roleColor: "#FE8D3D",
         linkTo: "/student",
-      },
+      }
+,      
       {
         icon: FacultyIc,
         roles: "Employees",

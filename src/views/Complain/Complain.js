@@ -40,7 +40,6 @@ const Complain = () => {
     page + 1,
     rowsPerPage,
   );
-  console.log("datatata",data);
 
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -161,7 +160,6 @@ const Complain = () => {
     }
   ];
 
-  console.log(data?.students, "tsdjhgfsfdsf");
   const rows = data?.students
     ? data?.students
         .filter((item) => item.complaints) 

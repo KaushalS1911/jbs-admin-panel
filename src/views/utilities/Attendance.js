@@ -16,6 +16,7 @@ const Attendance = () => {
   const [option, setOption] = useState({});
   const [startDate, setStartDate] = useState(new Date());
   const user = JSON.parse(localStorage.getItem("user"));
+  
   const fetchData = async () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user?.company_id}/batch`;
     try {

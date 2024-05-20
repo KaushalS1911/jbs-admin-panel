@@ -22,13 +22,20 @@ import { useNavigate } from "react-router-dom";
 const UpcomingDemo = ({ isLoading }) => {
   const navigate = useNavigate();
   const { data, refetch } = useGetUpcomingDemo();
+
   const ViewAllDemo = () => {
     navigate("/demo");
   };
 
   useEffect(() => {
     refetch();
-  }, [data]);
+  }, []);
+
+  //Show Only Pending demo status
+  const filteredData = data?.filter(
+    (e) => e.status !== "Completed" && e.status !== "Cancelled"
+  );
+
 
   return (
     <>
@@ -36,7 +43,7 @@ const UpcomingDemo = ({ isLoading }) => {
         <SkeletonPopularCard />
       ) : (
         <MainCard content={false}>
-          <CardContent style={{ height: "410px", overflowY: "scroll",p:'10' }}>
+          <CardContent style={{ height: "410px", overflowY: "scroll", padding: '10px' }}>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
                 <Grid
@@ -45,7 +52,7 @@ const UpcomingDemo = ({ isLoading }) => {
                   justifyContent="space-between"
                 >
                   <Grid item>
-                    <Typography variant="h4" style={{ fontSize: "18px" ,color:"#5559CE"}}>
+                    <Typography variant="h4" style={{ fontSize: "18px", color: "#5559CE" }}>
                       Upcoming Demo
                     </Typography>
                   </Grid>
@@ -63,9 +70,9 @@ const UpcomingDemo = ({ isLoading }) => {
               >
                 <Table aria-label="table with ellipsis texts" noWrap>
                   <TableBody style={{ cursor: "pointer" }}>
-                    {data &&
-                      data.length !== 0 &&
-                      data.map((entry, index) => {
+                    {filteredData &&
+                      filteredData.length !== 0 &&
+                      filteredData.map((entry, index) => {
                         const faculty_name = entry.faculty_name.split(" ")[0];
                         const avatarPhotoUrl = `https://api.adorable.io/avatars/100/${faculty_name}.png`;
                         return (
@@ -186,7 +193,7 @@ const UpcomingDemo = ({ isLoading }) => {
               sx={{
                 fontSize: "14px",
                 color: "#5559CE",
-                padding:"0",
+                padding: "0",
                 fontWeight: "500",
                 cursor: "pointer",
               }}

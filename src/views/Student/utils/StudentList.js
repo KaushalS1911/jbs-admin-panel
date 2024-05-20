@@ -45,6 +45,12 @@ const StudentList = ({ searchText, onSelectRow }) => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   //Examination-modal
   const [examinationOpen, setExaminationOpen] = useState(false);
+  const { data, refetch } = useGetAllStudents(
+    page + 1,
+    rowsPerPage,
+    searchText
+  );
+
   const examModalOpen = () => {
     setExaminationOpen(true);
   };
@@ -57,11 +63,9 @@ const StudentList = ({ searchText, onSelectRow }) => {
     examModalOpen();
   }
 
-  const { data, refetch } = useGetAllStudents(
-    page + 1,
-    rowsPerPage,
-    searchText
-  );
+  console.log(data);
+
+  console.log("Student all----->", data?.totalStudents);
 
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -190,7 +194,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
     {
       field: "EnrollNo",
       headerName: "Enroll No",
-      width: 100,
+      width: 70,
       disableColumnMenu: true,
       sortable: false,
       headerAlign: "center",
@@ -306,29 +310,31 @@ const StudentList = ({ searchText, onSelectRow }) => {
   ];
 
   const rows = data?.students
-    ? data?.students.map((item, index) => ({
-        id: item._id,
-        srNo: index + 1,
-        EnrollNo: item?.enrollment_no,
-        profile: item?.personal_info?.profile_pic,
-        status: item.status,
-        studentName: (
-          <Grid
-            style={{ cursor: "pointer", textDecoration: "none" }}
-            onClick={() => handleClick(item._id)}
-          >
-            {item.personal_info?.firstName} {item.personal_info?.lastName}
-          </Grid>
-        ),
-        course: item.personal_info?.course,
-        joiningDate: moment(item.personal_info?.joining_date).format(
-          "YYYY-MM-DD"
-        ),
-        contact: item.personal_info?.contact,
-        moreDetails: "view more",
-        Exams: "Exam",
-      }))
-    : [];
+  ? data.students.map((item, index) => ({
+      id: item._id,
+      srNo: index + 1,
+      EnrollNo: item?.enrollment_no,
+      profile: item?.personal_info?.profile_pic,
+      status: item.status,
+      studentName: (
+        <Grid
+          style={{ cursor: "pointer", textDecoration: "none" }}
+          onClick={() => handleClick(item._id)}
+        >
+          {item.personal_info?.firstName} {item.personal_info?.lastName}
+        </Grid>
+      ),
+      course: item.personal_info?.course,
+      joiningDate: moment(item.personal_info?.joining_date).format(
+        "YYYY-MM-DD"
+      ),
+      contact: item.personal_info?.contact,
+      moreDetails: "view more",
+      Exams: "Exam",
+    }))
+  : [];
+
+
 
   function handleSelectionModelChange(selectionModel) {
     setSelectedRows(selectionModel);
@@ -363,6 +369,17 @@ const StudentList = ({ searchText, onSelectRow }) => {
                 fontSize: 14,
                 color: "#262626",
               },
+              overflow: "scroll",
+              height: "100%",
+              "&::-webkit-scrollbar": {
+                width: "0.4em",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#888",
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                background: "#555",
+              },
             }}
           />
         ) : (
@@ -387,7 +404,14 @@ const StudentList = ({ searchText, onSelectRow }) => {
       <TablePagination
         rowsPerPageOptions={[10, 20, 50, 100]}
         component="div"
-        count={data?.totalStudents}
+        count={
+          data?.totalStudents
+            ? String(
+                data.totalStudents -
+                  rows.filter((row) => row.status === "Completed").length
+              ).padStart(3, "0")
+            : "000"
+        }
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -452,7 +476,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
             fontSize: "1.5rem",
             color: "#5559CE",
             textAlign: "center",
-          paddingBottom:' 20px'
+            paddingBottom: " 20px",
           }}
           variant="h4"
         >
