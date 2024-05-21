@@ -122,7 +122,9 @@ function CalendarApp() {
 
     if (user.role === "Admin" && values.eventType === "Student Leave") {
       event_user_id = studentIds;
-    } else {
+    } 
+    else if(user.role === "Admin" && values.eventType === "Reception Leave"){
+    }else {
       event_user_id = user._id;
     }
 
@@ -137,7 +139,8 @@ function CalendarApp() {
 
     if (
       user.role !== "Admin" ||
-      (user.role === "Admin" && payload.leave_type === "Student Leave")
+      (user.role === "Admin" && payload.leave_type === "Student Leave")||
+      (user.role === "Admin" && payload.leave_type === "Reception")
     ) {
       payload.leave_status = "Pending";
     } else {

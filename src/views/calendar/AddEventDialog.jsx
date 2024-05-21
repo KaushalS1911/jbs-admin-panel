@@ -58,6 +58,9 @@ function AddEventDialog({
     <MenuItem key="Leave" value="Student Leave">
       Student Leave
     </MenuItem>,
+    <MenuItem key="Leave" value="Reception Leave">
+      Reception Leave
+    </MenuItem>,
     <MenuItem key="other" value="other">
       other
     </MenuItem>,

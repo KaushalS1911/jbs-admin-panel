@@ -310,36 +310,40 @@ const StudentList = ({ searchText, onSelectRow }) => {
   ];
 
   const rows = data?.students
-  ? data.students.map((item, index) => ({
-      id: item._id,
-      srNo: index + 1,
-      EnrollNo: item?.enrollment_no,
-      profile: item?.personal_info?.profile_pic,
-      status: item.status,
-      studentName: (
-        <Grid
-          style={{ cursor: "pointer", textDecoration: "none" }}
-          onClick={() => handleClick(item._id)}
-        >
-          {item.personal_info?.firstName} {item.personal_info?.lastName}
-        </Grid>
-      ),
-      course: item.personal_info?.course,
-      joiningDate: moment(item.personal_info?.joining_date).format(
-        "YYYY-MM-DD"
-      ),
-      contact: item.personal_info?.contact,
-      moreDetails: "view more",
-      Exams: "Exam",
-    }))
-  : [];
-
-
+    ? data.students
+        .filter((item) => item.status !== "Completed")
+        .map((item, index) => ({
+          id: item._id,
+          srNo: index + 1,
+          EnrollNo: item?.enrollment_no,
+          profile: item?.personal_info?.profile_pic,
+          status: item.status,
+          studentName: (
+            <Grid
+              style={{ cursor: "pointer", textDecoration: "none" }}
+              onClick={() => handleClick(item._id)}
+            >
+              {item.personal_info?.firstName} {item.personal_info?.lastName}
+            </Grid>
+          ),
+          course: item.personal_info?.course,
+          joiningDate: moment(item.personal_info?.joining_date).format(
+            "YYYY-MM-DD"
+          ),
+          contact: item.personal_info?.contact,
+          moreDetails: "view more",
+          Exams: "Exam",
+        }))
+    : [];
 
   function handleSelectionModelChange(selectionModel) {
     setSelectedRows(selectionModel);
     onSelectRow(selectionModel);
   }
+
+  const completed =
+    data.totalStudents - rows.map((row) => row.status === "Completed").length;
+  console.log(completed);
 
   return (
     <>
@@ -405,12 +409,9 @@ const StudentList = ({ searchText, onSelectRow }) => {
         rowsPerPageOptions={[10, 20, 50, 100]}
         component="div"
         count={
-          data?.totalStudents
-            ? String(
-                data.totalStudents -
-                  rows.filter((row) => row.status === "Completed").length
-              ).padStart(3, "0")
-            : "000"
+          data.totalStudents -
+          data.students.filter((student) => student.status === "Completed")
+            .length
         }
         rowsPerPage={rowsPerPage}
         page={page}
