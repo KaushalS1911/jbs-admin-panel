@@ -29,7 +29,7 @@ import { Modal, notification } from "antd";
 import ExamForm from "./ExamForm";
 
 const StudentList = ({ searchText, onSelectRow }) => {
-  // eslint-disable-next-line
+  /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [selectedRow, setSelectedRow] = useState(null);
   const [page, setPage] = useState(0);
@@ -62,11 +62,6 @@ const StudentList = ({ searchText, onSelectRow }) => {
     setSelectedRow(value);
     examModalOpen();
   }
-
-  console.log(data);
-
-  console.log("Student all----->", data?.totalStudents);
-
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -341,9 +336,6 @@ const StudentList = ({ searchText, onSelectRow }) => {
     onSelectRow(selectionModel);
   }
 
-  const completed =
-    data.totalStudents - rows.map((row) => row.status === "Completed").length;
-  console.log(completed);
 
   return (
     <>
@@ -362,7 +354,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
             pageSize={rowsPerPage}
             onPageChange={handleChangePage}
             rowCount={rows.length}
-            checkboxSelection
+            checkboxSelection={profileData.role !== "Student"}
             disableRowSelectionOnClick
             disableColumnMenu
             onRowSelectionModelChange={handleSelectionModelChange}
@@ -409,8 +401,8 @@ const StudentList = ({ searchText, onSelectRow }) => {
         rowsPerPageOptions={[10, 20, 50, 100]}
         component="div"
         count={
-          data.totalStudents -
-          data.students.filter((student) => student.status === "Completed")
+          data?.totalStudents -
+          data?.students?.filter((student) => student.status === "Completed")
             .length
         }
         rowsPerPage={rowsPerPage}

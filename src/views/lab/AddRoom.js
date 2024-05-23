@@ -98,7 +98,6 @@ const AddRoom = () => {
           defaultValue=""
           required
           sx={{
-            // border: '1px solid #E5EBF0',
             borderRadius: '20px',
             width: '100%',
             '& .MuiOutlinedInput-root': {

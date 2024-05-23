@@ -18,7 +18,7 @@ import { useGetAccountData } from "../../../hooks/useGetAccountData";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfigs } from "../../Setting/SettingSlice";
 import Loading from "../../../ui-component/Loading";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { profile } from "../../../atoms/authAtoms";
 import PresentStudent from "./PresentStudent";
 import { useGetAllStudents } from "hooks/useGetAllStudents";
@@ -31,8 +31,9 @@ const Dashboard = () => {
   const { data } = useGetDashboardData();
   const { configs } = useSelector((state) => state.configs);
   const dispatch = useDispatch();
-  const { data:students } = useGetAllStudents();
-
+  const { data: students } = useGetAllStudents();
+  // eslint-disable-next-line
+  const [profileData, setProfileData] = useRecoilState(profile);
 
   useEffect(() => {
     dispatch(getConfigs(user.company_id));
@@ -52,11 +53,13 @@ const Dashboard = () => {
       {
         icon: StudentIc,
         roles: "Students",
-        roleValue: (students?.totalStudents || 0) - (students?.students?.filter((s) => s.status === "Completed").length || 0),
+        roleValue:
+          (students?.totalStudents || 0) -
+          (students?.students?.filter((s) => s.status === "Completed").length ||
+            0),
         roleColor: "#FE8D3D",
         linkTo: "/student",
-      }
-,      
+      },
       {
         icon: FacultyIc,
         roles: "Employees",
@@ -101,14 +104,12 @@ const Dashboard = () => {
         roles: "Employees",
         roleValue: data?.employeeCount || 0,
         roleColor: "#79AB78",
-        linkTo: "/employee",
       },
       {
         icon: InquiryIc,
         roles: "Inquiries",
         roleValue: data?.inquiryCount || 0,
         roleColor: "#68ACE3",
-        linkTo: "/inquiry",
       },
       {
         icon: LabIc,
@@ -162,30 +163,36 @@ const Dashboard = () => {
               height: "@media (max-width: 479px!important) ? 100px : auto",
             }}
           >
-            <Link to="/logs">
-              <PresentStudent />
-            </Link>
+            {profileData.role == "Admin" && (
+              <Link to="/logs">
+                <PresentStudent />
+              </Link>
+            )}
           </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={8} lg={8} xl={8}>
-                <TotelStudentsVisite isLoading={isLoading} />
+          {(profileData.role === "Admin"  || profileData.role === "Receptionist") && (
+            <>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={8} lg={8} xl={8}>
+                    <TotelStudentsVisite isLoading={isLoading} />
+                  </Grid>
+                  <Grid item xs={12} md={4} lg={4} xl={4}>
+                    <UpcomingDemo isLoading={isLoading} />
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={4} lg={4} xl={4}>
-                <UpcomingDemo isLoading={isLoading} />
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={12} lg={5} xl={4}>
+                    <PopularCard isLoading={isLoading} />
+                  </Grid>
+                  <Grid item xs={12} md={12} lg={7} xl={8}>
+                    <TotalGrowthBarChart isLoading={isLoading} />
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={12} lg={5} xl={4}>
-                <PopularCard isLoading={isLoading} />
-              </Grid>
-              <Grid item xs={12} md={12} lg={7} xl={8}>
-                <TotalGrowthBarChart isLoading={isLoading} />
-              </Grid>
-            </Grid>
-          </Grid>
+            </>
+          )}
         </Grid>
       )}
     </>

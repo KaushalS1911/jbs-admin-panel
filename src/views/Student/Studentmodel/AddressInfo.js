@@ -11,6 +11,18 @@ import { useDispatch } from 'react-redux'
 import { settingAddressDetails } from '../StudentSlice'
 import { useParams } from 'react-router-dom'
 
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 const initialValues = {
   address_1: '',
   address_2: '',
@@ -107,6 +119,7 @@ const AddressInfo = ({ activeStep, steps, handleNext, handleBack, handleReset, f
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Country"
+                    MenuProps={MenuProps}
                     name="country"
                     value={formik.values.country || 'Default Country'}
                     onChange={(e) => formik.handleChange(e)}
@@ -135,6 +148,7 @@ const AddressInfo = ({ activeStep, steps, handleNext, handleBack, handleReset, f
                   <Select
                     labelId="state-label"
                     name="state"
+                    MenuProps={MenuProps}
                     label="state"
                     value={formik.values.state || 'Default State'}
                     onChange={formik.handleChange}
@@ -163,6 +177,7 @@ const AddressInfo = ({ activeStep, steps, handleNext, handleBack, handleReset, f
                     labelId="city-label"
                     label="city"
                     name="city"
+                    MenuProps={MenuProps}
                     value={formik.values.city || 'Default City'}
                     onChange={formik.handleChange}
                   >

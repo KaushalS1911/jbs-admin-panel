@@ -13,13 +13,15 @@ const CardWrapper = styled(MainCard)(() => ({
 }));
 
 const PresentStudent = () => {
+   /* eslint-disable */
   const [selectedDate, setSelectedDate] = useState(new Date());
+   /* eslint-disable */
   const [selectedType, setSelectedType] = useState(["Present"]);
   const [totalPresent, setTotalPresent] = useState(0);
   const [totalAbsent, setTotalAbsent] = useState(0);
   const { data, refetch } = useGetAttendanceLogs(selectedDate, selectedType);
   const { data: allStudents } = useGetAllStudents();
-  const TotalStudent = allStudents?.totalStudents;
+  const TotalStudent = allStudents?.totalStudents - allStudents?.students?.filter((s) => s.status === "Completed").length
 
   useEffect(() => {
     refetch();

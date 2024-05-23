@@ -25,6 +25,7 @@ function Index() {
   const [profileData, setProfileData] = useRecoilState(profile);
   const [selectedRows, setSelectedRows] = useState([]);
   const { refetch } = useGetAllStudents();
+
   /* eslint-disable */
   const [searchText, setSearchText] = useState("");
 
@@ -120,53 +121,63 @@ function Index() {
               xs={12}
               sm={12}
             >
-              <Grid style={{ marginLeft: "4px" }}>
-                <Button
-                  variant="outlined"
-                  style={{
-                    color: "#5e35b1",
-                    border: "none",
-                    lineHeight: "35px",
-                    height: "35px",
-                    backgroundColor: "#D9DAF9",
-                    margin: " 0px 10px 0px 10px ",
-                  }}
-                  onClick={StudentAdd}
-                  startIcon={
-                    <AddCircleOutlineIcon
-                      style={{
-                        fontSize: "22px",
-                        marginRight: "3px",
+              {profileData.role !== "Student" && (
+                <Grid style={{ marginLeft: "4px" }}>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      color: "#5e35b1",
+                      border: "none",
+                      lineHeight: "35px",
+                      height: "35px",
+                      backgroundColor: "#D9DAF9",
+                      margin: " 0px 10px 0px 10px ",
+                      "&.Mui-disabled": {
+                        backgroundColor: "#e1e1e1",
                         color: "#5e35b1",
-                      }}
-                    />
-                  }
-                >
-                  Add
-                </Button>
-                <Button
-                  startIcon={
-                    <RestoreFromTrashTwoTone
-                      style={{
-                        fontSize: "22px",
-                        marginRight: "3px",
-                        color: "#ede7f6",
-                      }}
-                    />
-                  }
-                  sx={{
-                    backgroundColor: "#5559CE",
-                    color: "#fff",
-                    marginRight: "10px",
-                    height: "35px",
-                    lineHeight: "35px",
-                    "&:hover": { Color: "#5559CE", backgroundColor: "#5559CE" },
-                  }}
-                  onClick={deleteallStudents}
-                >
-                  Delete
-                </Button>
-              </Grid>
+                        opacity: 0.2,
+                      },
+                    }}
+                    onClick={StudentAdd}
+                    startIcon={
+                      <AddCircleOutlineIcon
+                        style={{
+                          fontSize: "22px",
+                          marginRight: "3px",
+                          color: "#5e35b1",
+                        }}
+                      />
+                    }
+                  >
+                    Add
+                  </Button>
+                  <Button
+                    startIcon={
+                      <RestoreFromTrashTwoTone
+                        style={{
+                          fontSize: "22px",
+                          marginRight: "3px",
+                          color: "#ede7f6",
+                        }}
+                      />
+                    }
+                    sx={{
+                      backgroundColor: "#5559CE",
+                      color: "#fff",
+                      marginRight: "10px",
+                      height: "35px",
+                      lineHeight: "35px",
+                      "&:hover": {
+                        color: "#5559CE",
+                        backgroundColor: "#5559CE",
+                      },
+                    }}
+                    onClick={deleteallStudents}
+                  >
+                    Delete
+                  </Button>
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </FormControl>

@@ -40,6 +40,7 @@ import axios from "axios";
 const Editemployee = () => {
   const { configs } = useSelector((state) => state.configs);
   const { emp_type, developer_type } = configs;
+
   //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -49,13 +50,12 @@ const Editemployee = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams(); /* eslint-disable */
+  const { id } = useParams();
+  /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [loading, setLoading] = useState(false);
   const [profilePic, setProfilePic] = useState("");
-
   const [open, setOpen] = useState(false);
-
   const handleOpenDialog = () => {
     setOpen(true);
   };
@@ -69,17 +69,17 @@ const Editemployee = () => {
     contact: yup.string().required("Contact No is required"),
     email: yup.string().email("Invalid email").required("Email is required"),
     gender: yup.string().required("Gender is required"),
-    role: yup.string().required("Role is required"),
-    qualification: yup.string().required("Qualification is required"),
-    technology: yup.string().required("Developer is required"),
-    experience: yup.string().required("Experience is required"),
-    dob: yup.date().required("Date of Birth is required"),
-    joining_date: yup.date().required("Joining Date is required"),
-    address_1: yup.string().required("Address line1 is required"),
-    country: yup.string().required("Country is required"),
-    state: yup.string().required("State is required"),
-    city: yup.string().required("City is required"),
-    zipcode: yup.string().required("Zip Code is required"),
+    // role: yup.string().required("Role is required"),
+    // qualification: yup.string().required("Qualification is required"),
+    // technology: yup.string().required("Developer is required"),
+    // experience: yup.string().required("Experience is required"),
+    // dob: yup.date().required("Date of Birth is required"),
+    // joining_date: yup.date().required("Joining Date is required"),
+    // address_1: yup.string().required("Address line1 is required"),
+    // country: yup.string().required("Country is required"),
+    // state: yup.string().required("State is required"),
+    // city: yup.string().required("City is required"),
+    // zipcode: yup.string().required("Zip Code is required"),
   });
 
   const handleFileChange = (event) => {
@@ -188,24 +188,25 @@ const Editemployee = () => {
   };
 
   const populateFormWithData = (data) => {
+    console.log("Emplyee & Staff", data);
     formik.setValues({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      contact: data.contact,
-      email: data.email,
-      gender: data.gender,
-      role: data.role,
-      qualification: data.qualification,
-      technology: data.technology,
-      experience: data.experience,
-      dob: data.dob ? new Date(data.dob) : null,
-      joining_date: data.joining_date ? new Date(data.joining_date) : null,
-      address_1: data.address.address_1,
-      address_2: data.address.address_2,
-      country: data.address.country,
-      state: data.address.state,
-      city: data.address.city,
-      zipcode: data.address.zipcode,
+      firstName: data?.firstName,
+      lastName: data?.lastName,
+      contact: data?.contact,
+      email: data?.email,
+      gender: data?.gender,
+      role: data?.role,
+      qualification: data?.qualification,
+      technology: data?.technology,
+      experience: data?.experience,
+      dob: data?.dob ? new Date(data?.dob) : null,
+      joining_date: data.joining_date ? new Date(data?.joining_date) : null,
+      address_1: data?.address.address_1,
+      address_2: data?.address.address_2,
+      country: data?.address.country,
+      state: data?.address.state,
+      city: data?.address.city,
+      zipcode: data?.address.zipcode,
     });
   };
 
@@ -486,6 +487,50 @@ const Editemployee = () => {
                   </FormControl>
                 </Grid>
 
+                {formik.values.role !== "HR" && (
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel
+                        id="developer-label"
+                        style={{ color: "#5559ce" }}
+                      >
+                        Technology
+                      </InputLabel>
+                      <Select
+                        labelId="developer-label"
+                        id="technology"
+                        name="technology"
+                        value={formik.values.technology}
+                        onChange={formik.handleChange}
+                        label="Developer"
+                        error={
+                          formik.touched.technology &&
+                          Boolean(formik.errors.technology)
+                        }
+                        helperText={
+                          formik.touched.technology && formik.errors.technology
+                        }
+                        InputLabelProps={{
+                          style: { color: "#5559CE" },
+                        }}
+                      >
+                        {developer_type &&
+                          developer_type?.length !== 0 &&
+                          developer_type.map((e) => {
+                            return <MenuItem value={e}>{e}</MenuItem>;
+                          })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                )}
                 <Grid
                   item
                   xl={4}
@@ -514,49 +559,6 @@ const Editemployee = () => {
                       style: { color: "#5559CE" },
                     }}
                   />
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel
-                      id="developer-label"
-                      style={{ color: "#5559ce" }}
-                    >
-                      Technology
-                    </InputLabel>
-                    <Select
-                      labelId="developer-label"
-                      id="technology"
-                      name="technology"
-                      value={formik.values.technology}
-                      onChange={formik.handleChange}
-                      label="Developer"
-                      error={
-                        formik.touched.technology &&
-                        Boolean(formik.errors.technology)
-                      }
-                      helperText={
-                        formik.touched.technology && formik.errors.technology
-                      }
-                      InputLabelProps={{
-                        style: { color: "#5559CE" },
-                      }}
-                    >
-                      {developer_type &&
-                        developer_type?.length !== 0 &&
-                        developer_type.map((e) => {
-                          return <MenuItem value={e}>{e}</MenuItem>;
-                        })}
-                    </Select>
-                  </FormControl>
                 </Grid>
 
                 <Grid

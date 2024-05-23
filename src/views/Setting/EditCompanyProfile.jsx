@@ -9,14 +9,11 @@ import { getConfigs } from "./SettingSlice";
 import PageTitle from "../../contants/PageTitle";
 
 function EditCompanyProfile() {
-  /* eslint-disable */
   const [profilePic, setProfilePic] = useState(null);
   const { configs } = useSelector((state) => state.configs);
   const dispatch = useDispatch();
-
   const { company_details } = configs;
 
-  //Notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -41,6 +38,7 @@ function EditCompanyProfile() {
       dispatch(getConfigs());
     } catch (error) {
       console.error("Upload error:", error);
+      openNotificationWithIcon("error", "Failed to upload logo.");
     }
   };
 
@@ -59,20 +57,18 @@ function EditCompanyProfile() {
                   onChange={handleFileChange}
                 />
                 <Avatar
-                
                   alt="Avatar"
-                  src={company_details?.logo ? company_details?.logo : "Upload Logo "}
+                  src={company_details?.logo || ""}
                   onClick={() => document.getElementById("file-input").click()}
                   style={{
                     cursor: "pointer",
                     width: 96,
                     height: 100,
                     margin: "auto",
-                    fontSize:'10px',
-                   
+                    fontSize: '10px',
                   }}
                 >
-                        Upload Logo 
+                  Upload Logo
                 </Avatar>
               </Box>
               <Typography

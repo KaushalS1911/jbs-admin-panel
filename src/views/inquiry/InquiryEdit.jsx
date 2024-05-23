@@ -42,6 +42,15 @@ import Mainbreadcrumbs from "../../contants/Mainbreadcrumbs";
 import { notification } from "antd";
 
 function InquiryEdit() {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
   //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -433,6 +442,7 @@ function InquiryEdit() {
               {/* Adress Details */}
               <Grid>
                 <Typography
+                  variant="h2"
                   sx={{
                     marginBottom: "20px",
                     color: "#5559CE",
@@ -502,6 +512,7 @@ function InquiryEdit() {
                         id="demo-simple-select"
                         label="Country"
                         name="country"
+                        MenuProps={MenuProps}
                         value={formik.values.country || "Default Country"}
                         onChange={formik.handleChange}
                         variant="outlined"
@@ -541,6 +552,7 @@ function InquiryEdit() {
                       <Select
                         labelId="state-label"
                         name="state"
+                        MenuProps={MenuProps}
                         label="state"
                         value={formik.values.state || "Default State"}
                         onChange={formik.handleChange}
@@ -573,6 +585,7 @@ function InquiryEdit() {
                         id="demo-simple-select"
                         label="City"
                         name="city"
+                        MenuProps={MenuProps}
                         value={formik.values.city || "Default City"}
                         onChange={formik.handleChange}
                         variant="outlined"
@@ -632,6 +645,7 @@ function InquiryEdit() {
               {/* Father"s Details */}
               <Grid>
                 <Typography
+                  variant="h2"
                   sx={{
                     marginBottom: "20px",
                     color: "#5559CE",
@@ -702,7 +716,7 @@ function InquiryEdit() {
                   </Grid>
                 </Grid>
               </Grid>
-              {/* ERefrence By */}
+              {/* Refrence By */}
               <Grid>
                 <Box
                   container
@@ -710,6 +724,7 @@ function InquiryEdit() {
                   sx={{ justifyContent: "space-between" }}
                 >
                   <Typography
+                    variant="h2"
                     sx={{
                       marginBottom: "10px",
                       color: "#5559CE",
@@ -783,6 +798,7 @@ function InquiryEdit() {
               <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
                 <Grid item xl={3} lg={3} md={3} sm={6} xs={12}>
                   <Typography
+                    variant="h2"
                     sx={{
                       marginBottom: "10px",
                       color: "#5559CE",
@@ -803,6 +819,7 @@ function InquiryEdit() {
                         id="interested-in"
                         label="interestedin"
                         multiple
+                        MenuProps={MenuProps}
                         value={formik.values.interested_in || "interested"}
                         onChange={handleCheckboxChange}
                         renderValue={(selected) => selected.join(", ")}
@@ -835,6 +852,7 @@ function InquiryEdit() {
               {/* Why Choose */}
               <Grid>
                 <Typography
+                  variant="h2"
                   sx={{
                     marginBottom: "10px",
                     color: "#5559CE",

@@ -66,12 +66,7 @@ const Leave = () => {
           `${process.env.REACT_APP_API_URL}${company_id}/event`,
           payload
         );
-        refetch();
-
-
-
-      
-        
+        refetch();  
       } catch (error) {
         console.error("Error:", error);
       }

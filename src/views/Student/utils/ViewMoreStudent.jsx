@@ -1,27 +1,54 @@
-import { useEffect, useState } from "react";
-import { Avatar, Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Avatar, Grid, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { useGetSingleStudent } from "hooks/useGetSingleStudent";
-import React from "react";
-import { useParams } from "react-router-dom";
+import { useGetSeminar } from "hooks/useGetSeminar";
+import { useGetEvents } from "hooks/useGetEvents";
+import { useGetAllAttendance } from "hooks/useGetAttendance";
+import { useSelector } from "react-redux";
 import MainCard from "ui-component/cards/MainCard";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import { useGetSeminar } from "hooks/useGetSeminar";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { courseProgress } from "contants/courseConstants";
-import { useGetEvents } from "hooks/useGetEvents";
-import { useSelector } from "react-redux";
+import moment from "moment";
 
 function ViewMoreStudent() {
   const { studentId } = useParams();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [completedCourses, setCompletedCourses] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const { data: attendance } = useGetAllAttendance(startDate, endDate);
   const { data, refetch } = useGetSingleStudent(studentId);
   const { data: seminar } = useGetSeminar();
   const { data: events } = useGetEvents();
-  const [completedCourses, setCompletedCourses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [dates, setDates] = useState([]);
   const { configs } = useSelector((state) => state.configs);
   const [eventData, setEventData] = useState([]);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      refetch(startDate, endDate);
+    }
+  }, [startDate, endDate]);
+
+
+  const rows = attendance?.attendance
+  ? attendance?.attendance.map((item, index) => ({
+      id: index + 1,
+      status: item.status,
+      studentId: item._id,
+      date: moment(item.date).format("DD/MM/YYYY"),
+    }))
+  : [];
+  
+    console.log(rows);
+
   const fetchCourseData = () => {
     const selectedCourse = courseProgress(data?.personal_info?.course);
     if (!selectedCourse) {
@@ -30,7 +57,7 @@ function ViewMoreStudent() {
     setCourses(selectedCourse);
     const initialDates = selectedCourse.map((course, index) =>
       data?.assignmentCompleted.some((item) => item.index === index)
-        ? data?.assignmentCompleted.find((item) => item.index === index).date
+        ? data.assignmentCompleted.find((item) => item.index === index).date
         : "--"
     );
     setDates(initialDates);
@@ -40,27 +67,28 @@ function ViewMoreStudent() {
     fetchCourseData();
     refetch();
 
-    if (data?.assignmentCompleted && data?.assignmentCompleted.length !== 0) {
-      setCompletedCourses(data?.assignmentCompleted);
+    if (data?.assignmentCompleted && data.assignmentCompleted.length !== 0) {
+      setCompletedCourses(data.assignmentCompleted);
     }
-  }, [data, refetch]);
+  }, [data, refetch, page, rowsPerPage]);
 
   const sameCourses = courses.map((course, index) => ({
     name: course,
     date: dates[index] || "--",
   }));
+
   const formatDate = (dateTimeString) => {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString("en-US");
   };
-  
+
   useEffect(() => {
     refetch();
     const studentEvents = events?.filter(
-      (item) => data.student_user_id === item.event_user_id
+      (item) => data?.student_user_id === item.event_user_id
     );
     setEventData(studentEvents);
-  }, []);
+  }, [events, data, refetch]);
 
   const handleAvatarClick = () => {
     document.getElementById("file-input").click();
@@ -68,7 +96,6 @@ function ViewMoreStudent() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
     const apiEndpoint = `${process.env.REACT_APP_API_URL}student/${studentId}/profile-pic`;
 
     if (file) {
@@ -90,9 +117,76 @@ function ViewMoreStudent() {
     }
   };
 
-
   return (
     <>
+     {/* Attandance Details */}
+     <Box py={2}>
+          <Typography variant="h4" sx={{ color: "#5559ce" }}>
+            Attadance Detsils:-
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              marginBottom: "20px",
+              justifyContent: "end",
+            }}
+          >
+            <Box className="flatpicker">
+              <label
+                htmlFor="rows-per-page"
+                style={{
+                  minWidth: "fit-content",
+                  marginRight: "5px",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                }}
+              >
+                From :
+              </label>
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
+            </Box>
+            <Box className="flatpicker">
+              <label
+                htmlFor="rows-per-page"
+                style={{
+                  minWidth: "fit-content",
+                  marginRight: "5px",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                }}
+              >
+                To :
+              </label>
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+              />
+            </Box>
+          </Box>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.id}>
+                  <td>{row.id}</td>
+                  <td>{row.status}</td>
+                  <td>{row.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Box>
       <MainCard>
         {/* Company Name */}
         <Typography
@@ -460,10 +554,10 @@ function ViewMoreStudent() {
             </tbody>
           </Table>
         </Box>
-        {/* Attandance Details */}
+        {/* Leave Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            ATTANDENCE DETAILS:-
+            Leave Detsils:-
           </Typography>
           <Table className="table" striped bordered hover size="sm">
             <thead>
@@ -488,6 +582,7 @@ function ViewMoreStudent() {
             </tbody>
           </Table>
         </Box>
+
         {/* Seminar Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
@@ -585,6 +680,7 @@ function ViewMoreStudent() {
             </Typography>
           </Typography>
         </Box>
+       
       </MainCard>
     </>
   );

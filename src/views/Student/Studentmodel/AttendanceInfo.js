@@ -32,6 +32,7 @@ const AttendanceInfo = ({ formData }) => {
     }
   }, [startDate, endDate]);
 
+
   function handleChangePage(newPage) {
     setPage(newPage);
   }
@@ -49,6 +50,8 @@ const AttendanceInfo = ({ formData }) => {
         date: moment(item.date).format("DD/MM/YYYY"),
       }))
     : [];
+
+    
 
   const columns = [
     {

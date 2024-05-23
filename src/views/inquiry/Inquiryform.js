@@ -34,6 +34,16 @@ import { notification } from "antd";
 import axios from "axios";
 import { useState } from "react";
 function Inquiryform() {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
+
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [loading, setLoading] = useState(false);
@@ -163,6 +173,7 @@ function Inquiryform() {
               {/* Personal Details */}
               <Grid>
                 <Typography
+                  variant="h5"
                   sx={{
                     marginBottom: "20px",
                     color: "#5559CE",
@@ -296,6 +307,7 @@ function Inquiryform() {
               {/* Adress Details */}
               <Grid>
                 <Typography
+                  variant="h5"
                   sx={{
                     marginBottom: "20px",
                     color: "#5559CE",
@@ -327,6 +339,7 @@ function Inquiryform() {
                       name="address_line2"
                       fullWidth
                       variant="outlined"
+                      MenuProps={MenuProps}
                       value={formik.values.address_line2}
                       onChange={formik.handleChange}
                       InputLabelProps={{
@@ -347,6 +360,7 @@ function Inquiryform() {
                         id="demo-simple-select"
                         label="Country"
                         name="country"
+                        MenuProps={MenuProps}
                         value={formik.values.country || "Default Country"}
                         onChange={(e) => formik.handleChange(e)}
                         variant="outlined"
@@ -378,6 +392,7 @@ function Inquiryform() {
                       <Select
                         labelId="state-label"
                         name="state"
+                        MenuProps={MenuProps}
                         label="state"
                         value={formik.values.state || "Default State"}
                         onChange={formik.handleChange}
@@ -453,8 +468,9 @@ function Inquiryform() {
               {/* Father"s Details */}
               <Grid>
                 <Typography
+                  variant="h5"
                   sx={{
-                    marginBottom: "20px",
+                    marginBottom: "10px",
                     color: "#5559CE",
                     fontWeight: "500",
                     fontSize: "18px",
@@ -502,33 +518,27 @@ function Inquiryform() {
                   </Grid>
                 </Grid>
               </Grid>
-              {/* ERefrence By */}
+              {/* Refrence By */}
               <Grid>
                 <Box
                   container
                   spacing={2}
                   sx={{ justifyContent: "space-between" }}
                 >
-                  <Typography
-                    sx={{
-                      marginBottom: "10px",
-                      color: "#5559CE",
-                      fontSize: "18px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Reference By :
-                  </Typography>
-                  <Typography
-                    sx={{
-                      marginBottom: "10px",
-                      color: "#1B1D28",
-                      fontSize: "12px",
-                      fontWeight: "normal",
-                    }}
-                  >
-                    How did you come to know about JBS IT ?
-                  </Typography>
+                  <Grid>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        marginBottom: "20px",
+                        color: "#5559CE",
+                        fontWeight: "normal",
+                        fontWeight: 600,
+                      }}
+                    >
+                      How did you come to know about JBS IT ?
+                    </Typography>
+                  </Grid>
+
                   <Grid
                     container
                     spacing={2}
@@ -582,6 +592,7 @@ function Inquiryform() {
               <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
                 <Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
                   <Typography
+                    variant="h4"
                     sx={{
                       marginBottom: "10px",
                       color: "#5559CE",
@@ -600,6 +611,7 @@ function Inquiryform() {
                         labelId="interested-in-label"
                         id="interested-in"
                         label="interestedin"
+                        MenuProps={MenuProps}
                         multiple
                         value={formik.values.interested_in || "interested"}
                         onChange={handleCheckboxChange}

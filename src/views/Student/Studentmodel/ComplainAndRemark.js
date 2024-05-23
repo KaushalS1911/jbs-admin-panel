@@ -1,12 +1,24 @@
-import { Box, Button, FormControl, Grid, TextField } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React, { useState } from "react";
-import { notification } from "antd";
+import { Typography, notification } from "antd";
 import { useParams } from "react-router-dom";
 import instance from "helpers/axios";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import ReportIcon from "@mui/icons-material/Report";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
 const initialValues = {
+  date: null,
   complaints: "",
   remarks: "",
 };
@@ -25,26 +37,36 @@ const ComplainAndRemark = ({ studentData }) => {
   };
 
   const validationSchema = Yup.object().shape({
-    complaints: Yup.string().required("Complaint is required"),
-    remarks:
-      role === "Admin"
-        ? Yup.string().required("Remark is required")
-        : Yup.string(),
+    date: Yup.date().required("Date is required"),
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      setComplaints([...complaints, values.complaints]);
-      setRemarks([...remarks, values.remarks]);
+      const date = values.date ? values.date.toISOString() : null;
+
+      let updatedComplaints = [...complaints];
+      let updatedRemarks = [...remarks];
+
+      if (values.complaints) {
+        updatedComplaints = [...complaints, { title: values.complaints, date }];
+
+        setComplaints(updatedComplaints);
+      }
+
+      if (values.remarks) {
+        updatedRemarks = [...remarks, { title: values.remarks, date }];
+        setRemarks(updatedRemarks);
+      }
 
       const payload = {
         ...studentData,
-        remarks: remarks,
-        complaints: complaints,
+        remarks: updatedRemarks,
+        complaints: updatedComplaints,
       };
 
+      console.log(payload);
       try {
         const response = await instance.put(
           `company/${companyId}/${studentId}/updateStudent`,
@@ -62,7 +84,6 @@ const ComplainAndRemark = ({ studentData }) => {
     <Box>
       <form onSubmit={formik.handleSubmit}>
         <FormControl
-          defaultValue=""
           required
           sx={{
             width: "100%",
@@ -81,13 +102,60 @@ const ComplainAndRemark = ({ studentData }) => {
           }}
           size="small"
         >
-          <Grid container spacing={10}>
-            <Grid item xs={12} md={6}>
+          <Grid container spacing={2} xs={8}>
+            <Grid item xs={12} md={12} lg={4}>
+              <Grid>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  marginBottom="14px"
+                  color="#5559CE"
+                >
+                  <ReportIcon
+                    style={{
+                      fontSize: "30px",
+                      marginRight: "8px",
+                      color: "#5e35b1",
+                    }}
+                  />
+                  <Typography
+                    style={{
+                      fontWeight: "600",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Complain
+                  </Typography>
+                </Box>
+              </Grid>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <MobileDatePicker
+                  label="Complain Date"
+                  clearable
+                  value={formik.values.date}
+                  onChange={(date) => formik.setFieldValue("date", date)}
+                  renderInput={(props) => (
+                    <TextField
+                      {...props}
+                      fullWidth
+                      label="Select Date"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start"></InputAdornment>
+                        ),
+                      }}
+                      error={formik.touched.date && !!formik.errors.date}
+                      helperText={formik.touched.date && formik.errors.date}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
               <TextField
                 id="complaints"
                 label="Complaint"
                 name="complaints"
                 multiline
+                sx={{ margin: "10px 0" }}
                 rows={3}
                 value={formik.values.complaints}
                 onChange={formik.handleChange}
@@ -103,12 +171,37 @@ const ComplainAndRemark = ({ studentData }) => {
               />
             </Grid>
             {role === "Admin" && (
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12} lg={4}>
+                <Grid>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    marginBottom="14px"
+                    color="#5559CE"
+                  >
+                    <PublishedWithChangesIcon
+                      style={{
+                        fontSize: "30px",
+                        marginRight: "8px",
+                        color: "#5e35b1",
+                      }}
+                    />
+                    <Typography
+                      style={{
+                        fontWeight: "600",
+                        fontSize: "18px",
+                      }}
+                    >
+                      Remark
+                    </Typography>
+                  </Box>
+                </Grid>
                 <TextField
                   id="remarks"
                   label="Remark"
                   name="remarks"
                   multiline
+                  sx={{ margin: "10px 0" }}
                   rows={3}
                   value={formik.values.remarks}
                   onChange={formik.handleChange}
@@ -127,7 +220,6 @@ const ComplainAndRemark = ({ studentData }) => {
             <Button
               type="submit"
               variant="outlined"
-              style={{ float: "right" }}
               sx={{
                 mt: "15px",
                 backgroundColor: "#5559CE",
@@ -135,12 +227,13 @@ const ComplainAndRemark = ({ studentData }) => {
                 marginRight: "10px",
                 height: "35px",
                 lineHeight: "35px",
-                "&:hover": { Color: "#5559CE", backgroundColor: "#5559CE" },
+                "&:hover": { color: "#5559CE", backgroundColor: "#fff" },
               }}
             >
               Submit
             </Button>
           </Box>
+          <Grid item xs={4} md={4}></Grid>
         </FormControl>
       </form>
     </Box>

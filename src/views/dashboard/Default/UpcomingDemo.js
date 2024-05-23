@@ -18,13 +18,22 @@ import { Box } from "@mui/system";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { useGetUpcomingDemo } from "../../../hooks/useGetUpcomingDemo";
 import { useNavigate } from "react-router-dom";
+import { profile } from "../../../atoms/authAtoms";
+import { useRecoilState } from "recoil";
 
 const UpcomingDemo = ({ isLoading }) => {
   const navigate = useNavigate();
   const { data, refetch } = useGetUpcomingDemo();
+  const [profileData, setProfileData] = useRecoilState(profile);
+  console.log(profileData);
 
   const ViewAllDemo = () => {
     navigate("/demo");
+
+    if (profileData.role == "Student") {
+      navigate("/");
+    } else {
+    }
   };
 
   useEffect(() => {
@@ -36,14 +45,15 @@ const UpcomingDemo = ({ isLoading }) => {
     (e) => e.status !== "Completed" && e.status !== "Cancelled"
   );
 
-
   return (
     <>
       {isLoading ? (
         <SkeletonPopularCard />
       ) : (
         <MainCard content={false}>
-          <CardContent style={{ height: "410px", overflowY: "scroll", padding: '10px' }}>
+          <CardContent
+            style={{ height: "410px", overflowY: "scroll", padding: "10px" }}
+          >
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
                 <Grid
@@ -52,7 +62,10 @@ const UpcomingDemo = ({ isLoading }) => {
                   justifyContent="space-between"
                 >
                   <Grid item>
-                    <Typography variant="h4" style={{ fontSize: "18px", color: "#5559CE" }}>
+                    <Typography
+                      variant="h4"
+                      style={{ fontSize: "18px", color: "#5559CE" }}
+                    >
                       Upcoming Demo
                     </Typography>
                   </Grid>
@@ -192,12 +205,20 @@ const UpcomingDemo = ({ isLoading }) => {
               disableElevation
               sx={{
                 fontSize: "14px",
-                color: "#5559CE",
+                backgroundColor: "#5559CE",
+                opacity:0.9,
                 padding: "0",
+                color: "#fff!important",
+                p: 1,
                 fontWeight: "500",
-                cursor: "pointer",
+                cursor: profileData.role === "Student" ? "not-allowed" : "pointer",
+                "&:hover": {
+                  backgroundColor: "#e1e1e1",
+                  color: "#FFF",
+                },
               }}
               onClick={ViewAllDemo}
+              disabled={profileData.role === "Student"}
             >
               View All
               <ChevronRightOutlinedIcon />

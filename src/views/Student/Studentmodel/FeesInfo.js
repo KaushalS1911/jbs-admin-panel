@@ -13,7 +13,7 @@ import {
 import { gridSpacing } from "store/constant";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { removeAllStateData, settingFeesDetails } from "../StudentSlice";
+import { removeAllStateData } from "../StudentSlice";
 import FormStepButtons from "../../../ui-component/FormStepButtons";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -111,10 +111,32 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         no_of_installments: noOfInstallments,
         upcoming_installment_date: formattedInstallDate,
       };
-      const {enrollment_no}=personalDetails;
-      const { firstName, lastName, contact,  email,  dob,  education,  college, blood_group, gender,  course, joining_date} = personalDetails;
-      const { address_1, address_2, city, state, country, zipcode } =addressDetails;
-      const { total_amount, amount_paid, amount_remaining, admission_amount, upcoming_installment_date, upcoming_installment_amount, no_of_installments, discount,} = finalobj;
+      const { enrollment_no } = personalDetails;
+      const {
+        firstName,
+        lastName,
+        contact,
+        email,
+        dob,
+        education,
+        college,
+        blood_group,
+        gender,
+        course,
+        joining_date,
+      } = personalDetails;
+      const { address_1, address_2, city, state, country, zipcode } =
+        addressDetails;
+      const {
+        total_amount,
+        amount_paid,
+        amount_remaining,
+        admission_amount,
+        upcoming_installment_date,
+        upcoming_installment_amount,
+        no_of_installments,
+        discount,
+      } = finalobj;
       const payload = {
         firstName,
         lastName,
@@ -144,6 +166,8 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         discount,
         enrollment_no,
       };
+      console.log("b----r", payload);
+
       setLoading(true);
       await axios({
         method: "POST",
@@ -153,18 +177,19 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         withCredentials: false,
       })
         .then((res) => {
+          console.log("a----r", payload);
           if (res.status === 200) {
             dispatch(removeAllStateData());
             openNotificationWithIcon(res.data.data.message);
             navigate("/student");
+            setLoading(false);
           }
+          window.location="/student";
         })
         .catch((error) => {
+          setLoading(false);
           dispatch(removeAllStateData());
           openNotificationWithIcon(error.data.message);
-        })
-        .finally(() => {
-          setLoading(false);
         });
       resetForm();
     },

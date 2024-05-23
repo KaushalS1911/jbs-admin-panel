@@ -26,6 +26,7 @@ import { profile } from "../../atoms/authAtoms";
 import axios from "axios";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const EmployeeAdd = () => {
   //notification
@@ -34,6 +35,17 @@ const EmployeeAdd = () => {
       message: message,
     });
   };
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
+
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [loading, setLoading] = useState(false);
@@ -127,17 +139,19 @@ const EmployeeAdd = () => {
                 size: "small",
               }}
             >
-              <Typography
-                variant="h4"
-                sx={{
-                  color: "#5559CE",
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  margin: "10px 8px 10px 0px",
-                }}
-              >
-                Personal Details:
-              </Typography>
+              <Grid>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    color: "#5559CE",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                    margin: "20px 8px 20px 0px",
+                  }}
+                >
+                  Personal Details:
+                </Typography>
+              </Grid>
 
               <Grid container spacing={2}>
                 <Grid
@@ -492,16 +506,19 @@ const EmployeeAdd = () => {
                 </Grid>
               </Grid>
               <Grid>
-                <Typography
-                  sx={{
-                    marginBottom: "20px",
-                    color: "#5559CE",
-                    fontWeight: "500",
-                    fontSize: "18px",
-                  }}
-                >
-                  Address Details:
-                </Typography>
+                <Grid item>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      color: "#5559CE",
+                      fontWeight: "500",
+                      fontSize: "18px",
+                      margin: "20px 8px 20px 0px",
+                    }}
+                  >
+                    Address Details:
+                  </Typography>
+                </Grid>
                 <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
                   <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
                     <TextField
@@ -555,6 +572,7 @@ const EmployeeAdd = () => {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         label="Country"
+                        MenuProps={MenuProps}
                         name="country"
                         value={formik.values.country || "Default Country"}
                         onChange={(e) => formik.handleChange(e)}
@@ -588,6 +606,7 @@ const EmployeeAdd = () => {
                       </InputLabel>
                       <Select
                         labelId="state-label"
+                        MenuProps={MenuProps}
                         name="state"
                         label="state"
                         value={formik.values.state || "Default State"}
@@ -621,6 +640,7 @@ const EmployeeAdd = () => {
                       <Select
                         labelId="city-label"
                         label="city"
+                        MenuProps={MenuProps}
                         name="city"
                         value={formik.values.city || "Default City"}
                         onChange={formik.handleChange}
