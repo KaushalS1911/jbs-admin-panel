@@ -60,33 +60,27 @@ const GuardianType = [
 ]
 
 const GuardianInfo = ({ activeStep, steps, handleNext, handleBack, handleReset, formData }) => {
-  const [guardians, setGuardians] = useState([])
-  const { studentId } = useParams()
-
-  const { guardianDetails } = useSelector((state) => state.student)
-
-  const dispatch = useDispatch()
+  const [guardians, setGuardians] = useState([]);
+  const { studentId } = useParams();
+  const { guardianDetails } = useSelector((state) => state.student);
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
     contact: Yup.string().required('Contact is required'),
     relation_type: Yup.string().required('Guardian Type is required')
-  })
+  });
 
   const formik = useFormik({
     initialValues: studentId ? formData : initialValues,
     validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
-      setGuardians({ ...guardians, values })
-      dispatch(settingGuardianDetails([...guardianDetails, values]))
-      resetForm()
-     
+      setGuardians([...guardians, values]);
+      dispatch(settingGuardianDetails([...guardianDetails, values]));
+      resetForm();
     }
-  })
-
-
-  
+  });
 
   return (
     <>
@@ -191,71 +185,36 @@ const GuardianInfo = ({ activeStep, steps, handleNext, handleBack, handleReset, 
                       Add Guardian
                     </Button>
                   </Grid>
-                  {/*<Grid item xl={3} lg={4} md={6} sm={6} xs={12} style={{ display: 'flex', alignItems: "center" }}>*/}
-                  {/*    {index === guardians.length - 1 && (*/}
-                  {/*        <>*/}
-                  {/*            <Button*/}
-                  {/*                style={{ height: "30px", width: "35px", minWidth: "0px", backgroundColor: "#5559CE" }}*/}
-                  {/*                variant="contained"*/}
-                  {/*                disabled={guardians.length === 3}*/}
-                  {/*                onClick={handleAddGuardian}*/}
-                  {/*            >*/}
-                  {/*                <AddIcon />*/}
-                  {/*            </Button>*/}
-                  {/*            <Button*/}
-                  {/*                style={{ height: "30px", width: "35px", minWidth: "0px", backgroundColor: "#5559CE", marginLeft: "10px" }}*/}
-                  {/*                variant="contained"*/}
-                  {/*                disabled={guardians.length === 1}*/}
-                  {/*                onClick={() => handleRemoveGuardian(index)}*/}
-                  {/*            >*/}
-                  {/*                <RemoveIcon />*/}
-                  {/*            </Button>*/}
-                  {/*        </>*/}
-                  {/*    )}*/}
-                  {/*</Grid>*/}
                 </Grid>
               </React.Fragment>
-              {/*<Grid container justifyContent="flex-end" sx={{ padding: '20px 30px ' }}>*/}
-              {/*  <Stack spacing={2} direction="row">*/}
-              {/*    <Button*/}
-              {/*      type="submit"*/}
-              {/*      className="button-1"*/}
-              {/*      onClick={formik.handleSubmit}*/}
-              {/*      variant="contained"*/}
-              {/*    >*/}
-              {/*      Submit*/}
-              {/*    </Button>*/}
-              {/*  </Stack>*/}
-              {/*</Grid>*/}
             </Grid>
           </FormControl>
         </form>
       </div>
       <div>
         {guardianDetails && guardianDetails.length !== 0 && (
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">Relation type</TableCell>
-                  <TableCell align="center">First Name</TableCell>
-                  <TableCell align="center">Last Name</TableCell>
-                  <TableCell align="center">Contact</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {guardianDetails &&
-                  guardianDetails.map((row, index) => (
-                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell align="center">{row.relation_type}</TableCell>
-                      <TableCell align="center">{row.firstName}</TableCell>
-                      <TableCell align="center">{row.lastName}</TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
-                    </TableRow>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">Relation type</TableCell>
+                    <TableCell align="center">First Name</TableCell>
+                    <TableCell align="center">Last Name</TableCell>
+                    <TableCell align="center">Contact</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {guardianDetails.map((row, index) => (
+                      <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell align="center">{row.relation_type}</TableCell>
+                        <TableCell align="center">{row.firstName}</TableCell>
+                        <TableCell align="center">{row.lastName}</TableCell>
+                        <TableCell align="center">{row.contact}</TableCell>
+                      </TableRow>
                   ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableBody>
+              </Table>
+            </TableContainer>
         )}
       </div>
       <Grid container justifyContent="flex-end" sx={{ padding: '30px 20px ' }}>

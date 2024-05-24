@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -10,91 +10,52 @@ import MainCard from "ui-component/cards/MainCard";
 import { Divider } from "@mui/material";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 
+const steps = [
+  "Personal Details",
+  "Address Details",
+  "Guardians Details",
+  "Fee Details",
+];
+
+const stepComponents = [
+  StudentInfo,
+  AddressInfo,
+  GuardianInfo,
+  FeesInfo,
+];
+
 function CreateStudentStepByStep() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+  const handleNext = () => setActiveStep((prev) => prev + 1);
+  const handleBack = () => setActiveStep((prev) => prev - 1);
+  const handleReset = () => setActiveStep(0);
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  const steps = [
-    "Personal Details",
-    "Address Details",
-    "Guardians Details",
-    "Fee Details",
-  ];
-
-  const getStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return (
-          <StudentInfo
-            steps={steps}
-            activeStep={activeStep}
-            handleBack={handleBack}
-            handleNext={handleNext}
-            handleReset={handleReset}
-          />
-        );
-      case 1:
-        return (
-          <AddressInfo
-            steps={steps}
-            activeStep={activeStep}
-            handleBack={handleBack}
-            handleNext={handleNext}
-            handleReset={handleReset}
-          />
-        );
-      case 2:
-        return (
-          <GuardianInfo
-            steps={steps}
-            activeStep={activeStep}
-            handleBack={handleBack}
-            handleNext={handleNext}
-            handleReset={handleReset}
-          />
-        );
-      case 3:
-        return (
-          <FeesInfo
-            steps={steps}
-            activeStep={activeStep}
-            handleBack={handleBack}
-            handleReset={handleReset}
-          />
-        );
-      default:
-        return "Unknown step";
-    }
-  };
+  const StepContent = stepComponents[activeStep];
 
   return (
-    <>
-      <Mainbreadcrumbs title={"Student"} />
-      <MainCard>
-        <div style={{ marginTop: "10px" }}>
-          <Stepper activeStep={activeStep} sx={{overflowX:'scroll'}}>
-            {steps.map((label, index) => (
-              <Step key={index}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <Divider sx={{ marginTop: "15px" }} />
-          <div>{getStepContent(activeStep)}</div>
-        </div>
-      </MainCard>
-    </>
+      <>
+        <Mainbreadcrumbs title="Student" />
+        <MainCard>
+          <div style={{ marginTop: "10px" }}>
+            <Stepper activeStep={activeStep} sx={{ overflowX: 'scroll' }}>
+              {steps.map((label, index) => (
+                  <Step key={index}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+              ))}
+            </Stepper>
+            <Divider sx={{ marginTop: "15px" }} />
+            <StepContent
+                steps={steps}
+                activeStep={activeStep}
+                handleBack={handleBack}
+                handleNext={handleNext}
+                handleReset={handleReset}
+            />
+          </div>
+        </MainCard>
+      </>
   );
 }
 

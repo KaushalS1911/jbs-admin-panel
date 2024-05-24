@@ -23,9 +23,7 @@ import { useParams } from "react-router-dom";
 import { Button } from "antd";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
-// import { useSelector } from 'react-redux'
 
-// // import axios from 'axios';
 //
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
