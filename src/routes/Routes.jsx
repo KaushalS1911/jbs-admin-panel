@@ -80,6 +80,7 @@ const Routes = () => {
             element={<FullStackStepper />}
             exact
           />
+          
 
           {/*Batches route*/}
           <Route path="/batches" element={<Batches />} exact />

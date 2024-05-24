@@ -5,7 +5,6 @@ import { Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select
 import PhoneInput from 'react-phone-input-2'
 import { GuardianType } from '../../../contants/guardiantypeConstants'
 import { useParams } from 'react-router-dom'
-import { gridSpacing } from 'store/constant'
 import { useState } from 'react'
 import axios from 'axios'
 
@@ -64,7 +63,7 @@ const AddGuardianinfo = ({studentData , setAddOpen}) => {
 
   return (
     <>
-      <div className="form-outer">
+      <div>
         <form action="">
           <FormControl
             defaultValue=""
@@ -87,8 +86,8 @@ const AddGuardianinfo = ({studentData , setAddOpen}) => {
             size="small"
           >
             <React.Fragment>
-              <Grid container spacing={gridSpacing} sx={{ padding: '30px 0' }}>
-                <Grid item lg={12} md={6} sm={6} xs={12}>
+              <Grid container spacing={2} >
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextField
                     label="First Name"
                     id={`firstname`}
@@ -104,8 +103,7 @@ const AddGuardianinfo = ({studentData , setAddOpen}) => {
                     }}
                   />
                 </Grid>
-
-                <Grid item lg={12} md={6} sm={6} xs={12}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextField
                     label="Last Name"
                     id={`lastName`}
@@ -121,7 +119,7 @@ const AddGuardianinfo = ({studentData , setAddOpen}) => {
                     }}
                   />
                 </Grid>
-                <Grid item lg={12} md={6} sm={6} xs={12}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <PhoneInput
                     country={'in'}
                     name={`contact`}
@@ -135,7 +133,7 @@ const AddGuardianinfo = ({studentData , setAddOpen}) => {
                     <FormHelperText style={{ color: 'red' }}>{formik.errors[`contact`]}</FormHelperText>
                   )}
                 </Grid>
-                <Grid item lg={12} md={6} sm={6} xs={12}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <FormControl fullWidth variant="outlined">
                     <InputLabel id={`course-label`}>Guardian-Type</InputLabel>
                     <Select
@@ -163,7 +161,7 @@ const AddGuardianinfo = ({studentData , setAddOpen}) => {
                 </Grid>
               </Grid>
 
-              <Grid item sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Grid item sx={{ display: 'flex', justifyContent: 'flex-end',margin:"10px 0" }}>
                 <Button
                   variant="outlined"
                   onClick={formik.handleSubmit}

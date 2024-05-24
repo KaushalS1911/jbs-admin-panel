@@ -94,7 +94,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
         discount: values.discount || "",
       },
     };
-
+    console.log(payload);
     await instance({
       method: "PUT",
       url: `company/${companyId}/${studentId}/updateStudent`,

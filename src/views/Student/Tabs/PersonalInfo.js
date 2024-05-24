@@ -50,7 +50,7 @@ const validationSchema = yup.object({
   enrollment_no: yup.string().required("Enrollment Number is required"),
 });
 
-function PersonalInfo({ formData, studentData, refetch }) {
+function PersonalInfo({ formData, studentData, refetch ,enrollment_no}) {
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -365,7 +365,7 @@ function PersonalInfo({ formData, studentData, refetch }) {
                 name="enrollment_no"
                 label="Enrollment No"
                 type="number"
-                value={formik.values?.enrollment_no || ""}
+                value={formik.values?.enrollment_no}
                 onChange={formik.handleChange}
                 error={
                   formik.touched.enrollment_no &&
