@@ -24,15 +24,16 @@ function EditStudent() {
   const { studentId } = useParams();
   const data1 = localStorage.getItem("user");
   const { role } = JSON.parse(data1);
-  const [value, setValue] = useState("1"); // Initialize state for value
+  const [value, setValue] = useState("1"); 
   const { data, refetch } = useGetSingleStudent(studentId);
+  console.log(data);
 
   useEffect(() => {
     refetch();
   }, []);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue); // Update value state when tab is changed
+    setValue(newValue); 
   };
 
   return (
@@ -64,6 +65,7 @@ function EditStudent() {
                 formData={data?.personal_info}
                 studentData={data}
                 refetch={refetch}
+                enrollment_no={data?.enrollment_no}
               />
             </TabPanel>
             <TabPanel value="2">

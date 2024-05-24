@@ -38,6 +38,20 @@ import { gridSpacing } from "store/constant";
 import axios from "axios";
 
 const Editemployee = () => {
+
+  
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
+  
+
+
   const { configs } = useSelector((state) => state.configs);
   const { emp_type, developer_type } = configs;
 
@@ -434,6 +448,7 @@ const Editemployee = () => {
                       labelId="gender-label"
                       id="gender"
                       name="gender"
+                      MenuProps={MenuProps}
                       value={formik.values.gender}
                       onChange={formik.handleChange}
                       label="Gender"
@@ -469,6 +484,7 @@ const Editemployee = () => {
                       labelId="role-label"
                       id="role"
                       name="role"
+                      MenuProps={MenuProps}
                       value={formik.values.role}
                       onChange={formik.handleChange}
                       label="role"
@@ -508,6 +524,7 @@ const Editemployee = () => {
                         labelId="developer-label"
                         id="technology"
                         name="technology"
+                        MenuProps={MenuProps}
                         value={formik.values.technology}
                         onChange={formik.handleChange}
                         label="Developer"
@@ -733,6 +750,7 @@ const Editemployee = () => {
                         id="demo-simple-select"
                         label="Country"
                         name="country"
+                        MenuProps={MenuProps}
                         value={formik.values.country || "Default Country"}
                         onChange={(e) => formik.handleChange(e)}
                         variant="outlined"
@@ -766,6 +784,7 @@ const Editemployee = () => {
                       <Select
                         labelId="state-label"
                         name="state"
+                        MenuProps={MenuProps}
                         label="state"
                         value={formik.values.state || "Default State"}
                         onChange={formik.handleChange}
@@ -799,6 +818,7 @@ const Editemployee = () => {
                         labelId="city-label"
                         label="city"
                         name="city"
+                        MenuProps={MenuProps}
                         value={formik.values.city || "Default City"}
                         onChange={formik.handleChange}
                       >

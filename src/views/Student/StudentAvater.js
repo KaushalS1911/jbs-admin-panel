@@ -1,24 +1,19 @@
 import { Avatar, Grid, Typography } from "@mui/material";
-import React from "react";
-import { gridSpacing } from "store/constant";
+import React, { useEffect } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useGetSingleStudent } from "hooks/useGetSingleStudent";
 
-const StudentAvater = () => {
-  // const [selectedFile, setSelectedFile] = useState(null);
+const StudentAvatar = () => {
   const { studentId } = useParams();
-
   const { data: student, refetch } = useGetSingleStudent(studentId);
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
     const apiEndpoint = `${process.env.REACT_APP_API_URL}student/${studentId}/profile-pic`;
 
     if (file) {
@@ -44,21 +39,15 @@ const StudentAvater = () => {
     document.getElementById("file-input").click();
   };
 
-  
   return (
     <div>
-      <Grid container spacing={gridSpacing} sx={{ padding: "30px" }}>
+      <Grid container spacing={2} sx={{ padding: "30px" }}>
         <Grid
           container
-          alignItems={"center"}
-          justifyContent={{
-            xs: "normal",
-            sm: "space-between",
-            md: "space-between",
-            lg: "space-between",
-          }}
+          alignItems="center"
+          justifyContent="space-between"
         >
-          <Grid sx={{ display: "flex", alignItems: "center" }}>
+          <Grid item sx={{ display: "flex", alignItems: "center" }}>
             <input
               id="file-input"
               type="file"
@@ -67,24 +56,24 @@ const StudentAvater = () => {
             />
             <Avatar
               alt="Avatar"
-              src= {student?.personal_info?.profile_pic}
+              src={student?.personal_info?.profile_pic}
               onClick={handleAvatarClick}
-              style={{ cursor: "pointer", width: 126, height: 126 }}
+              sx={{ cursor: "pointer", width: 126, height: 126 }}
             />
-
             <Grid
+              item
               xl={8}
               lg={8}
               md={8}
               sm={8}
               xs={12}
-              sx={{ margin: " 0 10px" }}
+              sx={{ margin: "0 10px" }}
             >
               <Typography variant="h2" gutterBottom>
                 {`${student?.personal_info?.firstName} ${student?.personal_info?.lastName}`}
               </Typography>
               <Typography variant="h5" gutterBottom>
-                {`${student?.personal_info?.course} `}
+                {`${student?.personal_info?.course}`}
               </Typography>
             </Grid>
           </Grid>
@@ -94,4 +83,4 @@ const StudentAvater = () => {
   );
 };
 
-export default StudentAvater;
+export default StudentAvatar;

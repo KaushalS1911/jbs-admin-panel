@@ -267,7 +267,6 @@ const GuardianInfo = ({ studentData }) => {
           maskClosable={false}
           footer={false}
           width={300}
-          className="Follow_modal"
         >
           <EditGuardianinfo
             guardianData={guardianData}

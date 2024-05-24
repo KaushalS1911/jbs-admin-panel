@@ -51,7 +51,6 @@ const ComplainAndRemark = ({ studentData }) => {
 
       if (values.complaints) {
         updatedComplaints = [...complaints, { title: values.complaints, date }];
-
         setComplaints(updatedComplaints);
       }
 
@@ -61,12 +60,11 @@ const ComplainAndRemark = ({ studentData }) => {
       }
 
       const payload = {
-        ...studentData,
+        // ...studentData,
         remarks: updatedRemarks,
         complaints: updatedComplaints,
       };
 
-      console.log(payload);
       try {
         const response = await instance.put(
           `company/${companyId}/${studentId}/updateStudent`,

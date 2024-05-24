@@ -92,7 +92,7 @@ const EditGuardianinfo = ({ guardianData, refetch, guardianCancel }) => {
             }}
             size="small"
           >
-            <React.Fragment>
+            <>
               <Grid container spacing={gridSpacing} sx={{ padding: "30px 0" }}>
                 <Grid item lg={12} md={6} sm={6} xs={12}>
                   <TextField
@@ -207,7 +207,7 @@ const EditGuardianinfo = ({ guardianData, refetch, guardianCancel }) => {
                   Save
                 </Button>
               </Grid>
-            </React.Fragment>
+            </>
           </FormControl>
         </form>
       </div>
