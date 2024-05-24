@@ -517,6 +517,14 @@ span.flatpickr-weekday {
 .flatpickr-current-month .flatpickr-monthDropdown-months {
   background: #d9daf9 !important;
   color: #000 !important;
+  border:none!important;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month{
+  background: #d9daf9 !important;
+  font-size: 14px!important;
+  padding: 18px!important;
+  border:none;
+
 }
 
 .flatpickr-current-month input.cur-year {

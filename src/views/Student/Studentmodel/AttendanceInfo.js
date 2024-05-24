@@ -3,9 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useGetAllAttendance } from "hooks/useGetAttendance";
 import moment from "moment";
 import { Box } from "@mui/system";
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 
 const AttendanceInfo = ({ formData }) => {
@@ -32,8 +30,7 @@ const AttendanceInfo = ({ formData }) => {
     }
   }, [startDate, endDate]);
 
-
-  function handleChangePage(newPage) {
+  function handleChangePage(event, newPage) {
     setPage(newPage);
   }
 
@@ -43,31 +40,41 @@ const AttendanceInfo = ({ formData }) => {
   }
 
   const rows = data?.attendance
-    ? data?.attendance.map((item, index) => ({
+    ? Object.values(
+        data.attendance.reduce((acc, item) => {
+          const date = moment(item.date).format("DD/MM/YYYY");
+          if (!acc[date]) {
+            acc[date] = {
+              id: date,
+              date: date,
+              status: new Set([item.status]),
+            };
+          } else {
+            acc[date].status.add(item.status);
+          }
+          return acc;
+        }, {})
+      ).map((item, index) => ({
         id: index + 1,
-        status: item.status,
-        studentId: item._Id,
-        date: moment(item.date).format("DD/MM/YYYY"),
+        date: item.date,
+        status: Array.from(item.status).join(", "),
       }))
     : [];
-
-    
 
   const columns = [
     {
       field: "id",
       headerName: "Sr No",
-      width: 200,
+      width: 100,
       disableColumnMenu: true,
       sortable: false,
       headerAlign: "center",
       align: "center",
     },
-
     {
       field: "date",
       headerName: "Date",
-      width: 350,
+      width: 200,
       sortable: false,
       headerAlign: "center",
       align: "center",
@@ -75,36 +82,32 @@ const AttendanceInfo = ({ formData }) => {
     {
       field: "status",
       headerName: "Status",
-      width: 350,
+      width: 300,
       sortable: false,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
-        let color;
-        switch (params.value) {
-          case "Present":
-            color = "green";
-            break;
-          case "Absent":
-            color = "red";
-            break;
-          case "Late":
-            color = "orange";
-            break;
-          default:
-            color = "skyblue";
-        }
+        const statusColors = {
+          Present: "green",
+          Absent: "red",
+          Late: "orange",
+          Default: "skyblue",
+        };
+        const statusArray = params.value.split(", ");
         return (
           <>
-            <Typography
-              style={{
-                color: color,
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              {params.value}
-            </Typography>
+            {statusArray.map((status, index) => (
+              <Typography
+                key={index}
+                style={{
+                  color: statusColors[status] || statusColors.Default,
+                  fontSize: 14,
+                  fontWeight: 500,
+                }}
+              >
+                {status}
+              </Typography>
+            ))}
           </>
         );
       },
@@ -164,7 +167,7 @@ const AttendanceInfo = ({ formData }) => {
           pagination
           pageSize={rowsPerPage}
           onPageChange={handleChangePage}
-          rowCount={rows.length}
+          rowCount={data?.total}
           disableRowSelectionOnClick
           disableColumnMenu
           hideFooter={true}

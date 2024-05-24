@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Avatar, Grid, Typography, Button } from "@mui/material";
+import { Avatar, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useGetSingleStudent } from "hooks/useGetSingleStudent";
 import { useGetSeminar } from "hooks/useGetSeminar";
@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 import MainCard from "ui-component/cards/MainCard";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { courseProgress } from "contants/courseConstants";
 import moment from "moment";
@@ -20,9 +19,7 @@ function ViewMoreStudent() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [completedCourses, setCompletedCourses] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const { data: attendance } = useGetAllAttendance(startDate, endDate);
+  const { data: attendance } = useGetAllAttendance();
   const { data, refetch } = useGetSingleStudent(studentId);
   const { data: seminar } = useGetSeminar();
   const { data: events } = useGetEvents();
@@ -31,23 +28,16 @@ function ViewMoreStudent() {
   const { configs } = useSelector((state) => state.configs);
   const [eventData, setEventData] = useState([]);
 
-  useEffect(() => {
-    if (startDate && endDate) {
-      refetch(startDate, endDate);
-    }
-  }, [startDate, endDate]);
-
-
   const rows = attendance?.attendance
-  ? attendance?.attendance.map((item, index) => ({
-      id: index + 1,
-      status: item.status,
-      studentId: item._id,
-      date: moment(item.date).format("DD/MM/YYYY"),
-    }))
-  : [];
-  
-    console.log(rows);
+    ? attendance?.attendance.map((item, index) => ({
+        id: index + 1,
+        status: item.status,
+        studentId: item._id,
+        date: moment(item.date).format("DD/MM/YYYY"),
+      }))
+    : [];
+
+  console.log(data);
 
   const fetchCourseData = () => {
     const selectedCourse = courseProgress(data?.personal_info?.course);
@@ -119,74 +109,6 @@ function ViewMoreStudent() {
 
   return (
     <>
-     {/* Attandance Details */}
-     <Box py={2}>
-          <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            Attadance Detsils:-
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              gap: "20px",
-              alignItems: "center",
-              marginBottom: "20px",
-              justifyContent: "end",
-            }}
-          >
-            <Box className="flatpicker">
-              <label
-                htmlFor="rows-per-page"
-                style={{
-                  minWidth: "fit-content",
-                  marginRight: "5px",
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                }}
-              >
-                From :
-              </label>
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-              />
-            </Box>
-            <Box className="flatpicker">
-              <label
-                htmlFor="rows-per-page"
-                style={{
-                  minWidth: "fit-content",
-                  marginRight: "5px",
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                }}
-              >
-                To :
-              </label>
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-              />
-            </Box>
-          </Box>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>id</th>
-                <th>Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.id}</td>
-                  <td>{row.status}</td>
-                  <td>{row.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Box>
       <MainCard>
         {/* Company Name */}
         <Typography
@@ -217,7 +139,7 @@ function ViewMoreStudent() {
         {/* Personal Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            PERSONAL DETAILS:-
+            Personal Details:-
           </Typography>
           <Grid container spacing={2} py={2}>
             <Grid item xs={12} sx={12} md={12} lg={2}>
@@ -407,7 +329,7 @@ function ViewMoreStudent() {
         {/* Gardian Detsils */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            GUARDIAN DETAILS:-
+            Gaurdian Details:-
           </Typography>
           <Table className="table" striped bordered hover size="sm">
             <thead>
@@ -435,7 +357,7 @@ function ViewMoreStudent() {
         {/* Fees Detaiils */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            FEES DETAILS:-
+            Fees Details:-
           </Typography>
           <Grid container spacing={1} py={1}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -476,7 +398,7 @@ function ViewMoreStudent() {
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography variant="h4" sx={{ fontWeight: 600, marginRight: 2 }}>
-                Admission Amount:{" "}
+                Admission Amount:-
                 <Typography
                   variant="h4"
                   component="span"
@@ -515,7 +437,7 @@ function ViewMoreStudent() {
         {/* Examination Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            EXAMINATION DETAILS:-
+            Examination Details:-
           </Typography>
           <Table className="table" striped bordered hover size="sm">
             <thead>
@@ -557,7 +479,7 @@ function ViewMoreStudent() {
         {/* Leave Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            Leave Detsils:-
+            Leave Details:-
           </Typography>
           <Table className="table" striped bordered hover size="sm">
             <thead>
@@ -586,7 +508,7 @@ function ViewMoreStudent() {
         {/* Seminar Details */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            SEMINAR DETAILS:-
+            Seminar Detsils:-
           </Typography>
           <Table className="table" striped bordered hover size="sm">
             <thead>
@@ -635,7 +557,7 @@ function ViewMoreStudent() {
         {/* Course Detsils */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            COURSE DETAILS:-
+            Course Details:-
           </Typography>
           <Table className="table" striped bordered hover size="sm">
             <thead>
@@ -664,23 +586,63 @@ function ViewMoreStudent() {
             </tbody>
           </Table>
         </Box>
-        {/* Remsrks */}
-        <Box py={2}>
-          <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            REMARKS:-
-            <Typography
-              sx={{
-                fontSize: "18px",
-                color: "black",
-                textTransform: "capitalize",
-              }}
-              variant="p"
-            >
-              {data?.remarks.join(" , ")}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+            <Typography variant="h4" sx={{ color: "#5559ce" }}>
+              Remarks:-
             </Typography>
-          </Typography>
-        </Box>
-       
+            <Table className="table" striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Date</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.remarks.map((r, index) => {
+                  return (
+                    <>
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{formatDate(r.date)}</td>
+                        <td>{r.title}</td>
+                      </tr>
+                    </>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+            <Typography variant="h4" sx={{ color: "#5559ce" }}>
+              Complaints:-
+            </Typography>
+            <Table className="table" striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Date</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.complaints.map((r, index) => {
+                  return (
+                    <>
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{formatDate(r.date)}</td>
+                        <td>{r.title}</td>
+                      </tr>
+                    </>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Grid>
+        </Grid>
+        {/* Remsrks */}
       </MainCard>
     </>
   );

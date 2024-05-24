@@ -177,14 +177,12 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         withCredentials: false,
       })
         .then((res) => {
-          console.log("a----r", payload);
           if (res.status === 200) {
             dispatch(removeAllStateData());
-            openNotificationWithIcon(res.data.data.message);
+            openNotificationWithIcon("success",res.data.data.message);
             navigate("/student");
             setLoading(false);
           }
-          window.location="/student";
         })
         .catch((error) => {
           setLoading(false);

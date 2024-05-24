@@ -201,18 +201,14 @@ const GuardianInfo = ({
                   </Grid>
                   <Grid item md={6} sm={6} xs={12}>
                     <PhoneInput
-                      defaultCountry="in"
-                      name={`contact`}
-                      value={formik.values[`contact`]}
+                      country={"in"}
+                      value={formik.values.contact}
                       onChange={(value, country, e, formattedValue) => {
-                        formik.setFieldValue(`contact`, formattedValue);
+                        formik.setFieldValue("contact", formattedValue);
                       }}
                     />
-
-                    {formik.touched[`contact`] && formik.errors[`contact`] && (
-                      <FormHelperText style={{ color: "red" }}>
-                        {formik.errors[`contact`]}
-                      </FormHelperText>
+                    {formik.touched.contact && formik.errors.contact && (
+                      <FormHelperText>{formik.errors.contact}</FormHelperText>
                     )}
                   </Grid>
                   <Grid item xs={12}>

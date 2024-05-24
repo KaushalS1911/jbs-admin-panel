@@ -101,9 +101,12 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
       data: payload,
     })
       .then((response) => {
+      if(response.status === 200){
         openNotificationWithIcon("success", response.data.data.message);
-        refetch();
-      })
+        // refetch();
+        window.location.reload();
+        alert("finally add!")
+      }})
       .catch((error) => {
         openNotificationWithIcon("error", error.response.data.message);
       });

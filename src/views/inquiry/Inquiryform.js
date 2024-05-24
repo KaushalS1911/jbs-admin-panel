@@ -47,6 +47,7 @@ function Inquiryform() {
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [loading, setLoading] = useState(false);
+  
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
@@ -60,6 +61,7 @@ function Inquiryform() {
       ),
   });
   const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -147,7 +149,7 @@ function Inquiryform() {
     <>
       <Mainbreadcrumbs title={"Inquiry"} subtitle={"Inquiry Add"} />
       <MainCard>
-        <form className="inquiry-form" action="" onSubmit={formik.handleSubmit}>
+        <form className="inquiry-form" onSubmit={formik.handleSubmit}>
           <div className="container">
             <FormControl
               sx={{

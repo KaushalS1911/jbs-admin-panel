@@ -36,7 +36,6 @@ const Complain = () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/student?page=${page}&limit=${rowsPerPage}`;
     try {
       const response = await axios.get(apiEndpoint);
-      console.log("student", response.data.data.students);
       setDemoData(response.data.data.students);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -58,8 +57,7 @@ const Complain = () => {
 
   const handleStatusChange = (complaintId, status) => {
     console.log("Status changed to:", status, "for complaint:", complaintId);
-    // Here you can add the API call to update the status of the complaint
-    handleClose();
+      handleClose();
   };
 
   const handleChangePage = (event, newPage) => {

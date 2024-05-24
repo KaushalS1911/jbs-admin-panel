@@ -65,7 +65,6 @@ function EditStudent() {
                 formData={data?.personal_info}
                 studentData={data}
                 refetch={refetch}
-                enrollment_no={data?.enrollment_no}
               />
             </TabPanel>
             <TabPanel value="2">

@@ -60,11 +60,11 @@ const ComplainAndRemark = ({ studentData }) => {
       }
 
       const payload = {
-        // ...studentData,
+        ...studentData,
         remarks: updatedRemarks,
         complaints: updatedComplaints,
       };
-
+      console.log(payload);
       try {
         const response = await instance.put(
           `company/${companyId}/${studentId}/updateStudent`,
