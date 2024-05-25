@@ -104,29 +104,6 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
 
         const amountRemaining = totalAmount - amountPaid - admissionAmount - discountAmt;
 
-      setLoading(true);
-      await axios({
-        method: "POST",
-        baseURL: `${process.env.REACT_APP_API_URL}${companyId}/`,
-        url: "student",
-        data: payload,
-        withCredentials: false,
-      })
-        .then((res) => {
-          if (res.status === 200) {
-            dispatch(removeAllStateData());
-            openNotificationWithIcon("success",res.data.data.message);
-            navigate("/student");
-            setLoading(false);
-          }
-        })
-        .catch((error) => {
-          setLoading(false);
-          dispatch(removeAllStateData());
-          openNotificationWithIcon(error.data.message);
-        });
-      resetForm();
-    },
         const finalPayload = {
           ...values,
           amount_paid: amountPaid,
