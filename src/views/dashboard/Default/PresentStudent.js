@@ -22,6 +22,7 @@ const PresentStudent = () => {
   const { data, refetch } = useGetAttendanceLogs(selectedDate, selectedType);
   const { data: allStudents } = useGetAllStudents();
   const TotalStudent = allStudents?.totalStudents - allStudents?.students?.filter((s) => s.status === "Completed").length
+  console.log();
 
   useEffect(() => {
     refetch();
@@ -34,7 +35,7 @@ const PresentStudent = () => {
       );
       const presentCount = filterStudents.filter((entry) => entry.status === "Present").length;
 
-      const absentCount = TotalStudent - presentCount;
+      const absentCount = TotalStudent - allStudents.totalStudents;
 
       setTotalPresent(presentCount);
       setTotalAbsent(absentCount);

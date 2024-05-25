@@ -26,7 +26,6 @@ function EditStudent() {
   const { role } = JSON.parse(data1);
   const [value, setValue] = useState("1"); 
   const { data, refetch } = useGetSingleStudent(studentId);
-  console.log(data);
 
   useEffect(() => {
     refetch();

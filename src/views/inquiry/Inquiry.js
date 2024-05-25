@@ -102,6 +102,7 @@ const Inquiry = () => {
       sortable: false,
       headerAlign: "left",
       align: "left",
+      filterable: false, 
     },
     {
       field: "studentName",
@@ -351,6 +352,7 @@ const Inquiry = () => {
               disableRowSelectionOnClick
               rowCount={rows.length}
               checkboxSelection
+              disableColumnMenu
               hideFooter={true}
               onRowSelectionModelChange={handleSelectionModelChange}
               sx={{

@@ -57,11 +57,8 @@ const Root = styled("div")(({ theme }) => ({
     fontWeight: 500,
   },
   "& .fc-event": {
-    //   backgroundColor: `${theme.palette.primary.dark}!important`,
     color: `${theme.palette.primary.contrastText}!important`,
     border: 0,
-    // padding: '0 6px',
-    //   borderRadius: '16px!important',
   },
 }));
 

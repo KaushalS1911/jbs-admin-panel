@@ -20,6 +20,7 @@ import "flatpickr/dist/themes/material_green.css";
 import { notification } from "antd";
 import { useGetAllStudents } from "hooks/useGetAllStudents";
 import { useSelector } from "react-redux";
+import { courses } from "contants/courseConstants";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,12 +44,6 @@ function Batchform({ setIsBatchOpen, fetchData }) {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const { data: students, refetch } = useGetAllStudents();
 
-
-
-
-
-
-  
   useEffect(() => {
     refetch();
   }, [refetch]);
@@ -129,28 +124,34 @@ function Batchform({ setIsBatchOpen, fetchData }) {
         }}
         size="small"
       >
-        <Grid
-          container
-          spacing={2}
-          justifyContent={"flex-end"}
-        >
+        <Grid container spacing={2} justifyContent={"flex-end"}>
           <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
-            <TextField
-              id="outlined-basic"
-              label="Technology"
-              variant="outlined"
-              name="technology"
-              value={formik.values.technology}
-              error={
-                formik.touched.technology && Boolean(formik.errors.technology)
-              }
-              helperText={formik.touched.technology && formik.errors.technology}
-              onChange={formik.handleChange}
-              fullWidth
-              InputLabelProps={{
-                style: { color: "#5559CE" },
-              }}
-            />
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="demo-simple-select-label">Technology</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select-label"
+                name="technology"
+                value={formik.values?.course}
+                error={
+                  formik.touched.course &&
+                  Boolean((<formik className="errors"></formik>).course)
+                }
+                helperText={formik.touched.course && formik.errors.course}
+                MenuProps={MenuProps}
+                onChange={formik.handleChange}
+                label="Technology"
+                InputLabelProps={{
+                  style: { color: "#5559CE" },
+                }}
+              >
+                {courses.map((courseItem) => (
+                  <MenuItem key={courseItem.value} value={courseItem.value}>
+                    {courseItem.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
             <Box
@@ -207,40 +208,43 @@ function Batchform({ setIsBatchOpen, fetchData }) {
                   style: { color: "#5559CE" },
                 }}
               >
-                {configs && configs.classrooms && configs?.classrooms?.length !== 0 && configs?.classrooms.map((LabItem) => (
-                  <MenuItem key={LabItem} value={LabItem}>
-                    {LabItem}
-                  </MenuItem>
-                ))}
+                {configs &&
+                  configs.classrooms &&
+                  configs?.classrooms?.length !== 0 &&
+                  configs?.classrooms.map((LabItem) => (
+                    <MenuItem key={LabItem} value={LabItem}>
+                      {LabItem}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
             <Autocomplete
-                multiple
-                options={options}
-                getOptionLabel={(option) =>
-                    `${option.firstName} ${option.lastName}`
-                }
-                value={selectedStudents}
-                onChange={(event, newValue) => {
-                  setSelectedStudents(newValue);
-                }}
-                getOptionSelected={(option, value) =>
-                    option.student_id === value.student_id
-                }
-                fullWidth
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        placeholder="Student Name"
-                        label="Student Name"
-                        variant="outlined"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                    />
-                )}
+              multiple
+              options={options}
+              getOptionLabel={(option) =>
+                `${option.firstName} ${option.lastName}`
+              }
+              value={selectedStudents}
+              onChange={(event, newValue) => {
+                setSelectedStudents(newValue);
+              }}
+              getOptionSelected={(option, value) =>
+                option.student_id === value.student_id
+              }
+              fullWidth
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Student Name"
+                  label="Student Name"
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
             />
           </Grid>
           <Grid>

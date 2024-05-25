@@ -34,7 +34,6 @@ import { profile } from "../../atoms/authAtoms";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import "react-datepicker/dist/react-datepicker.css";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
-import { gridSpacing } from "store/constant";
 import axios from "axios";
 
 const Editemployee = () => {
@@ -271,7 +270,7 @@ const Editemployee = () => {
               }}
             >
               <Grid container className="Main-form-wrapper">
-                <Grid container spacing={gridSpacing} sx={{ padding: "30px" }}>
+                <Grid container  sx={{ padding: "30px" }}>
                   <Grid
                     container
                     alignItems={"center"}

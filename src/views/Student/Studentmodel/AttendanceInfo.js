@@ -1,4 +1,4 @@
-import { Chip, TablePagination, Typography } from "@mui/material";
+import { TablePagination, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetAllAttendance } from "hooks/useGetAttendance";
 import moment from "moment";
@@ -19,7 +19,7 @@ const AttendanceInfo = ({ formData }) => {
     startDate,
     endDate
   );
-
+  
   useEffect(() => {
     refetch();
   }, [page, rowsPerPage]);
@@ -114,6 +114,7 @@ const AttendanceInfo = ({ formData }) => {
     },
   ];
 
+  console.log(rows);
   return (
     <>
       <Box
@@ -172,15 +173,6 @@ const AttendanceInfo = ({ formData }) => {
           disableColumnMenu
           hideFooter={true}
           headerClassName="custom-header-class"
-          sx={{
-            "& .MuiDataGrid-columnHeaders": {
-              fontSize: 14,
-              color: "#262626",
-            },
-            "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-              outline: "none !important",
-            },
-          }}
         />
         <TablePagination
           component="div"
@@ -189,12 +181,6 @@ const AttendanceInfo = ({ formData }) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          backIconButtonProps={{
-            "aria-label": "Previous Page",
-          }}
-          nextIconButtonProps={{
-            "aria-label": "Next Page",
-          }}
           rowsPerPageOptions={[10, 20, 50, 100]}
         />
       </div>

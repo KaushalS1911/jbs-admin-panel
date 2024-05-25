@@ -10,8 +10,8 @@ import { Grid, Typography } from "@mui/material";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
 import { useEffect } from "react";
-import {useRecoilState} from "recoil";
-import {profile} from "../../atoms/authAtoms";
+import { useRecoilState } from "recoil";
+import { profile } from "../../atoms/authAtoms";
 import moment from "moment";
 import { notification } from "antd";
 
@@ -23,7 +23,7 @@ const MainAccount = () => {
   };
   const [selectedDates, setSelectedDates] = useState([]);
   const [accountData, setAccountData] = useState([]);
-  const [profileData, setProfileData] = useRecoilState(profile)
+  const [profileData, setProfileData] = useRecoilState(profile);
 
   useEffect(() => {
     fetchData();
@@ -31,7 +31,7 @@ const MainAccount = () => {
 
   const onDateChange = (selectedDates) => {
     setSelectedDates(selectedDates);
-    selectedDates && selectedDates.length === 2 && fetchData()
+    selectedDates && selectedDates.length === 2 && fetchData();
   };
 
   const fetchData = async () => {
@@ -42,53 +42,48 @@ const MainAccount = () => {
       endDate = moment(selectedDates[1]).format("YYYY-MM-DD");
     } else {
       const today = moment();
-      startDate = today.startOf('month').format("YYYY-MM-DD");
-      endDate = today.endOf('month').format("YYYY-MM-DD");
+      startDate = today.startOf("month").format("YYYY-MM-DD");
+      endDate = today.endOf("month").format("YYYY-MM-DD");
     }
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${profileData.company_id}/account?startDate=${startDate}&endDate=${endDate}`;
     try {
       const response = await axios.get(apiEndpoint);
       setAccountData(response.data.data.data);
-      
     } catch (error) {
       console.error("Error fetching data:", error);
       openNotificationWithIcon("error", error.response.data.message);
-
     }
   };
 
-  const {expenses, students, otherInfo, feesInfo} = accountData
+  const { expenses, students, otherInfo, feesInfo } = accountData;
   return (
     <>
       <MainCard>
-        <Box
-          className="flatpicker"
-          style={{
-            outline: "none",
-            margin: "15px 0 30px 10px",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <label
-            htmlFor="rows-per-page"
-            style={{ minWidth: "fit-content", marginRight: "5px" }}
-          >
-            Date Range:
-          </label>
-          <Flatpickr
-            placeholder="Select Date"
-            style={{ minWidth: "220px" }}
-            onChange={onDateChange}
-            className="form-control"
-            options={{
-              dateFormat: "Y-m-d",
-              mode: "range",
+        <Grid container>
+          <Grid
+            item
+            xs={3}
+            className="flatpicker"
+            sx={{
+              outline: "none",
+              margin: "15px 0 30px 10px",
+              whiteSpace: "nowrap",
             }}
-          />
-        </Box>
+          >
+            <Flatpickr
+              placeholder="Select Date"
+              style={{ minWidth: "220px" }}
+              onChange={onDateChange}
+              className="form-control"
+              options={{
+                dateFormat: "Y-m-d",
+                mode: "range",
+              }}
+            />
+          </Grid>
+        </Grid>
       </MainCard>
 
-    
       <Box sx={{ width: "100%", marginTop: "16px" }}>
         <Grid
           container
@@ -110,13 +105,13 @@ const MainAccount = () => {
                   sx={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    padding: "14px"
+                    padding: "14px",
                   }}
                 >
                   Student Details
                 </Typography>
               </Box>
-              <Grid container direction="row" >
+              <Grid container direction="row">
                 <Grid lg={11} md={12} sm={12}>
                   <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
@@ -183,20 +178,20 @@ const MainAccount = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={6}>
             <Grid
-                sx={{
-                  boxShadow: 1,
-                  padding: "14px",
-                  borderRadius: "14px",
-                  backgroundColor: "#fff",
-                }}
+              sx={{
+                boxShadow: 1,
+                padding: "14px",
+                borderRadius: "14px",
+                backgroundColor: "#fff",
+              }}
             >
               <Box>
                 <Typography
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      padding: "14px"
-                    }}
+                  sx={{
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    padding: "14px",
+                  }}
                 >
                   Next month opening
                 </Typography>
@@ -206,7 +201,7 @@ const MainAccount = () => {
                   <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
-                          sx={{ fontSize: "16px", marginBottom: "4px" }}
+                        sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
                         Existing Admissions
                       </Typography>
@@ -216,40 +211,42 @@ const MainAccount = () => {
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
-                          sx={{ fontSize: "16px", marginBottom: "4px" }}
+                        sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
                         Opening pending fees
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        {otherInfo?.feesReceived?.totalAmount - otherInfo?.totalExpense}
+                        {otherInfo?.feesReceived?.totalAmount -
+                          otherInfo?.totalExpense}
                       </Typography>
                     </Grid>
                     <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
                       <Typography
-                          sx={{ fontSize: "16px", marginBottom: "4px" }}
+                        sx={{ fontSize: "16px", marginBottom: "4px" }}
                       >
                         Opening Cash
                       </Typography>
                       <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
-                        {otherInfo?.feesReceived?.totalAmount - otherInfo?.totalExpense}
+                        {otherInfo?.feesReceived?.totalAmount -
+                          otherInfo?.totalExpense}
                       </Typography>
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid lg={1} md={12} sm={12}>
                   <Grid
-                      container
-                      direction="column"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                      sx={{ height: "100%" }}
+                    container
+                    direction="column"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    sx={{ height: "100%" }}
                   >
                     <PeopleOutlineIcon
-                        sx={{
-                          fontSize: "40px",
-                          opacity: "0.6",
-                          color: "#16A34A",
-                        }}
+                      sx={{
+                        fontSize: "40px",
+                        opacity: "0.6",
+                        color: "#16A34A",
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -271,7 +268,7 @@ const MainAccount = () => {
                     fontSize: "16px",
                     fontWeight: "600",
                     marginBottom: "4px",
-                    padding: "14px"
+                    padding: "14px",
                   }}
                 >
                   Revenue Details
@@ -362,7 +359,7 @@ const MainAccount = () => {
                   sx={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    padding:"14px"
+                    padding: "14px",
                   }}
                 >
                   Expense Details
@@ -371,20 +368,30 @@ const MainAccount = () => {
               <Grid container direction="row">
                 <Grid lg={11} md={11} sm={12}>
                   <Grid container spacing={1} sx={{ padding: "0px 20px" }}>
-                    { expenses?.expensesByType && expenses.expensesByType.length !== 0 && expenses.expensesByType.map((e) => {
-                      return (
-                          <Grid xs={6} sm={6} md={6} lg={6} sx={{ padding: "8px 0" }}>
+                    {expenses?.expensesByType &&
+                      expenses.expensesByType.length !== 0 &&
+                      expenses.expensesByType.map((e) => {
+                        return (
+                          <Grid
+                            xs={6}
+                            sm={6}
+                            md={6}
+                            lg={6}
+                            sx={{ padding: "8px 0" }}
+                          >
                             <Typography
-                                sx={{ fontSize: "16px", marginBottom: "4px" }}
+                              sx={{ fontSize: "16px", marginBottom: "4px" }}
                             >
                               {e?.type}
                             </Typography>
-                            <Typography sx={{ fontSize: "30px", fontWeight: "500" }}>
+                            <Typography
+                              sx={{ fontSize: "30px", fontWeight: "500" }}
+                            >
                               {e?.totalAmount}
                             </Typography>
                           </Grid>
-                      )
-                    })}
+                        );
+                      })}
                   </Grid>
                 </Grid>
                 <Grid lg={1} md={12} sm={12} sx={{ padding: "6px" }}>
@@ -421,7 +428,7 @@ const MainAccount = () => {
                   sx={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    padding: "14px"
+                    padding: "14px",
                   }}
                 >
                   Cash/Bank Tally

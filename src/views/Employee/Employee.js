@@ -69,10 +69,12 @@ const Employee = () => {
   }
   //Employee Column
   const columns = [
-    { field: "srNo", headerName: "Sr No", width: 65 },
+    { field: "srNo", headerName: "Sr No", width: 65,sortable:"flase" },
     {
       field: "avatar_url",
       headerName: "Profile",
+      
+
       sortable: false,
       width: 70,
       renderCell: (params) => {
@@ -100,15 +102,15 @@ const Employee = () => {
         </Grid>
       ),
     },
-    { field: "contact", headerName: "Contact", width: 150 },
-    { field: "email", headerName: "Email", width: 170 },
-    { field: "gender", headerName: "Gender", width: 100 },
-    { field: "role", headerName: "Role", width: 100 },
-    { field: "qualification", headerName: "Qualification", width: 120 },
-    { field: "technology", headerName: "Technology", width: 160 },
-    { field: "experience", headerName: "Experience", width: 100 },
-    { field: "dob", headerName: "Date of Birth", width: 150 },
-    { field: "joiningDate", headerName: "Joining date", width: 150 },
+    { field: "contact", headerName: "Contact", width: 150 ,sortable:false},
+    { field: "email", headerName: "Email", width: 170 ,sortable:false},
+    { field: "gender", headerName: "Gender", width: 100,sortable:false },
+    { field: "role", headerName: "Role", width: 100 ,sortable:false},
+    { field: "qualification", headerName: "Qualification", width: 120 ,sortable:false},
+    { field: "technology", headerName: "Technology", width: 160,sortable:false },
+    { field: "experience", headerName: "Experience", width: 100,sortable:false },
+    { field: "dob", headerName: "Date of Birth", width: 150,sortable:false },
+    { field: "joiningDate", headerName: "Joining date", width: 150,sortable:false },
   ];
 
   //Employee Row

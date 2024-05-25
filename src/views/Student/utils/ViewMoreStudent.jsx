@@ -12,14 +12,15 @@ import Table from "react-bootstrap/Table";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { courseProgress } from "contants/courseConstants";
-import moment from "moment";
+import DatePicker from "react-datepicker";
 
 function ViewMoreStudent() {
   const { studentId } = useParams();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [completedCourses, setCompletedCourses] = useState([]);
-  const { data: attendance } = useGetAllAttendance();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const { data, refetch } = useGetSingleStudent(studentId);
   const { data: seminar } = useGetSeminar();
   const { data: events } = useGetEvents();
@@ -27,18 +28,17 @@ function ViewMoreStudent() {
   const [dates, setDates] = useState([]);
   const { configs } = useSelector((state) => state.configs);
   const [eventData, setEventData] = useState([]);
+  const { data: attendance } = useGetAllAttendance(
+    page + 1,
+    rowsPerPage,
+    studentId,
+    startDate,
+    endDate
+  );
+   console.log(attendance); 
 
-  const rows = attendance?.attendance
-    ? attendance?.attendance.map((item, index) => ({
-        id: index + 1,
-        status: item.status,
-        studentId: item._id,
-        date: moment(item.date).format("DD/MM/YYYY"),
-      }))
-    : [];
 
-  console.log(data);
-
+  // Corse Fetch
   const fetchCourseData = () => {
     const selectedCourse = courseProgress(data?.personal_info?.course);
     if (!selectedCourse) {
@@ -52,7 +52,6 @@ function ViewMoreStudent() {
     );
     setDates(initialDates);
   };
-
   useEffect(() => {
     fetchCourseData();
     refetch();
@@ -61,17 +60,16 @@ function ViewMoreStudent() {
       setCompletedCourses(data.assignmentCompleted);
     }
   }, [data, refetch, page, rowsPerPage]);
-
   const sameCourses = courses.map((course, index) => ({
     name: course,
     date: dates[index] || "--",
   }));
-
+  // Formated Date
   const formatDate = (dateTimeString) => {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString("en-US");
   };
-
+  //Event Data
   useEffect(() => {
     refetch();
     const studentEvents = events?.filter(
@@ -79,7 +77,7 @@ function ViewMoreStudent() {
     );
     setEventData(studentEvents);
   }, [events, data, refetch]);
-
+  //Image Upload
   const handleAvatarClick = () => {
     document.getElementById("file-input").click();
   };
@@ -434,132 +432,140 @@ function ViewMoreStudent() {
             </tbody>
           </Table>
         </Box>
-        {/* Examination Details */}
-        <Box py={2}>
-          <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            Examination Details:-
-          </Typography>
-          <Table className="table" striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Title</th>
-                <th>ConductBy</th>
-                <th>Total Marks</th>
-                <th>Obtain Marks</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.exam_info.length > 0 ? (
-                data.exam_info.map((item, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td style={{ textTransform: "capitalize" }}>
-                      {item.title}
-                    </td>
-                    <td style={{ textTransform: "capitalize" }}>
-                      {item.conducted_by}
-                    </td>
-                    <td>{item.total_marks}</td>
-                    <td>{item.obtained_marks}</td>
-                    <td>{item.desc}</td>
-                  </tr>
-                ))
-              ) : (
+        {/* Examination Details & Seminar Details */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={12} md={12} lg={6}>
+            <Typography variant="h4" sx={{ color: "#5559ce" }}>
+              Examination Details:-
+            </Typography>
+            <Table className="table" striped bordered hover size="sm">
+              <thead>
                 <tr>
-                  <td colSpan="6" Align="center">
-                    No exam records available
-                  </td>
+                  <th>No</th>
+                  <th>Title</th>
+                  <th>ConductBy</th>
+                  <th>Total Marks</th>
+                  <th>Obtain Marks</th>
+                  <th>Description</th>
                 </tr>
-              )}
-            </tbody>
-          </Table>
-        </Box>
-        {/* Leave Details */}
-        <Box py={2}>
-          <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            Leave Details:-
-          </Typography>
-          <Table className="table" striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th>StartDate</th>
-                <th>End Date</th>
-                <th>Title</th>
-                <th>Leave type</th>
-                <th>Ststus</th>
-              </tr>
-            </thead>
-            <tbody>
-              {eventData?.map((item, index) => (
-                <tr key={index}>
-                  <td>{formatDate(item.start)}</td>
-                  <td>{formatDate(item.end)}</td>
-                  <td>{item.title}</td>
-                  <td>{item.leave_type}</td>
-                  <td>{item.leave_status}</td>
+              </thead>
+              <tbody>
+                {data?.exam_info.length > 0 ? (
+                  data.exam_info.map((item, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td style={{ textTransform: "capitalize" }}>
+                        {item.title}
+                      </td>
+                      <td style={{ textTransform: "capitalize" }}>
+                        {item.conducted_by}
+                      </td>
+                      <td>{item.total_marks}</td>
+                      <td>{item.obtained_marks}</td>
+                      <td>{item.desc}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" Align="center">
+                      No exam records available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={6}>
+            <Typography variant="h4" sx={{ color: "#5559ce" }}>
+              Seminar Detsils:-
+            </Typography>
+            <Table className="table" striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th>Scheduled By</th>
+                  <th>Title</th>
+                  <th>Date</th>
+                  <th>Attendance</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Box>
-
-        {/* Seminar Details */}
-        <Box py={2}>
-          <Typography variant="h4" sx={{ color: "#5559ce" }}>
-            Seminar Detsils:-
-          </Typography>
-          <Table className="table" striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th>Scheduled By</th>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Attendance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {seminar?.seminars?.map((e) => {
-                return (
-                  <>
-                    {e.attended_role === "Student" && (
-                      <tr key={e.id}>
-                        {e.attended_by.map((s, index) => {
-                          return (
-                            <>
-                              {s.firstName ===
-                                data?.personal_info?.firstName && (
-                                <>
-                                  <td style={{ textTransform: "capitalize" }}>
-                                    {e.schedule_by}
-                                  </td>
-                                  <td style={{ textTransform: "capitalize" }}>
-                                    {e.title}
-                                  </td>
-                                  <td>{formatDate(s.created_at)}</td>
-                                  <td style={{ textTransform: "capitalize" }}>
-                                    {s.attended_status}
-                                  </td>
-                                </>
-                              )}
-                            </>
-                          );
-                        })}
-                      </tr>
-                    )}
-                  </>
-                );
-              })}
-            </tbody>
-          </Table>
-        </Box>
+              </thead>
+              <tbody>
+                {seminar?.seminars?.map((e) => {
+                  return (
+                    <>
+                      {e.attended_role === "Student" && (
+                        <tr key={e.id}>
+                          {e.attended_by.map((s, index) => {
+                            return (
+                              <>
+                                {s.firstName ===
+                                  data?.personal_info?.firstName && (
+                                  <>
+                                    <td style={{ textTransform: "capitalize" }}>
+                                      {e.schedule_by}
+                                    </td>
+                                    <td style={{ textTransform: "capitalize" }}>
+                                      {e.title}
+                                    </td>
+                                    <td>{formatDate(s.created_at)}</td>
+                                    <td style={{ textTransform: "capitalize" }}>
+                                      {s.attended_status}
+                                    </td>
+                                  </>
+                                )}
+                              </>
+                            );
+                          })}
+                        </tr>
+                      )}
+                    </>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Grid>
+        </Grid>
+        {/* Leave Details & Attdance Details */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h4" sx={{ color: "#5559ce" }}>
+              Leave Details:-
+            </Typography>
+            <Table className="table" striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th>StartDate</th>
+                  <th>End Date</th>
+                  <th>Title</th>
+                  <th>Leave type</th>
+                  <th>Ststus</th>
+                </tr>
+              </thead>
+              <tbody>
+                {eventData?.map((item, index) => (
+                  <tr key={index}>
+                    <td>{formatDate(item.start)}</td>
+                    <td>{formatDate(item.end)}</td>
+                    <td>{item.title}</td>
+                    <td>{item.leave_type}</td>
+                    <td>{item.leave_status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Grid>
+        </Grid>
         {/* Course Detsils */}
         <Box py={2}>
           <Typography variant="h4" sx={{ color: "#5559ce" }}>
             Course Details:-
           </Typography>
-          <Table className="table" striped bordered hover size="sm">
+          <Table
+            className="table student-details-rounded"
+            striped
+            bordered
+            hover
+            size="sm"
+          >
             <thead>
               <tr>
                 <th>No</th>
@@ -586,6 +592,7 @@ function ViewMoreStudent() {
             </tbody>
           </Table>
         </Box>
+        {/* Remarks & complain */}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
             <Typography variant="h4" sx={{ color: "#5559ce" }}>
@@ -642,7 +649,73 @@ function ViewMoreStudent() {
             </Table>
           </Grid>
         </Grid>
-        {/* Remsrks */}
+        <Grid item xs={12} md={12}>
+          <Typography variant="h4" sx={{ color: "#5559ce" }}>
+            Attandance Details:-
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              marginBottom: "20px",
+              justifyContent: "end",
+            }}
+          >
+            <Box className="flatpicker">
+              <label
+                htmlFor="rows-per-page"
+                style={{
+                  minWidth: "fit-content",
+                  marginRight: "5px",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                }}
+              >
+                From :
+              </label>
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
+            </Box>
+            <Box className="flatpicker">
+              <label
+                htmlFor="rows-per-page"
+                style={{
+                  minWidth: "fit-content",
+                  marginRight: "5px",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                }}
+              >
+                To :
+              </label>
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+              />
+            </Box>
+          </Box>
+          {/* <Table className="table" striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.id}>
+                  <td>{row.id}</td>
+                  <td>{row.date}</td>
+                  <td>{row.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table> */}
+        </Grid>
       </MainCard>
     </>
   );

@@ -26,7 +26,7 @@ const validationSchema = Yup.object({
   amount_remaining: Yup.string().required("Amount Remaining is required"),
   admission_amount: Yup.string().required("Admission Amount is required"),
   upcoming_installment_date: Yup.date().required(
-    "Next installment  is required"
+    "Next installment date is required"
   ),
   upcoming_installment_amount: Yup.string().required(
     "Next installment amount is required"
@@ -44,7 +44,6 @@ const MenuProps = {
 };
 
 const FeesInfo = ({ formData, studentData, refetch }) => {
-  //notification
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -66,50 +65,51 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
+      console.log("Form Values:", values);
       handleUpdateStudent(values);
     },
   });
 
   async function handleUpdateStudent(values) {
     const payload = {
-      ...studentData,
+      // ...studentData,
       fees_info: {
         ...studentData.fees_info,
         total_amount: values.total_amount || "",
         amount_paid: values.amount_paid || "",
         amount_remaining:
-          formik.values?.total_amount -
-            formik.values.amount_paid -
-            formik.values.admission_amount -
-            formik.values.discount || "",
+          values.total_amount -
+            values.amount_paid -
+            values.admission_amount -
+            values.discount || "",
         admission_amount: values.admission_amount || "",
         upcoming_installment_date: values.upcoming_installment_date || "",
         upcoming_installment_amount:
-          (formik.values?.total_amount -
-            formik.values.amount_paid -
-            formik.values.admission_amount -
-            formik.values.discount) /
-            formik.values.no_of_installments || "",
+          (values.total_amount -
+            values.amount_paid -
+            values.admission_amount -
+            values.discount) /
+            values.no_of_installments || "",
         no_of_installments: values.no_of_installments || "",
         discount: values.discount || "",
       },
     };
     console.log(payload);
-    await instance({
-      method: "PUT",
-      url: `company/${companyId}/${studentId}/updateStudent`,
-      data: payload,
-    })
-      .then((response) => {
-      if(response.status === 200){
-        openNotificationWithIcon("success", response.data.data.message);
-        // refetch();
-        window.location.reload();
-        alert("finally add!")
-      }})
-      .catch((error) => {
-        openNotificationWithIcon("error", error.response.data.message);
-      });
+    // Uncomment the below lines to make the actual API call
+    // await instance({
+    //   method: "PUT",
+    //   url: `company/${companyId}/${studentId}/updateStudent`,
+    //   data: payload,
+    // })
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       openNotificationWithIcon("success", response.data.data.message);
+    //       window.location.reload();
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     openNotificationWithIcon("error", error.response.data.message);
+    //   });
   }
 
   return (
@@ -144,7 +144,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <TextField
                   id="outlined-basic"
-                  label="Total Amount "
+                  label="Total Amount"
                   variant="outlined"
                   fullWidth
                   name="total_amount"
@@ -165,7 +165,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <TextField
                   id="outlined-basic"
-                  label="Amount Paid "
+                  label="Amount Paid"
                   variant="outlined"
                   fullWidth
                   name="amount_paid"
@@ -186,7 +186,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <TextField
                   id="outlined-basic"
-                  label="Admission Amount "
+                  label="Admission Amount"
                   variant="outlined"
                   fullWidth
                   name="admission_amount"
@@ -209,7 +209,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <TextField
                   id="outlined-basic"
-                  label=" Amount Remaining "
+                  label="Amount Remaining"
                   variant="outlined"
                   fullWidth
                   disabled
@@ -248,14 +248,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
                     value={formik.values?.no_of_installments}
                     error={
                       formik.touched.no_of_installments &&
-                      Boolean(
-                        (<formik className="errors"></formik>)
-                          .no_of_installments
-                      )
-                    }
-                    helperText={
-                      formik.touched.no_of_installments &&
-                      formik.errors.no_of_installments
+                      Boolean(formik.errors.no_of_installments)
                     }
                     onChange={formik.handleChange}
                     label="Number of Installment"
@@ -314,7 +307,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
                     onChange={(selectedDates) => onDateChange(selectedDates)}
                     className="form-control"
                     options={{
-                      dateFormat: "Y-m-d ",
+                      dateFormat: "Y-m-d",
                       mode: "single",
                     }}
                   />
@@ -324,7 +317,7 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <TextField
                   id="outlined-basic"
-                  label="Next installment amount "
+                  label="Next installment amount"
                   variant="outlined"
                   fullWidth
                   disabled

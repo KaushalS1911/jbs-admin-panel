@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination"; // Import TablePagination
+import TablePagination from "@mui/material/TablePagination";
 import MainCard from "ui-component/cards/MainCard";
 import moment from "moment";
 import axios from "axios";
@@ -17,9 +17,9 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  IconButton, // Import IconButton
+  IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
+import CloseIcon from "@mui/icons-material/Close";
 import noDataImg from "../../assets/images/no data found.png";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 
@@ -55,11 +55,6 @@ const Complain = () => {
     setOpen(false);
   };
 
-  const handleStatusChange = (complaintId, status) => {
-    console.log("Status changed to:", status, "for complaint:", complaintId);
-      handleClose();
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -67,6 +62,17 @@ const Complain = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleStatusChange = (complaintId) => {
+    setSelectedStudent((prevStudent) => {
+      const updatedComplaints = prevStudent.complaints.map((complaint) =>
+        complaint._id === complaintId
+          ? { ...complaint, status: complaint.status === "Pending" ? "Done" : "Pending" }
+          : complaint
+      );
+      return { ...prevStudent, complaints: updatedComplaints };
+    });
   };
 
   return (
@@ -193,45 +199,31 @@ const Complain = () => {
                           </TableCell>
                           <TableCell style={{ padding: 4 }}>
                             <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() =>
-                                handleStatusChange(complaint._id, "Done")
-                              }
-                              style={{ marginRight: "8px" }}
+                              type="primary"
+                              danger={complaint.status === "Pending"}
+                              onClick={() => handleStatusChange(complaint._id)}
                             >
-                              Done
-                            </Button>
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              onClick={() =>
-                                handleStatusChange(complaint._id, "In Process")
-                              }
-                            >
-                              In Process
+                              {complaint.status}
                             </Button>
                           </TableCell>
                         </TableRow>
                       ))
                     ) : (
-                      <>
-                        <Grid
-                          container
-                          justifyContent="center"
-                          alignItems="center"
-                          style={{ minHeight: "300px" }}
-                        >
-                          <img
-                            src={noDataImg}
-                            alt="no data"
-                            style={{
-                              maxWidth: "300px",
-                              width: "100%",
-                            }}
-                          />
-                        </Grid>
-                      </>
+                      <Grid
+                        container
+                        justifyContent="center"
+                        alignItems="center"
+                        style={{ minHeight: "300px" }}
+                      >
+                        <img
+                          src={noDataImg}
+                          alt="no data"
+                          style={{
+                            maxWidth: "300px",
+                            width: "100%",
+                          }}
+                        />
+                      </Grid>
                     )}
                   </TableBody>
                 </Table>

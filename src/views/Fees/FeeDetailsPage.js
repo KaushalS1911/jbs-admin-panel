@@ -78,11 +78,13 @@ function FeeDetailsPage() {
       status: selectedValue,
       payment_amount: paymentAmount,
     };
+    console.log(finalObject);
     setLoading(true);
     try {
       const apiEndpoint = `${process.env.REACT_APP_API_URL}${profileData.company_id}/student/${studentId}/fee-detail/${selectedRow.id}`;
       const response = await axios.put(apiEndpoint, finalObject);
       if (response.status === 200) {
+        console.log(response);
         setOpenDialog(false);
         refetch();
         setLoading(false);
@@ -272,6 +274,34 @@ function FeeDetailsPage() {
     }
   };
 
+  // Student Image Show
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const apiEndpoint = `${process.env.REACT_APP_API_URL}student/${studentId}/profile-pic`;
+
+    if (file) {
+      const formData = new FormData();
+      formData.append("profile-pic", file);
+
+      axios
+        .put(apiEndpoint, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          refetch();
+        })
+        .catch((error) => {
+          console.error("Upload error:", error);
+        });
+    }
+  };
+
+  const handleAvatarClick = () => {
+    document.getElementById("file-input").click();
+  };
+
   const columns = [
     { field: "srNo", headerName: "Sr No", width: 250 },
     { field: "installment_date", headerName: "Installment Date", width: 250 },
@@ -393,11 +423,18 @@ function FeeDetailsPage() {
           style={{ textAlign: "right", padding: "10px" }}
         ></Typography>
         <Grid container sx={{ margin: "0.5rem" }} spacing={2}>
-          <Grid item>
+          <Grid item sx={{ display: "flex", alignItems: "center" }}>
+            <input
+              id="file-input"
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
             <Avatar
-              alt="Remy Sharp"
-              src="/static/images/avatar/1.jpg"
-              sx={{ width: 128, height: 128 }}
+              alt="Avatar"
+              src={data?.personal_info?.profile_pic}
+              onClick={handleAvatarClick}
+              sx={{ cursor: "pointer", width: 126, height: 126 }}
             />
           </Grid>
           <Grid item xs={12} sm container>
@@ -561,9 +598,6 @@ function FeeDetailsPage() {
                       style: { color: "#5559CE" },
                     }}
                   />
-                  <Typography sx={{ p: 1, fw: 700 }}>
-                    Due Amount: {dueamount}
-                  </Typography>
                 </Grid>
               </FormControl>
             </Grid>

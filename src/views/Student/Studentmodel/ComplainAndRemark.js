@@ -25,8 +25,8 @@ const initialValues = {
 
 const ComplainAndRemark = ({ studentData }) => {
   const { studentId, companyId } = useParams();
-  const [remarks, setRemarks] = useState([]);
   const [complaints, setComplaints] = useState([]);
+  const [remarks, setRemarks] = useState([]);
   const loginUser = localStorage.getItem("user");
   const { role } = JSON.parse(loginUser);
 
@@ -50,7 +50,10 @@ const ComplainAndRemark = ({ studentData }) => {
       let updatedRemarks = [...remarks];
 
       if (values.complaints) {
-        updatedComplaints = [...complaints, { title: values.complaints, date }];
+        updatedComplaints = [
+          ...complaints,
+          { title: values.complaints, date, status: "Pending" },
+        ];
         setComplaints(updatedComplaints);
       }
 
@@ -101,7 +104,7 @@ const ComplainAndRemark = ({ studentData }) => {
           size="small"
         >
           <Grid container spacing={2} xs={8}>
-            <Grid item xs={12} md={12} lg={4}>
+            <Grid container item xs={12} md={12} lg={4}>
               <Grid>
                 <Box
                   display="flex"
@@ -122,13 +125,13 @@ const ComplainAndRemark = ({ studentData }) => {
                       fontSize: "18px",
                     }}
                   >
-                    Complain
+                    Complain & Remarks
                   </Typography>
                 </Box>
               </Grid>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  label="Complain Date"
+                  label="Date"
                   clearable
                   value={formik.values.date}
                   onChange={(date) => formik.setFieldValue("date", date)}
@@ -167,39 +170,12 @@ const ComplainAndRemark = ({ studentData }) => {
                   style: { color: "#5559CE" },
                 }}
               />
-            </Grid>
-            {role === "Admin" && (
-              <Grid item xs={12} md={12} lg={4}>
-                <Grid>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    marginBottom="14px"
-                    color="#5559CE"
-                  >
-                    <PublishedWithChangesIcon
-                      style={{
-                        fontSize: "30px",
-                        marginRight: "8px",
-                        color: "#5e35b1",
-                      }}
-                    />
-                    <Typography
-                      style={{
-                        fontWeight: "600",
-                        fontSize: "18px",
-                      }}
-                    >
-                      Remark
-                    </Typography>
-                  </Box>
-                </Grid>
+              {role === "Admin" && (
                 <TextField
                   id="remarks"
                   label="Remark"
                   name="remarks"
                   multiline
-                  sx={{ margin: "10px 0" }}
                   rows={3}
                   value={formik.values.remarks}
                   onChange={formik.handleChange}
@@ -211,8 +187,8 @@ const ComplainAndRemark = ({ studentData }) => {
                     style: { color: "#5559CE" },
                   }}
                 />
-              </Grid>
-            )}
+              )}
+            </Grid>
           </Grid>
           <Box>
             <Button

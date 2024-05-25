@@ -28,7 +28,7 @@ export const courses = [
   { value: "master in UI/UX Design", label: "Master in UI/UX Design" },
   { value: "advance Graphics Design", label: "Advance Graphics Design" },
   { value: "photoshop", label: "Photoshop" },
-  { value: "cCC- Basic Computer Course", label: "CCC- Basic Computer Course" },
+  { value: "CCC- Basic Computer Course", label: "CCC- Basic Computer Course" },
   { value: "adobe XD", label: "Adobe XD" },
   { value: "adobe Illustrator", label: "Adobe Illustrator" },
   { value: "Frontend Development", label: "Frontend Development" },
