@@ -14,25 +14,32 @@ import FeesInfo from './Studentmodel/FeesInfo';
 
 const steps = ['Student Information', 'Guardian Information', 'Address Information', 'Fees Information'];
 
+const renderStepContent = (step) => {
+    switch (step) {
+        case 0:
+            return <StudentInfo />;
+        case 1:
+            return <GuardianInfo />;
+        case 2:
+            return <AddressInfo />;
+        case 3:
+            return <FeesInfo />;
+        default:
+            return null;
+    }
+};
+
 export default function StudentMain() {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
 
-    const isStepOptional = (step) => {
-        return step === 1; 
-    };
+    const isStepOptional = (step) => step === 1;
 
-    const isStepSkipped = (step) => {
-        return skipped.has(step);
-    };
+    const isStepSkipped = (step) => skipped.has(step);
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
+    const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
     const handleSkip = () => {
         if (!isStepOptional(activeStep)) {
@@ -52,46 +59,27 @@ export default function StudentMain() {
         setSkipped(new Set());
     };
 
-    const renderStepContent = (step) => {
-        switch (step) {
-            case 0:
-                return <StudentInfo />;
-            case 1:
-                return <GuardianInfo />;
-            case 2:
-                return <AddressInfo />;
-            case 3:
-                return <FeesInfo />;
-            default:
-                return null;
-        }
-    };
-
     return (
         <MainCard className="student-main">
             <Box sx={{ width: '100%' }}>
-                <Stepper activeStep={activeStep} >
+                <Stepper activeStep={activeStep}>
                     {steps.map((label, index) => {
                         const stepProps = {};
-                        const labelProps = {};
-
                         if (isStepSkipped(index)) {
                             stepProps.completed = false;
                         }
                         return (
                             <Step key={label} {...stepProps}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>  
+                                <StepLabel>{label}</StepLabel>
                             </Step>
                         );
                     })}
                 </Stepper>
                 <Divider sx={{ marginTop: '15px' }} />
-                {renderStepContent(activeStep)} {renderStepContent}
+                {renderStepContent(activeStep)}
                 {activeStep === steps.length ? (
                     <React.Fragment>
-                        <Typography sx={{ mt: 2, mb: 1 }}>
-                            All steps completed - you&apos;re finished
-                        </Typography>
+                        <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                             <Box sx={{ flex: '1 1 auto' }} />
                             <Button onClick={handleReset}>Reset</Button>

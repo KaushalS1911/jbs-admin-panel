@@ -92,81 +92,17 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
     initialValues: studentId ? formData : initialValues,
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      const formattedInstallDate = formatDate(values.upcoming_installment_date);
-      const totalAmount = parseFloat(values.total_amount) || 0;
-      const amountPaid = parseFloat(values.amount_paid) || 0;
-      const admissionAmount = parseFloat(values.admission_amount) || 0;
-      const discountAmt = parseFloat(values.discount) || 0;
-      const noOfInstallments = parseInt(values.no_of_installments) || 0;
-      const amountRemaining =
-        totalAmount - amountPaid - admissionAmount - discountAmt;
+      try {
+        const formattedInstallDate = formatDate(values.upcoming_installment_date);
+        const {
+          total_amount: totalAmount = 0,
+          amount_paid: amountPaid = 0,
+          admission_amount: admissionAmount = 0,
+          discount: discountAmt = 0,
+          no_of_installments: noOfInstallments = 0
+        } = values;
 
-      const finalobj = {
-        ...values,
-        amount_paid: amountPaid,
-        total_amount: totalAmount,
-        discount: discountAmt,
-        admission_amount: admissionAmount,
-        amount_remaining: amountRemaining,
-        no_of_installments: noOfInstallments,
-        upcoming_installment_date: formattedInstallDate,
-      };
-      const { enrollment_no } = personalDetails;
-      const {
-        firstName,
-        lastName,
-        contact,
-        email,
-        dob,
-        education,
-        college,
-        blood_group,
-        gender,
-        course,
-        joining_date,
-      } = personalDetails;
-      const { address_1, address_2, city, state, country, zipcode } =
-        addressDetails;
-      const {
-        total_amount,
-        amount_paid,
-        amount_remaining,
-        admission_amount,
-        upcoming_installment_date,
-        upcoming_installment_amount,
-        no_of_installments,
-        discount,
-      } = finalobj;
-      const payload = {
-        firstName,
-        lastName,
-        contact,
-        email,
-        dob,
-        education,
-        college,
-        blood_group,
-        gender,
-        course,
-        joining_date,
-        address_1,
-        address_2,
-        city,
-        state,
-        country,
-        zipcode,
-        guardian_info: guardianDetails,
-        total_amount,
-        amount_paid,
-        amount_remaining,
-        admission_amount,
-        upcoming_installment_date,
-        upcoming_installment_amount,
-        no_of_installments,
-        discount,
-        enrollment_no,
-      };
-      console.log("b----r", payload);
+        const amountRemaining = totalAmount - amountPaid - admissionAmount - discountAmt;
 
       setLoading(true);
       await axios({
@@ -191,7 +127,82 @@ const FeesInfo = ({ activeStep, steps, handleBack, handleReset, formData }) => {
         });
       resetForm();
     },
+        const finalPayload = {
+          ...values,
+          amount_paid: amountPaid,
+          total_amount: totalAmount,
+          discount: discountAmt,
+          admission_amount: admissionAmount,
+          amount_remaining: amountRemaining,
+          no_of_installments: noOfInstallments,
+          upcoming_installment_date: formattedInstallDate
+        };
+
+        const {
+          enrollment_no,
+          firstName,
+          lastName,
+          contact,
+          email,
+          dob,
+          education,
+          college,
+          blood_group,
+          gender,
+          course,
+          joining_date
+        } = personalDetails;
+
+        const {
+          address_1,
+          address_2,
+          city,
+          state,
+          country,
+          zipcode
+        } = addressDetails;
+
+        const payload = {
+          firstName,
+          lastName,
+          contact,
+          email,
+          dob,
+          education,
+          college,
+          blood_group,
+          gender,
+          course,
+          joining_date,
+          address_1,
+          address_2,
+          city,
+          state,
+          country,
+          zipcode,
+          guardian_info: guardianDetails,
+          ...finalPayload,
+          enrollment_no
+        };
+
+        setLoading(true);
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}${companyId}/student`, payload, { withCredentials: false });
+
+        if (res.status === 200) {
+           dispatch(removeAllStateData());
+           openNotificationWithIcon('success', res.data.message);
+           navigate("/student");
+        }
+      } catch (error) {
+        openNotificationWithIcon("error", error?.response?.data?.message);
+      } finally {
+        setLoading(false);
+        resetForm();
+      }
+    }
   });
+
+
   return (
     <>
       <div className="form-outer">

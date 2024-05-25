@@ -5,7 +5,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useGetSingleStudent } from "../../hooks/useGetSingleStudent";
-import { useEffect, useState } from "react"; // Import useState
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PersonalInfo from "./Tabs/PersonalInfo";
 import MainCard from "ui-component/cards/MainCard";
@@ -24,7 +24,7 @@ function EditStudent() {
   const { studentId } = useParams();
   const data1 = localStorage.getItem("user");
   const { role } = JSON.parse(data1);
-  const [value, setValue] = useState("1"); 
+  const [value, setValue] = useState("1");
   const { data, refetch } = useGetSingleStudent(studentId);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function EditStudent() {
   }, []);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue); 
+    setValue(newValue);
   };
 
   return (
