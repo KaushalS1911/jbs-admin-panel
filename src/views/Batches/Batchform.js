@@ -125,33 +125,25 @@ function Batchform({ setIsBatchOpen, fetchData }) {
         size="small"
       >
         <Grid container spacing={2} justifyContent={"flex-end"}>
-          <Grid item xl={12} lg={12} md={6} sm={6} xs={12} sx={{marginTop:'20px'}}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">Technology</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select-label"
-                name="technology"
-                value={formik.values?.course}
-                error={
-                  formik.touched.course &&
-                  Boolean((<formik className="errors"></formik>).course)
-                }
-                helperText={formik.touched.course && formik.errors.course}
-                MenuProps={MenuProps}
-                onChange={formik.handleChange}
-                label="Technology"
-                InputLabelProps={{
-                  style: { color: "#5559CE" },
-                }}
-              >
-                {courses.map((courseItem) => (
-                  <MenuItem key={courseItem.value} value={courseItem.value}>
-                    {courseItem.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+            <TextField
+              id="outlined-basic"
+              label="Technology"
+              variant="outlined"
+              name="technology"
+              value={formik.values?.technology}
+              error={
+                formik.touched?.technology && Boolean(formik.errors?.technology)
+              }
+              helperText={
+                formik.touched?.technology && formik.errors?.technology
+              }
+              onChange={formik.handleChange}
+              fullWidth
+              InputLabelProps={{
+                style: { color: "#5559CE" },
+              }}
+            />
           </Grid>
           <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
             <Box
@@ -248,18 +240,18 @@ function Batchform({ setIsBatchOpen, fetchData }) {
             />
           </Grid>
           <Button
-              type="submit"
-              variant="contained"
-              justifyContent="center"
-              sx={{
-                backgroundColor: "#5559CE",
-                color: "#fff",
-                margin: "15px auto",
-              }}
-              onClick={formik.handleSubmit}
-            >
-              Add Batch
-            </Button>
+            type="submit"
+            variant="contained"
+            justifyContent="center"
+            sx={{
+              backgroundColor: "#5559CE",
+              color: "#fff",
+              margin: "15px auto",
+            }}
+            onClick={formik.handleSubmit}
+          >
+            Add Batch
+          </Button>
         </Grid>
       </FormControl>
     </form>

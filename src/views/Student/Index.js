@@ -73,8 +73,8 @@ function Index() {
                             lg={8}
                             md={12}
                             xs={12}
-                            sm={12}
-                        >
+                            sm={12}>
+                            
                             <ActionButtons user={user} navigate={navigate} deleteAllStudents={deleteAllStudents} />
                         </Grid>
                     </Grid>
