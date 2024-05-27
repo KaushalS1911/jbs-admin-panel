@@ -56,7 +56,16 @@ const Header = ({ handleLeftDrawerToggle }) => {
         </ButtonBase>
       </Box>
 
-      <Box sx={{ marginLeft: "4rem", flexGrow: 1, display: "flex" }}>
+      <Box
+      sx={{
+        marginLeft: "4rem",
+        flexGrow: 1,
+        display: "flex",
+        "@media (max-width: 600px)": {
+          marginLeft: "0",
+        }
+      }}
+    >
         <Typography
           color="secondary"
           sx={{

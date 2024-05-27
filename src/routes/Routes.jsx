@@ -42,6 +42,7 @@ import { Expence } from "views/utilities/Expence";
 import ViewMoreStudent from "views/Student/utils/ViewMoreStudent";
 import Complain from "views/Complain/Complain";
 import Examination from "views/utilities/Examination";
+import AppBanner from "views/Setting/AppBanner";
 
 const Routes = () => {
   return (
@@ -143,6 +144,7 @@ const Routes = () => {
           <Route path="/settings/role-config" element={<Roles />} exact />
           <Route path="/settings/course-config" element={<Course />} exact />
           <Route path="settings-Admin-lock" element={<AdminLock />} exact />
+          <Route path="settings-banner-lock" element={<AppBanner />} exact />
           <Route
             path="/settings/classroom-config"
             element={<Classrooms />}

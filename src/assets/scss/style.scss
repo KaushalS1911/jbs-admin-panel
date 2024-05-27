@@ -517,14 +517,15 @@ span.flatpickr-weekday {
 .flatpickr-current-month .flatpickr-monthDropdown-months {
   background: #d9daf9 !important;
   color: #000 !important;
-  border:none!important;
+  border: none !important;
 }
-.flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month{
+.flatpickr-current-month
+  .flatpickr-monthDropdown-months
+  .flatpickr-monthDropdown-month {
   background: #d9daf9 !important;
-  font-size: 14px!important;
-  padding: 18px!important;
-  border:none;
-
+  font-size: 14px !important;
+  padding: 18px !important;
+  border: none;
 }
 
 .flatpickr-current-month input.cur-year {
@@ -836,11 +837,16 @@ Button:disabled {
 //   width: 30% !important;
 // }
 
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
-.student-details-rounded{
-  border-radius: 10px!important;
+.student-details-rounded {
+  border-radius: 10px !important;
+}
+
+:where(.css-dev-only-do-not-override-42nv3w).ant-modal {
+  top: 50%;
+  left: 0%;
+  transform: translate(0%,-50%);
 }

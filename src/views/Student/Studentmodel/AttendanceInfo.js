@@ -19,7 +19,8 @@ const AttendanceInfo = ({ formData }) => {
     startDate,
     endDate
   );
-  
+
+
   useEffect(() => {
     refetch();
   }, [page, rowsPerPage]);
@@ -120,10 +121,11 @@ const AttendanceInfo = ({ formData }) => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           gap: "20px",
           alignItems: "center",
           marginBottom: "20px",
-          justifyContent: "end",
+          justifyContent: { xs: "center", sm: "end" } ,
         }}
       >
         <Box className="flatpicker">

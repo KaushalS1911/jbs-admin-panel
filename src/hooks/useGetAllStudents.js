@@ -5,7 +5,8 @@ import { profile } from "../atoms/authAtoms";
 
 export const useGetAllStudents = (page, perPage, searchText) => {
   const user = useRecoilValue(profile);
-  return useQuery(["students"], async () => {
+
+  return useQuery(["students", page, perPage, searchText], async () => {
     let apiUrl = `${process.env.REACT_APP_API_URL}`;
     if (user && user.company_id) {
       apiUrl += `/${user.company_id}/student`;
@@ -19,7 +20,6 @@ export const useGetAllStudents = (page, perPage, searchText) => {
 
     try {
       const response = await axios.get(apiUrl, { withCredentials: false });
-      console.log(response);
       if (response.status === 200) {
         return response.data.data;
       } else {

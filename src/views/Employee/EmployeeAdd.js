@@ -116,7 +116,7 @@ const EmployeeAdd = () => {
     <>
       <Mainbreadcrumbs title={"Employee"} subtitle={"Add Employee"} />
       <MainCard className="form-outer">
-        <div>
+        <Grid>
           <form action="" onSubmit={formik.handleSubmit}>
             <FormControl
               sx={{
@@ -140,371 +140,383 @@ const EmployeeAdd = () => {
               }}
             >
               <Grid>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    color: "#5559CE",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    margin: "20px 8px 20px 0px",
-                  }}
-                >
-                  Personal Details:
-                </Typography>
+                <Grid item>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      color: "#5559CE",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                      margin: "20px 8px 20px 0px",
+                    }}
+                  >
+                    Personal Details:
+                  </Typography>
+                </Grid>
               </Grid>
-
-              <Grid container spacing={2}>
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <TextField
-                    label="First Name"
-                    id="firstname"
-                    name="firstName"
-                    variant="outlined"
-                    value={formik.values.firstName}
-                    error={
-                      formik.touched.firstName &&
-                      Boolean(formik.errors.firstName)
-                    }
-                    helperText={
-                      formik.touched.firstName && formik.errors.firstName
-                    }
-                    onChange={formik.handleChange}
-                    fullWidth
-                    InputLabelProps={{
-                      style: { color: "#5559CE" },
-                    }}
-                  />
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <TextField
-                    label="Last Name"
-                    variant="outlined"
-                    name="lastName"
-                    value={formik.values.lastName}
-                    error={
-                      formik.touched.lastName && Boolean(formik.errors.lastName)
-                    }
-                    helperText={
-                      formik.touched.lastName && formik.errors.lastName
-                    }
-                    onChange={formik.handleChange}
-                    fullWidth
-                    InputLabelProps={{
-                      style: { color: "#5559CE" },
-                    }}
-                  />
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <PhoneInput
-                    country={"in"}
-                    value={formik.values.contact}
-                    onChange={(value, country, e, formattedValue) => {
-                      formik.setFieldValue("contact", formattedValue);
-                    }}
-                  />
-                  {formik.touched.contact && formik.errors.contact && (
-                    <FormHelperText>{formik.errors.contact}</FormHelperText>
-                  )}
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <TextField
-                    label="Email"
-                    name="email"
-                    variant="outlined"
-                    value={formik.values.email}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                    onChange={formik.handleChange}
-                    fullWidth
-                    InputLabelProps={{
-                      style: { color: "#5559CE" },
-                    }}
-                  />
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <FormControl item={true} fullWidth variant="outlined">
-                    <InputLabel id="gender-label" style={{ color: "#5559ce" }}>
-                      Gender
-                    </InputLabel>
-                    <Select
-                      labelId="gender-label"
-                      id="gender"
-                      name="gender"
-                      value={formik.values.gender}
-                      onChange={formik.handleChange}
-                      label="Gender"
+              <Grid container spacing={2} sx={{ marginBottom: "20px",padding:"20px" }}>
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <TextField
+                      label="First Name"
+                      id="firstname"
+                      name="firstName"
+                      variant="outlined"
+                      value={formik.values.firstName}
                       error={
-                        formik.touched.gender && Boolean(formik.errors.gender)
-                      }
-                      helperText={formik.touched.gender && formik.errors.gender}
-                      InputLabelProps={{
-                        style: { color: "#5559CE" },
-                      }}
-                    >
-                      <MenuItem value="Male">Male</MenuItem>
-                      <MenuItem value="Female">Female</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <FormControl item={true} fullWidth variant="outlined">
-                    <InputLabel id="role-label" style={{ color: "#5559ce" }}>
-                      Role
-                    </InputLabel>
-                    <Select
-                      labelId="role-label"
-                      id="role"
-                      name="role"
-                      value={formik.values.role}
-                      onChange={formik.handleChange}
-                      label="role"
-                      error={formik.touched.role && Boolean(formik.errors.role)}
-                      helperText={formik.touched.role && formik.errors.role}
-                      InputLabelProps={{
-                        style: { color: "#5559CE" },
-                      }}
-                    >
-                      {emp_type &&
-                        emp_type?.length !== 0 &&
-                        emp_type.map((e) => {
-                          return <MenuItem value={e}>{e}</MenuItem>;
-                        })}
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <TextField
-                    label="qualification"
-                    variant="outlined"
-                    fullWidth
-                    name="qualification"
-                    value={formik.values.qualification}
-                    error={
-                      formik.touched.qualification &&
-                      Boolean(formik.errors.qualification)
-                    }
-                    helperText={
-                      formik.touched.qualification &&
-                      formik.errors.qualification
-                    }
-                    onChange={formik.handleChange}
-                    InputLabelProps={{
-                      style: { color: "#5559CE" },
-                    }}
-                  />
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <FormControl item={true} fullWidth variant="outlined">
-                    <InputLabel
-                      id="developer-label"
-                      style={{ color: "#5559ce" }}
-                    >
-                      Developer
-                    </InputLabel>
-                    <Select
-                      labelId="developer-label"
-                      id="developer"
-                      name="technology"
-                      value={formik.values.technology}
-                      onChange={formik.handleChange}
-                      label="Developer"
-                      error={
-                        formik.touched.technology &&
-                        Boolean(formik.errors.technology)
+                        formik.touched.firstName &&
+                        Boolean(formik.errors.firstName)
                       }
                       helperText={
-                        formik.touched.technology && formik.errors.technology
+                        formik.touched.firstName && formik.errors.firstName
                       }
+                      onChange={formik.handleChange}
+                      fullWidth
                       InputLabelProps={{
                         style: { color: "#5559CE" },
                       }}
-                    >
-                      {developer_type &&
-                        developer_type?.length !== 0 &&
-                        developer_type.map((e) => {
-                          return <MenuItem value={e}>{e}</MenuItem>;
-                        })}
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <TextField
-                    label="Experience"
-                    variant="outlined"
-                    fullWidth
-                    name="experience"
-                    value={formik.values.experience}
-                    error={
-                      formik.touched.experience &&
-                      Boolean(formik.errors.experience)
-                    }
-                    helperText={
-                      formik.touched.experience && formik.errors.experience
-                    }
-                    onChange={formik.handleChange}
-                    InputLabelProps={{
-                      style: { color: "#5559CE" },
-                    }}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <MobileDatePicker
-                      fullWidth
-                      label="Date of Birth"
-                      clearable
-                      value={formik.values.dob}
-                      onChange={(date) => formik.setFieldValue("dob", date)}
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          fullWidth
-                          label="Select Date"
-                          error={
-                            formik.touched.dob && Boolean(formik.errors.dob)
-                          }
-                          helperText={formik.touched.dob && formik.errors.dob}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start"></InputAdornment>
-                            ),
-                          }}
-                        />
-                      )}
                     />
-                  </LocalizationProvider>
-                </Grid>
+                  </Grid>
 
-                <Grid
-                  item
-                  xl={4}
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  sx={{ marginBottom: "10px" }}
-                >
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <MobileDatePicker
-                      fullWidth
-                      label="Joining Date"
-                      value={formik.values.joining_date}
-                      onChange={(joining_date) =>
-                        formik.setFieldValue("joining_date", joining_date)
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <TextField
+                      label="Last Name"
+                      variant="outlined"
+                      name="lastName"
+                      value={formik.values.lastName}
+                      error={
+                        formik.touched.lastName &&
+                        Boolean(formik.errors.lastName)
                       }
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          fullWidth
-                          label="Select Joining date"
-                          error={
-                            formik.touched.joining_date &&
-                            Boolean(formik.errors.joining_date)
-                          }
-                          helperText={
-                            formik.touched.joining_date &&
-                            formik.errors.joining_date
-                          }
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start"></InputAdornment>
-                            ),
-                          }}
-                        />
-                      )}
+                      helperText={
+                        formik.touched.lastName && formik.errors.lastName
+                      }
+                      onChange={formik.handleChange}
+                      fullWidth
+                      InputLabelProps={{
+                        style: { color: "#5559CE" },
+                      }}
                     />
-                  </LocalizationProvider>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <PhoneInput
+                      country={"in"}
+                      value={formik.values.contact}
+                      onChange={(value, country, e, formattedValue) => {
+                        formik.setFieldValue("contact", formattedValue);
+                      }}
+                    />
+                    {formik.touched.contact && formik.errors.contact && (
+                      <FormHelperText>{formik.errors.contact}</FormHelperText>
+                    )}
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <TextField
+                      label="Email"
+                      name="email"
+                      variant="outlined"
+                      value={formik.values.email}
+                      error={
+                        formik.touched.email && Boolean(formik.errors.email)
+                      }
+                      helperText={formik.touched.email && formik.errors.email}
+                      onChange={formik.handleChange}
+                      fullWidth
+                      InputLabelProps={{
+                        style: { color: "#5559CE" },
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <FormControl item={true} fullWidth variant="outlined">
+                      <InputLabel
+                        id="gender-label"
+                        style={{ color: "#5559ce" }}
+                      >
+                        Gender
+                      </InputLabel>
+                      <Select
+                        labelId="gender-label"
+                        id="gender"
+                        name="gender"
+                        value={formik.values.gender}
+                        onChange={formik.handleChange}
+                        label="Gender"
+                        error={
+                          formik.touched.gender && Boolean(formik.errors.gender)
+                        }
+                        helperText={
+                          formik.touched.gender && formik.errors.gender
+                        }
+                        InputLabelProps={{
+                          style: { color: "#5559CE" },
+                        }}
+                      >
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
+                        <MenuItem value="Other">Other</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <FormControl item={true} fullWidth variant="outlined">
+                      <InputLabel id="role-label" style={{ color: "#5559ce" }}>
+                        Role
+                      </InputLabel>
+                      <Select
+                        labelId="role-label"
+                        id="role"
+                        name="role"
+                        value={formik.values.role}
+                        onChange={formik.handleChange}
+                        label="role"
+                        error={
+                          formik.touched.role && Boolean(formik.errors.role)
+                        }
+                        helperText={formik.touched.role && formik.errors.role}
+                        InputLabelProps={{
+                          style: { color: "#5559CE" },
+                        }}
+                      >
+                        {emp_type &&
+                          emp_type?.length !== 0 &&
+                          emp_type.map((e) => {
+                            return <MenuItem value={e}>{e}</MenuItem>;
+                          })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <TextField
+                      label="qualification"
+                      variant="outlined"
+                      fullWidth
+                      name="qualification"
+                      value={formik.values.qualification}
+                      error={
+                        formik.touched.qualification &&
+                        Boolean(formik.errors.qualification)
+                      }
+                      helperText={
+                        formik.touched.qualification &&
+                        formik.errors.qualification
+                      }
+                      onChange={formik.handleChange}
+                      InputLabelProps={{
+                        style: { color: "#5559CE" },
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <FormControl item={true} fullWidth variant="outlined">
+                      <InputLabel
+                        id="developer-label"
+                        style={{ color: "#5559ce" }}
+                      >
+                        Developer
+                      </InputLabel>
+                      <Select
+                        labelId="developer-label"
+                        id="developer"
+                        name="technology"
+                        value={formik.values.technology}
+                        onChange={formik.handleChange}
+                        label="Developer"
+                        error={
+                          formik.touched.technology &&
+                          Boolean(formik.errors.technology)
+                        }
+                        helperText={
+                          formik.touched.technology && formik.errors.technology
+                        }
+                        InputLabelProps={{
+                          style: { color: "#5559CE" },
+                        }}
+                      >
+                        {developer_type &&
+                          developer_type?.length !== 0 &&
+                          developer_type.map((e) => {
+                            return <MenuItem value={e}>{e}</MenuItem>;
+                          })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <TextField
+                      label="Experience"
+                      variant="outlined"
+                      fullWidth
+                      name="experience"
+                      value={formik.values.experience}
+                      error={
+                        formik.touched.experience &&
+                        Boolean(formik.errors.experience)
+                      }
+                      helperText={
+                        formik.touched.experience && formik.errors.experience
+                      }
+                      onChange={formik.handleChange}
+                      InputLabelProps={{
+                        style: { color: "#5559CE" },
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <MobileDatePicker
+                        fullWidth
+                        label="Date of Birth"
+                        clearable
+                        value={formik.values.dob}
+                        onChange={(date) => formik.setFieldValue("dob", date)}
+                        renderInput={(props) => (
+                          <TextField
+                            {...props}
+                            fullWidth
+                            label="Select Date"
+                            error={
+                              formik.touched.dob && Boolean(formik.errors.dob)
+                            }
+                            helperText={formik.touched.dob && formik.errors.dob}
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start"></InputAdornment>
+                              ),
+                            }}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xl={4}
+                    lg={4}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <MobileDatePicker
+                        fullWidth
+                        label="Joining Date"
+                        value={formik.values.joining_date}
+                        onChange={(joining_date) =>
+                          formik.setFieldValue("joining_date", joining_date)
+                        }
+                        renderInput={(props) => (
+                          <TextField
+                            {...props}
+                            fullWidth
+                            label="Select Joining date"
+                            error={
+                              formik.touched.joining_date &&
+                              Boolean(formik.errors.joining_date)
+                            }
+                            helperText={
+                              formik.touched.joining_date &&
+                              formik.errors.joining_date
+                            }
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start"></InputAdornment>
+                              ),
+                            }}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
                 </Grid>
-              </Grid>
               <Grid>
                 <Grid item>
                   <Typography
@@ -690,7 +702,6 @@ const EmployeeAdd = () => {
                   </Grid>
                 </Grid>
               </Grid>
-
               <Grid
                 item
                 xl={12}
@@ -734,7 +745,7 @@ const EmployeeAdd = () => {
               </Grid>
             </FormControl>
           </form>
-        </div>
+        </Grid>
       </MainCard>
     </>
   );

@@ -60,6 +60,8 @@ function ViewMoreStudent() {
       setCompletedCourses(data.assignmentCompleted);
     }
   }, [data, refetch, page, rowsPerPage]);
+
+  
   const sameCourses = courses.map((course, index) => ({
     name: course,
     date: dates[index] || "--",

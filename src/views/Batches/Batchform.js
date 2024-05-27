@@ -125,7 +125,7 @@ function Batchform({ setIsBatchOpen, fetchData }) {
         size="small"
       >
         <Grid container spacing={2} justifyContent={"flex-end"}>
-          <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+          <Grid item xl={12} lg={12} md={6} sm={6} xs={12} sx={{marginTop:'20px'}}>
             <FormControl fullWidth variant="outlined">
               <InputLabel id="demo-simple-select-label">Technology</InputLabel>
               <Select
@@ -178,8 +178,8 @@ function Batchform({ setIsBatchOpen, fetchData }) {
               id="w3review"
               name="note"
               placeholder="Notes"
-              rows="4"
-              cols="50"
+              rows="3"
+              cols="30"
               value={formik.values.note}
               onChange={formik.handleChange}
             />
@@ -247,24 +247,19 @@ function Batchform({ setIsBatchOpen, fetchData }) {
               )}
             />
           </Grid>
-          <Grid>
-            <Button
+          <Button
               type="submit"
               variant="contained"
+              justifyContent="center"
               sx={{
                 backgroundColor: "#5559CE",
                 color: "#fff",
-                marginRight: "10px",
-                marginTop: "15px",
-                height: "35px",
-                lineHeight: "35px",
-                "&:hover": { backgroundColor: "#5559CE" },
+                margin: "15px auto",
               }}
               onClick={formik.handleSubmit}
             >
               Add Batch
             </Button>
-          </Grid>
         </Grid>
       </FormControl>
     </form>

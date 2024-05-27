@@ -69,6 +69,7 @@ const Index = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchDemo = async () => {
     const apiEndpoint = `${process.env.REACT_APP_API_URL}${user.company_id}/demo?limit=${rowsPerPage}&page=${page + 1}`;
+    console.log(apiEndpoint);
     try {
       const response = await axios.get(apiEndpoint);
       setDemoData(response.data.data.data);

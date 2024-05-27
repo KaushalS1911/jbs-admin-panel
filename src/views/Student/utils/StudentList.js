@@ -51,6 +51,11 @@ const StudentList = ({ searchText, onSelectRow }) => {
     searchText
   );
 
+
+  const totalStudents = data?.totalStudents || 0;
+  const completedStudents = data?.students?.filter((student) => student.status === "Completed").length || 0;
+  const count = totalStudents - completedStudents;
+
   const examModalOpen = () => {
     setExaminationOpen(true);
   };
@@ -403,11 +408,7 @@ const StudentList = ({ searchText, onSelectRow }) => {
       <TablePagination
         rowsPerPageOptions={[10, 20, 50, 100]}
         component="div"
-        count={
-          data?.totalStudents -
-          data?.students?.filter((student) => student.status === "Completed")
-            .length
-        }
+        count={count}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

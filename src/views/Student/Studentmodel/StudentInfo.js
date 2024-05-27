@@ -377,9 +377,15 @@ const StudentInfo = ({
               </Grid>
               {!studentId ? (
                 <Grid
+                  row
                   container
-                  justifyContent="flex-end"
-                  sx={{ padding: "30px 20px " }}
+                  justifyContent="end"
+                  sx={{
+                    padding: "30px 20px",
+                    "@media (max-width: 600px)": {
+                      justifyContent: "center" ,
+                    },
+                  }}
                 >
                   <Stack spacing={2} direction="row">
                     <FormStepButtons
@@ -392,11 +398,7 @@ const StudentInfo = ({
                   </Stack>
                 </Grid>
               ) : (
-                <Button
-                  variant="outlined"
-                  size={"large"}
-                  style={{ position: "absolute", bottom: "-40%", right: "0%" }}
-                >
+                <Button variant="outlined" size={"large"}>
                   Save
                 </Button>
               )}

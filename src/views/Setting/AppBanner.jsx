@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Avatar, Grid, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Avatar, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
@@ -8,11 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getConfigs } from "./SettingSlice";
 import PageTitle from "../../contants/PageTitle";
 
-function EditCompanyProfile() {
-  const [profilePic, setProfilePic] = useState(null);
+function AppBanner() {
+  const [banners, setBanners] = useState({ logo: "" });
+  const [banner, setBanner] = useState(null);
   const { configs } = useSelector((state) => state.configs);
+  console.log(configs.company_id);
   const dispatch = useDispatch();
-  const { company_details } = configs;
 
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -20,34 +21,49 @@ function EditCompanyProfile() {
     });
   };
 
+  useEffect(() => {
+    const fetchBanner = async () => {
+      try {
+        const apiEndpoint = `${process.env.REACT_APP_LOGIN_URL}v1/company/${configs?.company_id}/app-banner`;
+        const response = await axios.get(apiEndpoint);
+        setBanners({ logo: response.data.banner_image });
+      } catch (error) {
+        console.error("Error fetching banner image:", error);
+      }
+    };
+
+    if (configs?.company_id) {
+      fetchBanner();
+    }
+  }, [configs]);
+
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    setProfilePic(file);
-    const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs?.company_id}/company-logo`;
-
-    const formData = new FormData();
-    formData.append("logo_url", file, file.name);
-
+    setBanner(file);
 
     try {
-      const response = await axios.put(apiEndpoint, formData, {
+      const apiEndpoint = `${process.env.REACT_APP_LOGIN_URL}v1/company/${configs?.company_id}/app-banner`;
+      const formData = new FormData();
+      formData.append("banner-image", file, file.name);
+
+      const response = await axios.post(apiEndpoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      openNotificationWithIcon("success", response.data.data.message);
+      console.log(response);
+      openNotificationWithIcon("success", response.data.message);
       dispatch(getConfigs());
     } catch (error) {
       console.error("Upload error:", error);
-      openNotificationWithIcon("error", "Failed to upload logo.");
     }
   };
 
   return (
     <div>
-      <PageTitle title={"Settings"} subtitle={"Company Profile"} />
+      <PageTitle title="App Banner" />
       <Box sx={{ maxWidth: "1200px" }}>
-        <Grid container spacing={3} rowSpacing={3} alignItems={"start"}>
+        <Grid container spacing={3} rowSpacing={3} alignItems="start">
           <Grid item xs={12} lg={4} md={6} sm={12}>
             <MainCard sx={{ padding: "10px" }}>
               <Box sx={{ marginBottom: "20px" }}>
@@ -59,7 +75,7 @@ function EditCompanyProfile() {
                 />
                 <Avatar
                   alt="Avatar"
-                  src={company_details?.logo || ""}
+                  src={banners?.logo || ""}
                   onClick={() => document.getElementById("file-input").click()}
                   style={{
                     cursor: "pointer",
@@ -69,18 +85,9 @@ function EditCompanyProfile() {
                     fontSize: "10px",
                   }}
                 >
-                  Upload Logo
+                  {!banner && "Upload Banner Image"}
                 </Avatar>
               </Box>
-              <Typography
-                sx={{
-                  fontSize: "1.1rem",
-                  fontWeight: 600,
-                  textAlign: "center",
-                }}
-              >
-                {company_details?.name}
-              </Typography>
             </MainCard>
           </Grid>
         </Grid>
@@ -89,4 +96,4 @@ function EditCompanyProfile() {
   );
 }
 
-export default EditCompanyProfile;
+export default AppBanner;

@@ -48,7 +48,14 @@ function Setting() {
     const ShowDeveloperLogs =()=>{
         navigate("/settings-Admin-lock")
     }
+    const ShowBannercode=()=>{
+        navigate("/settings-banner-lock")
+    }
 
+
+    // const ShowDeveloperLogs =()=>{
+    //     navigate("/settings-Admin-lock")
+    // }
     useEffect(() => {
         dispatch(getConfigs(user.company_id))
     }, []);
@@ -60,7 +67,7 @@ function Setting() {
             <Grid container spacing={2}>
 
                 {/* Expenses */}
-                <Grid item xs={12} sm={12} md={6} lg={4} onClick={showExpenses}
+                <Grid item xs={12} sm={6} md={6} lg={4} onClick={showExpenses}
                       sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -96,7 +103,7 @@ function Setting() {
                 </Grid>
 
                 {/* Profile */}
-                <Grid item xs={12} sm={12} md={6} lg={4}
+                <Grid item xs={12} sm={6} md={6} lg={4}
                       onClick={showCompanyProfile} sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -131,7 +138,7 @@ function Setting() {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={4}
+                <Grid item xs={12} sm={6} md={6} lg={4}
                       onClick={showRoles} sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -165,7 +172,7 @@ function Setting() {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={4}
+                <Grid item xs={12} sm={6} md={6} lg={4}
                       onClick={showCourses} sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -199,7 +206,7 @@ function Setting() {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={4}
+                <Grid item xs={12} sm={6} md={6} lg={4}
                       onClick={showClassrooms} sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -233,7 +240,7 @@ function Setting() {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={4}
+                <Grid item xs={12} sm={6} md={6} lg={4}
                       onClick={showEmployeeRoles} sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -267,7 +274,7 @@ function Setting() {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={4}
+                <Grid item xs={12} sm={6} md={6} lg={4}
                       onClick={showDeveloperOptions} sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -301,7 +308,7 @@ function Setting() {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={4}
+                <Grid item xs={12} sm={6} md={6} lg={4}
                       onClick={ShowDeveloperLogs} sx={{cursor: 'pointer'}}>
                     <Grid
                         style={gridItemStyle}
@@ -331,6 +338,31 @@ function Setting() {
                             }}
                         >
                             Please Edit or Add more options for the role of Admin accordingly to institute.
+                        </Typography>
+                    </Grid>
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={6} lg={4}
+                      onClick={ShowBannercode} sx={{cursor: 'pointer'}}>
+                    <Grid
+                        style={gridItemStyle}
+                        boxShadow={1}
+                        sx={{
+                            padding: "20px",
+                            backgroundColor: "#fff",
+                            borderRadius: "10px",
+                            aspectRatio: '0.9/0.3'
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                fontSize: "25px",
+                                fontWeight: "500",
+                                color: "#d8460c",
+                                marginBottom: "16px",
+                            }}
+                        >
+                           App Banner
                         </Typography>
                     </Grid>
                 </Grid>

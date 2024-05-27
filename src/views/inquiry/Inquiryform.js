@@ -691,7 +691,7 @@ function Inquiryform() {
                         ? {
                             backgroundColor: "rgba(0, 0, 0, 0.12)",
                             color: "rgba(0, 0, 0, 0.26)",
-                            width: "150px",
+                            width: "100px",
                             boxShadow: "none",
                           }
                         : {

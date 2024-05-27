@@ -94,22 +94,20 @@ const FeesInfo = ({ formData, studentData, refetch }) => {
         discount: values.discount || "",
       },
     };
-    console.log(payload);
-    // Uncomment the below lines to make the actual API call
-    // await instance({
-    //   method: "PUT",
-    //   url: `company/${companyId}/${studentId}/updateStudent`,
-    //   data: payload,
-    // })
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       openNotificationWithIcon("success", response.data.data.message);
-    //       window.location.reload();
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     openNotificationWithIcon("error", error.response.data.message);
-    //   });
+    await instance({
+      method: "PUT",
+      url: `company/${companyId}/${studentId}/updateStudent`,
+      data: payload,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          openNotificationWithIcon("success", response.data.data.message);
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        openNotificationWithIcon("error", error.response.data.message);
+      });
   }
 
   return (
