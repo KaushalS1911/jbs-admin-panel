@@ -28,9 +28,6 @@ import noDataImg from "../../assets/images/no data found.png";
 
 
 const Inquiry = () => {
-
-
-
       //notification
       const openNotificationWithIcon = (type, message) => {
         notification[type]({

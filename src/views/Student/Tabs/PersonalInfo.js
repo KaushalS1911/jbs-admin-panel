@@ -11,6 +11,7 @@ import {
   InputLabel,
   Button,
   Box,
+  InputAdornment,
 } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import { gridSpacing } from "store/constant";
@@ -24,6 +25,10 @@ import "flatpickr/dist/themes/material_green.css";
 import { notification } from "antd";
 import { useDispatch } from "react-redux";
 import { settingPersonalDetails } from "../StudentSlice";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -50,7 +55,7 @@ const validationSchema = yup.object({
   enrollment_no: yup.string().required("Enrollment Number is required"),
 });
 
-function PersonalInfo({ formData, studentData, refetch ,enrollment_no}) {
+function PersonalInfo({ formData, studentData, refetch, enrollment_no }) {
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -88,13 +93,13 @@ function PersonalInfo({ formData, studentData, refetch ,enrollment_no}) {
         lastName: values.lastName || "",
         contact: values.contact || "",
         email: values.email || "",
-        dob: values.dob || "",
+        dob: values.dob ? new Date(values.dob): null || "",
         education: values.education || "",
         college: values.college || "",
         blood_group: values.blood_group || "",
         gender: values.gender || "",
         course: values.course || "",
-        joining_date: values.joining_date || "",
+        joining_date: values.joining_date ? new Date(values.joining_date): null || "",
       },
       enrollment_no: values.enrollment_no || "",
     };
@@ -236,22 +241,28 @@ function PersonalInfo({ formData, studentData, refetch ,enrollment_no}) {
               </FormControl>
             </Grid>
             <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
-              <Box
-                className="flatpicker-input"
-                style={{ outline: "none", whiteSpace: "nowrap" }}
-              >
-                <Flatpickr
-                  placeholder="Date Of Birth"
+              <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
+                <MobileDatePicker
+                  fullWidth
+                  label="Date Of Birth"
+                  clearable
                   name="dob"
-                  value={formik.values?.dob}
-                  onChange={(selectedDates) => onDateChange(selectedDates)}
-                  className="form-control"
-                  options={{
-                    dateFormat: "Y-m-d ",
-                    mode: "single",
-                  }}
+                  value={formik.values?.dob || ""}
+                  onChange={(date) => formik.setFieldValue("dob", date)}
+                  renderInput={(props) => (
+                    <TextField
+                      {...props}
+                      fullWidth
+                      label="Select Date"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start"></InputAdornment>
+                        ),
+                      }}
+                    />
+                  )}
                 />
-              </Box>
+              </LocalizationProvider>
             </Grid>
             <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
               <TextField
@@ -324,7 +335,7 @@ function PersonalInfo({ formData, studentData, refetch ,enrollment_no}) {
                 <Flatpickr
                   placeholder="Joining Date"
                   name="joining_date"
-                  value={formik.values?.joining_date}
+                  value={formik.values?.joining_date || ""}
                   onChange={(selectedDates) =>
                     onJoiningDateChange(selectedDates)
                   }

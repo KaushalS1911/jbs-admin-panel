@@ -24,7 +24,7 @@ function EditAdminProfile() {
     email: "",
     contact: "",
   });
-  const [isPhotoUploaded, setIsPhotoUploaded] = useState(false); 
+  const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -147,18 +147,18 @@ function EditAdminProfile() {
                                 margin: "0 auto 10px",
                               }}
                             ></Avatar>
-                         
                           </Box>
                           <span
-                              style={{
-                                fontSize: "14px",
-                                color: "#5559CE",
-                                fontWeight: "700",
-                              }}
-                            >
-                              Upload your Photo
-                            </span>
+                            style={{
+                              fontSize: "14px",
+                              color: "#5559CE",
+                              fontWeight: "700",
+                            }}
+                          >
+                            Upload your Photo
+                          </span>
                           <Typography
+                            variant="h6"
                             sx={{
                               fontSize: "20px",
                               textAlign: "center",
@@ -167,7 +167,9 @@ function EditAdminProfile() {
                             }}
                           >
                             {values.firstName} {values.lastName}{" "}
-                            <Typography sx={{ color: "#5559CE", fontWeight: "600" }}>
+                            <Typography
+                              sx={{ color: "#5559CE", fontWeight: "600" }}
+                            >
                               ({values.role})
                             </Typography>
                           </Typography>

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PersonalInfo from "./Tabs/PersonalInfo";
 import MainCard from "ui-component/cards/MainCard";
+
 import StudentAvater from "./StudentAvater";
 import GuardianInfo from "./Tabs/GuardianInfo";
 import FeesInfo from "./Tabs/FeesInfo";

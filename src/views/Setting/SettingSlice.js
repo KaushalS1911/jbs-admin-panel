@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const getConfigs =  createAsyncThunk("Configs/getAllConfigs", async(companyId) => {
     const url = `${process.env.REACT_APP_API_URL}${companyId}/configs`;
+    console.log(url);
     const response = await axios.get(url)
     return response.data.data.data[0]
 })

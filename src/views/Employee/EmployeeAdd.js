@@ -25,8 +25,8 @@ import { useRecoilState } from "recoil";
 import { profile } from "../../atoms/authAtoms";
 import axios from "axios";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
-import { useSelector } from "react-redux";
 import { useState } from "react";
+import { useGetAllconfigs } from "hooks/useGetAllconfigs";
 
 const EmployeeAdd = () => {
   //notification
@@ -49,9 +49,12 @@ const EmployeeAdd = () => {
   /* eslint-disable */
   const [profileData, setProfileData] = useRecoilState(profile);
   const [loading, setLoading] = useState(false);
-  const { configs } = useSelector((state) => state.configs);
-  const { emp_type, developer_type } = configs;
   const navigate = useNavigate();
+  const { data:role } = useGetAllconfigs();
+  const emp_type=role?.emp_type;
+  const developer_type=role?.developer_type;
+
+
   const validationSchema = yup.object({
     firstName: yup.string().required("First Name is required"),
     lastName: yup.string().required("Last Name is required"),

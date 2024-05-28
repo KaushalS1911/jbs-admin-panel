@@ -52,6 +52,7 @@ function ViewMoreStudent() {
     );
     setDates(initialDates);
   };
+
   useEffect(() => {
     fetchCourseData();
     refetch();
@@ -70,6 +71,25 @@ function ViewMoreStudent() {
   const formatDate = (dateTimeString) => {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString("en-US");
+  };
+  const formatedDate = (inputDate) => {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+  
+    // Ensure inputDate is a valid Date object
+    const date = new Date(inputDate);
+  
+    // Get day, month, and year
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+  
+    // Format the date
+    const formattedDate = `${day} ${months[monthIndex]} ${year}`;
+  
+    return formattedDate;
   };
   //Event Data
   useEffect(() => {
@@ -293,13 +313,13 @@ function ViewMoreStudent() {
                     variant="h4"
                     sx={{ fontWeight: 600, marginRight: 2 }}
                   >
-                    DOB:{" "}
+                    Birth Date:{" "}
                     <Typography
                       variant="h4"
                       component="span"
                       sx={{ fontWeight: 300 }}
                     >
-                      {formatDate(data?.personal_info.dob)}
+                      {formatedDate(data?.personal_info.dob)}
                     </Typography>
                   </Typography>
                 </Grid>

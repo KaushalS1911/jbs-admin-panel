@@ -828,15 +828,6 @@ Button:disabled {
   outline: none;
 }
 
-// Seminer
-// .main-seminar{
-//   width: 70%;
-// }
-
-// .Seminar_modal {
-//   width: 30% !important;
-// }
-
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -845,8 +836,10 @@ input[type="number"]::-webkit-outer-spin-button {
   border-radius: 10px !important;
 }
 
+/* General Modal Customization */
 :where(.css-dev-only-do-not-override-42nv3w).ant-modal {
   top: 50%;
   left: 0%;
-  transform: translate(0%,-50%);
+  transform: translate(0%, -50%);
+  transition: all 0.05s ease-in-out !important;
 }

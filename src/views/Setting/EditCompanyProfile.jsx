@@ -4,15 +4,16 @@ import { Box } from "@mui/system";
 import MainCard from "ui-component/cards/MainCard";
 import axios from "axios";
 import { notification } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getConfigs } from "./SettingSlice";
 import PageTitle from "../../contants/PageTitle";
+import { useGetAllconfigs } from "hooks/useGetAllconfigs";
 
 function EditCompanyProfile() {
+  /* eslint-disable */
   const [profilePic, setProfilePic] = useState(null);
-  const { configs } = useSelector((state) => state.configs);
   const dispatch = useDispatch();
-  const { company_details } = configs;
+  const { data:company_details } = useGetAllconfigs();
 
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -23,7 +24,7 @@ function EditCompanyProfile() {
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     setProfilePic(file);
-    const apiEndpoint = `${process.env.REACT_APP_API_URL}${configs?.company_id}/company-logo`;
+    const apiEndpoint = `${process.env.REACT_APP_API_URL}${company_details?.company_id}/company-logo`;
 
     const formData = new FormData();
     formData.append("logo_url", file, file.name);
@@ -36,6 +37,7 @@ function EditCompanyProfile() {
         },
       });
       openNotificationWithIcon("success", response.data.data.message);
+      window.location.reload();
       dispatch(getConfigs());
     } catch (error) {
       console.error("Upload error:", error);

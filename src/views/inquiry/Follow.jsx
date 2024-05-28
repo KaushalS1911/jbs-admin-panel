@@ -18,8 +18,13 @@ import axios from "axios";
 import { notification } from "antd";
 import { useRecoilValue } from "recoil";
 import { profile } from "../../atoms/authAtoms";
+import Meuprops from "Extracomponent/Meuprops";
+
+const MenuProps = Meuprops;
+
 
 function Follow({ id, setIsFollowOpen }) {
+
   const [faculties, setFaculties] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -162,6 +167,7 @@ function Follow({ id, setIsFollowOpen }) {
                 value={formik.values.faculty_name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                MenuProps={MenuProps}
                 inputProps={{ style: { color: "#5559CE" } }}
               >
                 {faculties &&

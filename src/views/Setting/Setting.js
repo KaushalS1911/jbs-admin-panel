@@ -13,8 +13,8 @@ function Setting() {
     const user = useRecoilValue(profile)
     const dispatch = useDispatch()
 
-    const backgroundImageUrl =
-        "https://i.postimg.cc/DZR5bVtY/back-school-pattern-background-set-different-drawings-related-school-blue-color-153454-35.avif";
+    const backgroundImageUrl ="https://i.postimg.cc/DZR5bVtY/back-school-pattern-background-set-different-drawings-related-school-blue-color-153454-35.avif";
+    
     const gridItemStyle = {
         backgroundImage: `url(${backgroundImageUrl})`,
         backgroundSize: "cover",
@@ -89,16 +89,6 @@ function Setting() {
                         >
                             Expenses
                         </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit and Add Expenses according to personal
-                            Details.
-                        </Typography>
                     </Grid>
                 </Grid>
 
@@ -125,16 +115,6 @@ function Setting() {
                         >
                             Company Profile
                         </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit and Add Profile according to Company
-                            Details.
-                        </Typography>
                     </Grid>
                 </Grid>
 
@@ -159,15 +139,6 @@ function Setting() {
                             }}
                         >
                             User Roles
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit and Add Roles accordingly.
                         </Typography>
                     </Grid>
                 </Grid>
@@ -194,15 +165,6 @@ function Setting() {
                         >
                             Courses
                         </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit and Add Courses accordingly to company norms.
-                        </Typography>
                     </Grid>
                 </Grid>
 
@@ -227,15 +189,6 @@ function Setting() {
                             }}
                         >
                             Labs / Classrooms
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit name or Add more classrooms accordingly to institute.
                         </Typography>
                     </Grid>
                 </Grid>
@@ -262,15 +215,6 @@ function Setting() {
                         >
                             Employee Roles
                         </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit or Add more roles of the employees accordingly to institute.
-                        </Typography>
                     </Grid>
                 </Grid>
 
@@ -296,15 +240,6 @@ function Setting() {
                         >
                             Developer options
                         </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit or Add more options for the role of developer accordingly to institute.
-                        </Typography>
                     </Grid>
                 </Grid>
 
@@ -329,15 +264,6 @@ function Setting() {
                             }}
                         >
                             Admin Logs
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: "16px",
-                                color: "#fff",
-                                marginBottom: "16px"
-                            }}
-                        >
-                            Please Edit or Add more options for the role of Admin accordingly to institute.
                         </Typography>
                     </Grid>
                 </Grid>

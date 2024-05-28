@@ -5,6 +5,7 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -23,6 +24,8 @@ import { useParams } from "react-router-dom";
 import { Button } from "antd";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 
 //
 const ITEM_HEIGHT = 48;
@@ -40,7 +43,7 @@ const initialValues = {
   lastName: "",
   contact: "",
   email: "",
-  dob: "",
+  dob: null,
   education: "",
   college: "",
   blood_group: "",
@@ -230,22 +233,28 @@ const StudentInfo = ({
                 </FormControl>
               </Grid>
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
-                <Box
-                  className="flatpicker-input"
-                  style={{ outline: "none", whiteSpace: "nowrap" }}
-                >
-                  <Flatpickr
-                    placeholder="Date Of Birth"
+                <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
+                  <MobileDatePicker
+                    fullWidth
+                    label="Date Of Birth"
+                    clearable
                     name="dob"
                     value={formik.values.dob}
-                    onChange={(selectedDates) => onDateChange(selectedDates)}
-                    className="form-control"
-                    options={{
-                      dateFormat: "Y-m-d ",
-                      mode: "single",
-                    }}
+                    onChange={(date) => formik.setFieldValue("dob", date)}
+                    renderInput={(props) => (
+                      <TextField
+                        {...props}
+                        fullWidth
+                        label="Select Date"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start"></InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
                   />
-                </Box>
+                </LocalizationProvider>
               </Grid>
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <TextField
@@ -314,24 +323,28 @@ const StudentInfo = ({
                 </FormControl>
               </Grid>
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
-                <Box
-                  className="flatpicker-input"
-                  style={{ outline: "none", whiteSpace: "nowrap" }}
-                >
-                  <Flatpickr
-                    placeholder="Joining Date"
+                <LocalizationProvider dateAdapter={AdapterDateFns} fullWidth>
+                  <MobileDatePicker
+                    fullWidth
+                    label="Joining Date"
+                    clearable
                     name="joining_date"
                     value={formik.values.joining_date}
-                    onChange={(selectedDates) =>
-                      onJoiningDateChange(selectedDates)
-                    }
-                    className="form-control"
-                    options={{
-                      dateFormat: "Y-m-d ",
-                      mode: "single",
-                    }}
+                    onChange={(date) => formik.setFieldValue("joining_date", date)}
+                    renderInput={(props) => (
+                      <TextField
+                        {...props}
+                        fullWidth
+                        label="Select Joining Date"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start"></InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
                   />
-                </Box>
+                </LocalizationProvider>
               </Grid>
               <Grid item xl={4} lg={4} md={6} sm={6} xs={12}>
                 <TextField
@@ -383,7 +396,7 @@ const StudentInfo = ({
                   sx={{
                     padding: "30px 20px",
                     "@media (max-width: 600px)": {
-                      justifyContent: "center" ,
+                      justifyContent: "center",
                     },
                   }}
                 >

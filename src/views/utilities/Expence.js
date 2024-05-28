@@ -1,20 +1,21 @@
+
+
 import {
   Button,
   FormControl,
   Grid,
   InputLabel,
-  ListItemText,
   MenuItem,
   Select,
   TablePagination,
   TextField,
+  CircularProgress,
 } from "@mui/material";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import MainCard from "ui-component/cards/MainCard";
 import { gridSpacing } from "store/constant";
 import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
 import { Modal, notification } from "antd";
 import { useFormik } from "formik";
 import { string, object } from "yup";
@@ -22,29 +23,28 @@ import "flatpickr/dist/themes/material_green.css";
 import { useRecoilState } from "recoil";
 import { profile } from "atoms/authAtoms";
 import axios from "axios";
-import { useEffect } from "react";
 import { useGetAllExpenses } from "hooks/useGetAllExpense";
 import moment from "moment";
 import { deleteAllExpense } from "store/slices/inquiryslice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { RestoreFromTrashTwoTone, EditNoteTwoTone } from "@mui/icons-material";
-
-const expenseType = [
-  "Rent",
-  "Electricity bill",
-  "Salary",
-  "Stationary",
-  "Maintenance",
-  "New Asset purchase",
-  "Office expense",
-];
+import { useGetAllconfigs } from "hooks/useGetAllconfigs";
 
 export const Expence = () => {
-  /* eslint-disable */
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      },
+    },
+  };
+
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(0);
-  const dispatch = useDispatch();
+  const dispatch = useCallback(useDispatch(), []);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [profileData, setProfileData] = useRecoilState(profile);
   const { data, refetch } = useGetAllExpenses(
@@ -57,18 +57,19 @@ export const Expence = () => {
   const [editButton, setEditButton] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [currentDate, setCurrentDate] = useState(null);
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
+  const { data:configs } = useGetAllconfigs();
+  const expenses=configs?.expenses;
 
   useEffect(() => {
     refetch();
-  }, [page, rowsPerPage, searchText]);
+  }, [page, rowsPerPage, searchText, refetch]);
 
   useEffect(() => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
-
     const formattedDate = `${year}-${month}-${day}`;
     setCurrentDate(formattedDate);
   }, []);
@@ -125,7 +126,6 @@ export const Expence = () => {
       headerAlign: "left",
       align: "left",
     },
-
     {
       field: "date",
       headerName: "Date",
@@ -180,10 +180,6 @@ export const Expence = () => {
     formik.handleReset();
   }
 
-  const handleOkExpenses = () => {
-    setAddModal(false);
-  };
-
   const initialValue = {
     type: editExpence.type || "",
     date: editExpence.date || currentDate,
@@ -212,9 +208,9 @@ export const Expence = () => {
         amount: values.amount,
         company_id: profileData.company_id,
       };
-      setLoading(true)
+      setLoading(true);
       try {
-        if (editButton == true) {
+        if (editButton) {
           await axios
             .put(
               `${process.env.REACT_APP_API_URL}/${data?.expenses[0].company_id}/${editExpence.id}/update-expense`,
@@ -225,7 +221,7 @@ export const Expence = () => {
               action.resetForm();
               setAddModal(false);
               refetch();
-      setLoading(false);
+              setLoading(false);
             })
             .catch((err) => console.log(err));
         } else {
@@ -236,7 +232,7 @@ export const Expence = () => {
               action.resetForm();
               setAddModal(false);
               refetch();
-      setLoading(false);
+              setLoading(false);
             })
             .catch((err) => console.log(err));
         }
@@ -271,6 +267,7 @@ export const Expence = () => {
   return (
     <>
       <Mainbreadcrumbs title={"Expense"} />
+
       <MainCard>
         <FormControl
           sx={{
@@ -303,17 +300,17 @@ export const Expence = () => {
             <Grid item lg={4} md={12} xs={12} sm={12}>
               <Grid item>
                 <TextField
-                    item
-                    label="Search"
-                    fullWidth
-                    size="small"
-                    style={{ width: "100%", minWidth: "220px", margin: "auto" }}
-                    variant="outlined"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                    InputLabelProps={{
-                      style: { color: "#5559CE", marginBottom: "0" },
-                    }}
+                  item
+                  label="Search"
+                  fullWidth
+                  size="small"
+                  style={{ width: "100%", minWidth: "220px", margin: "auto" }}
+                  variant="outlined"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  InputLabelProps={{
+                    style: { color: "#5559CE", marginBottom: "0" },
+                  }}
                 />
               </Grid>
             </Grid>
@@ -392,6 +389,7 @@ export const Expence = () => {
           </Grid>
         </FormControl>
       </MainCard>
+
       <MainCard style={{ marginTop: "20px" }}>
         <div style={{ width: "100%", height: "570px", maxHeight: "100%" }}>
           <DataGrid
@@ -423,23 +421,40 @@ export const Expence = () => {
           backIconButtonProps={{
             "aria-label": "Previous Page",
           }}
-          nextIconButtonProps={{
-            "aria-label": "Next Page",
-          }}
-          rowsPerPageOptions={[10, 20, 50, 100]}
         />
       </MainCard>
 
       <Modal
         open={addModal}
+        onOk={formik.handleSubmit}
         onCancel={handleCloseAddBatchDialog}
-        onOk={handleOkExpenses}
-        maskClosable={false}
-        footer={false}
-        width={500}
-        className="Follow_modal"
+        width={800}
+        footer={[
+          <Button
+            key="submit"
+            onClick={formik.handleSubmit}
+            sx={{
+              height: "40px",
+              fontSize: "15px",
+              lineHeight: "28px",
+              backgroundColor: "#5559CE",
+              color: "#fff",
+              padding: "0px 30px",
+              "&:hover": {
+                backgroundColor: "#5559CE",
+                color: "#fff",
+              },
+            }}
+          >
+            {loading ? (
+              <CircularProgress size={24} sx={{ color: "#fff" }} />
+            ) : (
+              "Submit"
+            )}
+          </Button>,
+        ]}
       >
-        <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
+        <form onSubmit={formik.handleSubmit}>
           <Grid
             container
             spacing={2}
@@ -461,106 +476,76 @@ export const Expence = () => {
               },
             }}
           >
-            <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+            <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
               <FormControl fullWidth>
                 <InputLabel id="type">Type</InputLabel>
                 <Select
                   labelId="Type"
                   id="type"
+                  label="Type"
                   name="type"
+                  MenuProps={MenuProps}
+                  fullWidth
                   inputlabelprops={{
                     style: { color: "#5559CE" },
                   }}
-                  label="Type"
                   value={formik?.values?.type}
                   onChange={formik.handleChange}
                 >
-                  {expenseType.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      <ListItemText primary={option} />
-                    </MenuItem>
-                  ))}
+                  {expenses &&
+                    expenses?.length !== 0 &&
+                    expenses.map((e) => {
+                      return <MenuItem value={e}>{e}</MenuItem>;
+                    })}
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+            <Grid item xs={12}>
               <TextField
-                label="Description"
-                variant="outlined"
-                name="desc"
-                value={formik.values?.desc}
-                onChange={formik.handleChange}
-                multiline
                 fullWidth
-                inputlabelprops={{
+                id="desc"
+                name="desc"
+                label="Description"
+                InputProps={{
                   style: { color: "#5559CE" },
                 }}
-                error={
-                  formik.touched.description &&
-                  Boolean(formik.errors.description)
-                }
-                helperText={
-                  formik.touched.description && formik.errors.description
-                }
+                value={formik.values.desc}
+                onChange={formik.handleChange}
+                error={formik.touched.desc && Boolean(formik.errors.desc)}
+                helperText={formik.touched.desc && formik.errors.desc}
               />
             </Grid>
-            <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+            <Grid item xs={12}>
               <TextField
-                type="number"
-                label="Amount"
-                variant="outlined"
-                name="amount"
-                value={formik.values.amount}
-                onChange={formik.handleChange}
-                multiline
                 fullWidth
+                id="amount"
+                name="amount"
+                label="Amount"
                 inputlabelprops={{
                   style: { color: "#5559CE" },
                 }}
+                value={formik.values.amount}
+                onChange={formik.handleChange}
                 error={formik.touched.amount && Boolean(formik.errors.amount)}
                 helperText={formik.touched.amount && formik.errors.amount}
               />
             </Grid>
-
-            <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+            <Grid item xs={12}>
               <TextField
-                type="date"
-                variant="outlined"
-                name="date"
-                value={formik?.values?.date}
-                onChange={formik.handleChange}
                 fullWidth
+                id="date"
+                name="date"
                 inputlabelprops={{
                   style: { color: "#5559CE" },
                 }}
-                error={formik.touched.date && Boolean(formik.errors.date)}
-                helperText={formik.touched.date && formik.errors.date}
-              />
-            </Grid>
-
-            <Grid
-              item
-              xl={12}
-              lg={12}
-              md={6}
-              sm={6}
-              xs={12}
-              sx={{ textAlign: "right" }}
-            >
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  backgroundColor: "#5559CE",
-                  color: "#fff",
-                  marginRight: "10px",
-                  marginTop: "15px",
-                  height: "35px",
-                  "&:hover": { backgroundColor: "#5559CE" },
+                label="Date"
+                type="date"
+                value={formik.values.date}
+                onChange={formik.handleChange}
+                InputLabelProps={{
+                  shrink: true,
                 }}
-              >
-               {loading ? <CircularProgress size={24} /> : (editButton ? "Edit" : "Add Expense")}
-              </Button>
+              />
             </Grid>
           </Grid>
         </form>
@@ -568,3 +553,5 @@ export const Expence = () => {
     </>
   );
 };
+
+export default Expence;

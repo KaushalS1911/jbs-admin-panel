@@ -21,7 +21,7 @@ import PhoneInput from "react-phone-input-2";
 import countrystatecity from "Countrystatecity.json";
 import "react-phone-input-2/lib/style.css";
 import MainCard from "ui-component/cards/MainCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   EditEmployee,
   deleteEmployee,
@@ -35,6 +35,7 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import "react-datepicker/dist/react-datepicker.css";
 import Mainbreadcrumbs from "contants/Mainbreadcrumbs";
 import axios from "axios";
+import { useGetAllconfigs } from "hooks/useGetAllconfigs";
 
 const Editemployee = () => {
 
@@ -51,8 +52,9 @@ const Editemployee = () => {
   
 
 
-  const { configs } = useSelector((state) => state.configs);
-  const { emp_type, developer_type } = configs;
+  const { data:role } = useGetAllconfigs();
+  const emp_type=role?.emp_type;
+  const developer_type=role?.developer_type;
 
   //notification
   const openNotificationWithIcon = (type, message) => {
@@ -686,6 +688,7 @@ const Editemployee = () => {
 
               <Grid>
                 <Typography
+                variant="h4"
                   sx={{
                     marginBottom: "20px",
                     color: "#5559CE",
