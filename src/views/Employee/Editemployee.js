@@ -889,7 +889,7 @@ const Editemployee = () => {
                         color: "#fff",
                       }}
                     >
-                      {loading ? <CircularProgress size={24} /> : "Save"}
+                      {loading ? <CircularProgress size={24} style={{ color: 'white' }}/> : "Save"}
                     </Button>
                   </Grid>
                   <Grid>

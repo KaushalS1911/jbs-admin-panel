@@ -19,8 +19,8 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { notification } from "antd";
 import { useGetAllStudents } from "hooks/useGetAllStudents";
-import { useSelector } from "react-redux";
 import { courses } from "contants/courseConstants";
+import { useGetAllconfigs } from "hooks/useGetAllconfigs";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -33,7 +33,6 @@ const MenuProps = {
 };
 
 function Batchform({ setIsBatchOpen, fetchData }) {
-  const { configs } = useSelector((state) => state.configs);
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
       message: message,
@@ -43,6 +42,10 @@ function Batchform({ setIsBatchOpen, fetchData }) {
   const [options, setOptions] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const { data: students, refetch } = useGetAllStudents();
+  const { data:lab } = useGetAllconfigs();
+  const labs=lab?.classrooms;
+
+  console.log(lab);
 
   useEffect(() => {
     refetch();
@@ -145,7 +148,7 @@ function Batchform({ setIsBatchOpen, fetchData }) {
               }}
             />
           </Grid>
-          <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+          <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
             <Box
               className="flatpicker-input"
               style={{ outline: "none", whiteSpace: "nowrap" }}
@@ -164,7 +167,7 @@ function Batchform({ setIsBatchOpen, fetchData }) {
               />
             </Box>
           </Grid>
-          <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+          <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
             <textarea
               className="text-Note"
               id="w3review"
@@ -179,10 +182,10 @@ function Batchform({ setIsBatchOpen, fetchData }) {
               <div style={{ color: "red" }}>{formik.errors.note}</div>
             )}
           </Grid>
-          <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+          <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
             <FormControl fullWidth variant="outlined">
               <InputLabel id="demo-simple-select-label">
-                Select Classroom
+                Lab Name
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -200,10 +203,10 @@ function Batchform({ setIsBatchOpen, fetchData }) {
                   style: { color: "#5559CE" },
                 }}
               >
-                {configs &&
-                  configs.classrooms &&
-                  configs?.classrooms?.length !== 0 &&
-                  configs?.classrooms.map((LabItem) => (
+                {labs &&
+                  labs &&
+                  labs?.length !== 0 &&
+                  labs?.map((LabItem) => (
                     <MenuItem key={LabItem} value={LabItem}>
                       {LabItem}
                     </MenuItem>
@@ -211,7 +214,7 @@ function Batchform({ setIsBatchOpen, fetchData }) {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
+          <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
             <Autocomplete
               multiple
               options={options}

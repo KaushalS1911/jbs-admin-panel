@@ -17,6 +17,7 @@ import { useGetAllStudents } from "hooks/useGetAllStudents";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { notification } from "antd";
+import { useGetAllconfigs } from "hooks/useGetAllconfigs";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -28,18 +29,6 @@ const MenuProps = {
   },
 };
 
-const labs = [
-  { value: "lab 1", label: "Lab 1" },
-  { value: "lab 2", label: "Lab 2" },
-  { value: "lab 3", label: "Lab 3" },
-  { value: "lab 4", label: "Lab 4" },
-  { value: "lab 5", label: "Lab 5" },
-  { value: "lab 6", label: "Lab 6" },
-  { value: "lab 7", label: "Lab 7" },
-  { value: "lab 8", label: "Lab 8" },
-  { value: "lab 9", label: "Lab 9" },
-  { value: "lab 10", label: "Lab 10" },
-];
 
 function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
   //notification
@@ -52,6 +41,9 @@ function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
   const [options, setOptions] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const { data: students, refetch } = useGetAllStudents();
+  const { data:lab } = useGetAllconfigs();
+  const labs=lab?.classrooms;
+
 
   useEffect(() => {
     refetch();
@@ -209,11 +201,7 @@ function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
           </Grid>
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel
-                id="demo-simple-select-label"
-                style={{ color: "#5559CE" }}
-                helpertext={formik.touched.lab_name && formik.errors.lab_name}
-              >
+              <InputLabel id="demo-simple-select-label">
                 Lab Name
               </InputLabel>
               <Select
@@ -225,14 +213,21 @@ function BatchEdit({ batchData, setIsBatcheditOpen, fetchData }) {
                 error={
                   formik.touched.lab_name && Boolean(formik.errors.lab_name)
                 }
+                helperText={formik.touched.lab_name && formik.errors.lab_name}
                 onChange={formik.handleChange}
                 MenuProps={MenuProps}
+                InputLabelProps={{
+                  style: { color: "#5559CE" },
+                }}
               >
-                {labs.map((LabItem) => (
-                  <MenuItem key={LabItem.value} value={LabItem.value}>
-                    {LabItem.label}
-                  </MenuItem>
-                ))}
+                {labs &&
+                  labs &&
+                  labs?.length !== 0 &&
+                  labs?.map((LabItem) => (
+                    <MenuItem key={LabItem} value={LabItem}>
+                      {LabItem}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>

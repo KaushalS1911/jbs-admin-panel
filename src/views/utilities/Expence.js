@@ -26,7 +26,7 @@ import axios from "axios";
 import { useGetAllExpenses } from "hooks/useGetAllExpense";
 import moment from "moment";
 import { deleteAllExpense } from "store/slices/inquiryslice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { RestoreFromTrashTwoTone, EditNoteTwoTone } from "@mui/icons-material";
 import { useGetAllconfigs } from "hooks/useGetAllconfigs";

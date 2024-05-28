@@ -742,7 +742,7 @@ const EmployeeAdd = () => {
                           }
                     }
                   >
-                    {loading ? <CircularProgress size={24} /> : "Submit"}
+                    {loading ? <CircularProgress size={24}  style={{ color: 'white' }}/> : "Submit"}
                   </Button>
                 </Grid>
               </Grid>
