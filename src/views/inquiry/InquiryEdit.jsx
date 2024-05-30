@@ -373,7 +373,7 @@ function InquiryEdit() {
                         fullWidth
                         label="Date Of Birth"
                         clearable
-                        value={formik.values.dob || null} // Set the initial date value
+                        value={formik.values.dob || null} 
                         onChange={(date) => formik.setFieldValue("dob", date)}
                         renderInput={(props) => (
                           <TextField
