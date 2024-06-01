@@ -7,7 +7,8 @@ import {profile} from "../atoms/authAtoms";
 export const useGetAllInquiries = (page, perPage, searchText) => {
   const user = useRecoilValue(profile)
   return useQuery(['inquiries'], async () => {
-    const url = searchText.trim() !== '' ? `${process.env.REACT_APP_API_URL}${user?.company_id}/inquiry?page=${page}&limit=${perPage}&searchKey=${searchText}`: `${process.env.REACT_APP_API_URL}${user.company_id}/inquiry?page=${page}&limit=${perPage}`
+    const url = searchText.trim() !== '' ? `${process.env.REACT_APP_API_URL}${user?.company_id}/inquiry?page=${page}&limit=${perPage}&searchKey=${searchText}`:
+     `${process.env.REACT_APP_API_URL}${user.company_id}/inquiry?page=${page}&limit=${perPage}`
     return axios
       .get(url, {
         withCredentials: false

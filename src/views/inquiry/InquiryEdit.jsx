@@ -78,28 +78,7 @@ function InquiryEdit() {
     lastName: Yup.string().required("Last name is required"),
     occupation: Yup.string().required("Occupation is required"),
     contact: Yup.string().required("Conatct number is required"),
-    father_contact: Yup.string().required("Conatct number is required"),
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required")
-      .matches(
-        /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/,
-        "Invalid email format"
-      ),
-    education: Yup.string().required("Education is required"),
-    dob: Yup.date().required("Dob is required is required"),
-    address_line1: Yup.string().required("Address line 1 is required"),
-    address_line2: Yup.string().required("Address line 2 is required"),
-    zip_code: Yup.string()
-      .required("Zip code is required")
-      .matches(/^\d{1,6}$/, "Zip code must be at most 6 digits"),
-    reference_by: Yup.string().required("Reference By is required"),
-    fatherName: Yup.string().required("Father name is required"),
-    father_occupation: Yup.string().required("Father occupation is required"),
-    interested_in: Yup.array()
-      .min(2, "Select at least two options.")
-      .required("At least two options must be selected."),
-    suggested_by: Yup.string().required("Suggested by is required"),
+  
   });
   const formik = useFormik({
     initialValues: {
